@@ -1,0 +1,12 @@
+name: Mcdc
+version: ${project.version}
+main: com.github.mafelp.minecraft.Main
+api-version: 1.16
+prefix: MCDC
+authors: [ MaFeLP ]
+description: A Spigot plugin for cross communicatin with a discord server
+website: https://github.com/MaFeLP/MCDC
+
+commands:
+  link:
+    description: Links your discord account to your minecraft account.
