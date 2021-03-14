@@ -10,10 +10,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class Settings {
+    // Internal variables
     public static volatile DiscordApi discordApi = null;
     public static volatile Server minecraftServer = null;
+    public static final String version = "v0.2-beta";
+
+    // User defined variables
     public static volatile String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "]"
-            + ChatColor.BLACK + ": " + ChatColor.RESET;
+            + ChatColor.BLACK + ": " + ChatColor.RESET; // TODO add to config file
     public static boolean shortMsg = true;
     private static String API_TOKEN;
     public static String msgPrefix(MessageCreateEvent event) {
@@ -54,6 +58,7 @@ public class Settings {
         }
     }
 
+    // Configuration
     private static final File configurationFileDirectory = new File("./plugins/MCDC");
     private static final File configurationFile = new File(configurationFileDirectory, "config.yml");
     private static volatile YamlConfiguration configuration;

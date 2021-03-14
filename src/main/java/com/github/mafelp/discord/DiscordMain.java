@@ -14,7 +14,7 @@ public class DiscordMain {
         // Settings.minecraftServer.broadcastMessage("Test");
         try {
             Settings.discordApi = new DiscordApiBuilder()
-                    .setToken(Settings.API_TOKEN)
+                    .setToken(Settings.getApiToken())
                     .addListener(new DiscordListener())
                     .login().join();
         } catch (IllegalStateException exception) {
