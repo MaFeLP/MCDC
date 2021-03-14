@@ -15,11 +15,6 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // setting prefix
-        prefix = ChatColor.DARK_GRAY + "[" +
-                ChatColor.GOLD + "MCDC" +
-                ChatColor.DARK_GRAY + "]" +
-                ChatColor.BLACK + ": " +
-                ChatColor.RESET;
 
         Bukkit.getLogger().fine("Plugin MCDC version 0.1-beta is being loaded...");
 
