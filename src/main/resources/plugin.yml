@@ -1,4 +1,4 @@
-name: Mcdc
+name: MCDC
 version: ${project.version}
 main: com.github.mafelp.minecraft.Main
 api-version: 1.16
@@ -10,3 +10,7 @@ website: https://github.com/MaFeLP/MCDC
 commands:
   link:
     description: Links your discord account to your minecraft account.
+  token:
+    description: Sets the discord bot token!
+    usage: /token <Your API Token>
+    permission-message: Only administrators can run this command. Sorry
