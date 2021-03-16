@@ -32,10 +32,21 @@ All the functionalities will be added in the future!</div>
 ### \<server directory\>/plugins/MCDC/config.yml:
 #### Default config:
 ```yaml
-apiToken: <Your API Token goes here. See Installation>  # string
-useShortMsgFormat: true                                 # boolean
+apiToken: <Your API Token goes here. See Installation>      # string
+useShortMsgFormat: true                                     # boolean
+pluginPrefix: <Formatted Plugin Prefix for console>         # String, optional 
+serverName: <A name for your server, displayed in Messages> # String
+channelIDs:                                                 # long list
+  - <ID of your first channel>                              # long
+  - <ID of your second channel>                             # long
+  - ...
 ```
-<div class="alert alert-info" role="alert">Coming in version beta 0.2!</div>
+
+### Get the ID of a text channel:
+1. In your discord app open the user settings (next to your mute buttons)
+2. Go to the tab `Appearence`
+3. Scroll down and in the tab `Advanced` check the box `Developer Mode`
+4. Close the settings and right click on a text channel. Then click `Copy ID`
 
 ---
 
