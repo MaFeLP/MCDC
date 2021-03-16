@@ -19,6 +19,8 @@ public final class Main extends JavaPlugin {
 
         Settings.minecraftServer = this.getServer();
 
+        Settings.init();
+
         // Plugin startup logic
         listenerRegistration();
         commandRegistration();
