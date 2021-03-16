@@ -15,7 +15,7 @@ The bot can currently do all the checked items, unchecked will be implemented in
 <div class="alert alert-danger" role="alert">Remember that this plugin is currently in its beta phase!<br>
 All the functionalities will be added in the future!</div>
 
-## Installation {#Installation}
+## Installation
 1. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
 2. Restart the server.
 3. Create a new discord bot [here](https://discord.com/developers/applications).
@@ -66,4 +66,4 @@ mvn package
 mvn verify
 ```
 4. Copy the file `MCDC/target/mcdc-VERSION.jar` into your servers plugin folder.
-5. Continue with [Installation](#Installation)
+5. Continue with [Installation](#installation)
