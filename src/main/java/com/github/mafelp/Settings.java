@@ -13,7 +13,7 @@ public class Settings {
     // Internal variables
     public static volatile DiscordApi discordApi = null;
     public static volatile Server minecraftServer = null;
-    public static final String version = "v0.2-beta";
+    public static final String version = "v0.2.1-beta";
 
     // User defined variables
     public static volatile String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "]"
