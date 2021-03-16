@@ -8,7 +8,9 @@ import static com.github.mafelp.Settings.msgPrefix;
 public class DiscordListener implements MessageCreateListener {
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
-        Settings.minecraftServer.broadcastMessage(msgPrefix(event) +
-                event.getReadableMessageContent());
+        if (!event.getMessageAuthor().isYourself()) {
+            Settings.minecraftServer.broadcastMessage(msgPrefix(event) +
+                    event.getReadableMessageContent());
+        }
     }
 }

@@ -1,11 +1,10 @@
 package com.github.mafelp.minecraft;
 
+import com.github.mafelp.discord.ChannelAdmin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-import static com.github.mafelp.Settings.prefix;
 
 public class MinecraftChatListener implements Listener {
 
@@ -21,6 +20,7 @@ public class MinecraftChatListener implements Listener {
 
         Player player = event.getPlayer();
         String message = event.getMessage();
-        //TODO Add Discord Support
+
+        ChannelAdmin.broadcastMessage(player, message);
     }
 }

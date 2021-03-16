@@ -41,6 +41,7 @@ public final class Main extends JavaPlugin {
     private void listenerRegistration() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new JoinListener(), this);
+        pluginManager.registerEvents(new MinecraftChatListener(), this);
     }
 
     private void commandRegistration() {

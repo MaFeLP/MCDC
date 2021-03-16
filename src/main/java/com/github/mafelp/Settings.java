@@ -13,12 +13,12 @@ public class Settings {
     // Internal variables
     public static volatile DiscordApi discordApi = null;
     public static volatile Server minecraftServer = null;
-    public static final String version = "v0.2.1-beta";
+    public static final String version = "v0.3-beta";
 
     // User defined variables
-    public static volatile String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "]"
-            + ChatColor.BLACK + ": " + ChatColor.RESET; // TODO add to config file
-    public static boolean shortMsg = true;
+    public static volatile String prefix;
+    public static volatile boolean shortMsg = true;
+    public static volatile String serverName;
     private static String API_TOKEN;
     public static String msgPrefix(MessageCreateEvent event) {
         if (shortMsg || (event.getServer().isEmpty() || event.getServerTextChannel().isEmpty())) {
@@ -92,6 +92,8 @@ public class Settings {
         configuration.setDefaults(createDefaultConfig());
         API_TOKEN = configuration.getString("apiToken");
         shortMsg = configuration.getBoolean("useShortMessageFormat");
+        prefix = configuration.getString("pluginPrefix");
+        serverName = configuration.getString("serverName");
     }
 
     private static YamlConfiguration createDefaultConfig() {
@@ -99,7 +101,9 @@ public class Settings {
         defaultConfiguration = YamlConfiguration.loadConfiguration(configurationFile);
         defaultConfiguration.set("apiToken", null);
         defaultConfiguration.set("useShortMessageFormat", true);
-        defaultConfiguration.set("defaultTest", "default");
+        defaultConfiguration.set("pluginPrefix",  ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" +
+                ChatColor.DARK_GRAY + "]" + ChatColor.BLACK + ": " + ChatColor.RESET);
+        defaultConfiguration.set("serverName", "A Minecraft Server");
         return defaultConfiguration;
     }
 
