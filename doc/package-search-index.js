@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.github.mafelp"},{"l":"com.github.mafelp.discord"},{"l":"com.github.mafelp.minecraft"},{"l":"com.github.mafelp.minecraft.commands"}];updateSearchResults();
