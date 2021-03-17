@@ -3,6 +3,9 @@ package com.github.mafelp.discord;
 import com.github.mafelp.Settings;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
+
+import java.util.concurrent.CompletionException;
+
 import static com.github.mafelp.Settings.prefix;
 
 /**
@@ -19,6 +22,7 @@ public class DiscordMain {
             // log error message and return
             Settings.minecraftServer.getLogger().warning(prefix + ChatColor.RED +
                     "No token given! Please use \"token <your token>\" to activate the plugin!");
+            return;
         }
         // TODO Change: make this function a thread / use bukkit scheduler
         // Log that the instance is being started
@@ -35,7 +39,7 @@ public class DiscordMain {
                     // lof the bot in and join the servers
                     .login().join();
                     // TODO Add: activity
-        } catch (IllegalStateException exception) {
+        } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
             Settings.minecraftServer.getConsoleSender().sendMessage(prefix + ChatColor.RED +
