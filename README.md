@@ -53,13 +53,36 @@ channelIDs:                                                 # long list
 ## Building from source
 1. Install the following dependencies:
    - [maven](https://maven.apache.org/download.cgi)
-   - [JavaSE 16](https://www.oracle.com/java/technologies/javase-downloads.html)
+   - [JavaSE 15](https://www.oracle.com/java/technologies/javase-downloads.html)
    - or [java 8](https://java.com/en/download/) (Needs further configuration. See use with java8)
    - [git](https://git-scm.com/downloads)
 2. Open a shell and paste the following command in
 ```bash
 git clone https://github.com/MaFeLP/MCDC.git
 cd MCDC/
+```
+
+#### Using custom java version Java 8:
+In pom.xml edit the value for `<java.version>`:
+##### Normal:
+```xml
+<project>
+    <properties>
+        <java.version>15</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+   ...
+</project>
+```
+##### Using java 8:
+```xml
+<project>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+   ...
+</project>
 ```
 
 3. In this shell run:
