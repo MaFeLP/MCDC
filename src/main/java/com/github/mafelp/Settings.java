@@ -32,7 +32,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.3.1-beta";
+    public static final String version = "v0.3.4-beta";
 
 
     // User defined variables
