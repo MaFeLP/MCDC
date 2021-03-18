@@ -1,4 +1,16 @@
 # Changelog
+## v0.4-beta
+### Skins update!
+➕ Added package [com.github.mafelp.minecraft.skins](./src/main/java/com/github/mafelp/minecraft/skins)<br>
+➕ Added [Skin.java](./src/main/java/com/github/mafelp/minecraft/skins/Skin.java) <br>
+↳ Class to store information about the Skin of a player in, like the skin and head file.<br>
+➕ Added [SkinManager.java](./src/main/java/com/github/mafelp/minecraft/skins/SkinManager.java) <br>
+↳ Class to handle all skin downloading and storing for the Skin class.<br>
+➕ Added downloading of the skin on join. <br>
+➕ Added display of the head in the head of the discord message embed.
+
+---
+
 ## v0.3.4-beta
 ### Changelog fixes
 🛠 Fixed some rendering bugs in the [changelog](./CHANGELOG.md).

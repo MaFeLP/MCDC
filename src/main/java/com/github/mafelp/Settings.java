@@ -32,7 +32,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.3.4-beta";
+    public static final String version = "v0.4-beta";
 
 
     // User defined variables
@@ -66,6 +66,8 @@ public class Settings {
      * token can be found on https://discord.com/developers/applications
      */
     private static String API_TOKEN;
+
+    private static File skinDirectory = new File("./plugins/MCDC/");
 
     /**
      * Creates a prefix for a minecraft message
@@ -225,5 +227,9 @@ public class Settings {
      */
     public static String getApiToken() {
         return API_TOKEN;
+    }
+
+    public static File getSkinDirectory() {
+        return skinDirectory;
     }
 }
