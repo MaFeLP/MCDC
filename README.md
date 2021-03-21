@@ -36,7 +36,6 @@ apiToken: <Your API Token goes here. See Installation>      # string
 useShortMsgFormat: true                                     # boolean
 pluginPrefix: <Formatted Plugin Prefix for console>         # String, optional 
 serverName: <A name for your server, displayed in Messages> # String
-debug: <should additional information should be displayed>  # boolean
 channelIDs:                                                 # long list
   - <ID of your first channel>                              # long
   - <ID of your second channel>                             # long
