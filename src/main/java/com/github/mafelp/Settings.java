@@ -32,12 +32,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.4.1-beta";
-
-    /**
-     * enables more information being displayed while executing events
-     */
-    public static boolean debug = true;
+    public static final String version = "v0.3.4-beta";
 
 
     // User defined variables
@@ -182,7 +177,6 @@ public class Settings {
         shortMsg = configuration.getBoolean("useShortMessageFormat");
         prefix = configuration.getString("pluginPrefix");
         serverName = configuration.getString("serverName");
-        debug = configuration.getBoolean("debug");
     }
 
     /**
@@ -198,7 +192,6 @@ public class Settings {
         defaultConfiguration.set("pluginPrefix",  ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" +
                 ChatColor.DARK_GRAY + "]" + ChatColor.BLACK + ": " + ChatColor.RESET);
         defaultConfiguration.set("serverName", "A Minecraft Server");
-        defaultConfiguration.set("debug", false);
         return defaultConfiguration;
     }
 
@@ -232,13 +225,5 @@ public class Settings {
      */
     public static String getApiToken() {
         return API_TOKEN;
-    }
-
-    /**
-     * Getter for the configurationFileDirectory
-     * @return a File which contains the configuration file directory
-     */
-    public static File getConfigurationFileDirectory() {
-        return configurationFileDirectory;
     }
 }
