@@ -1,6 +1,8 @@
 package com.github.mafelp.minecraft;
 
 import com.github.mafelp.Settings;
+import com.github.mafelp.minecraft.skins.Skin;
+import com.github.mafelp.minecraft.skins.SkinManager;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +38,8 @@ public class JoinListener implements Listener {
                 "    Be aware that any chat messages that you send are going to be send to a discord channel!" +
                 ChatColor.RESET
         );
+
+        Skin joinedPlayerSkin = new Skin(playerJoinEvent.getPlayer(), true);
 
         // TODO add discord message updating with online players.
     }
