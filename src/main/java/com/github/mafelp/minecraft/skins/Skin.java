@@ -23,7 +23,7 @@ public class Skin {
 
     public Skin(Player player, boolean getSkinFromMojang) {
         this.player = player;
-        this.skinDirectory = Settings.getSkinDirectory();
+        this.skinDirectory = Settings.getConfigurationFileDirectory();
 
         this.skinDirectorySkins = new File(skinDirectory, "skins/");
         if (getSkinFromMojang) {

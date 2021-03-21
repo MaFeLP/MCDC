@@ -1,4 +1,13 @@
 # Changelog
+## v0.4.1-beta
+### Skins commenting update
+➕ Added commenting and JavaDoc to [SkinManager.java](./src/main/java/com/github/mafelp/minecraft/skins/SkinManager.java) <br>
+➕ Added new configuration variable info `config.yml`: `debug` <br> 
+↳ Displays additional information <br>
+▷◁ Merged Settings.skinFileDirectory into Settings.configurationFileDirectory <br>
+
+---
+
 ## v0.4-beta
 ### Skins update!
 ➕ Added package [com.github.mafelp.minecraft.skins](./src/main/java/com/github/mafelp/minecraft/skins)<br>

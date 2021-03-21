@@ -32,7 +32,12 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.4-beta";
+    public static final String version = "v0.4.1-beta";
+
+    /**
+     * enables more information being displayed while executing events
+     */
+    public static boolean debug = true;
 
 
     // User defined variables
@@ -66,8 +71,6 @@ public class Settings {
      * token can be found on https://discord.com/developers/applications
      */
     private static String API_TOKEN;
-
-    private static File skinDirectory = new File("./plugins/MCDC/");
 
     /**
      * Creates a prefix for a minecraft message
@@ -179,6 +182,7 @@ public class Settings {
         shortMsg = configuration.getBoolean("useShortMessageFormat");
         prefix = configuration.getString("pluginPrefix");
         serverName = configuration.getString("serverName");
+        debug = configuration.getBoolean("debug");
     }
 
     /**
@@ -194,6 +198,7 @@ public class Settings {
         defaultConfiguration.set("pluginPrefix",  ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" +
                 ChatColor.DARK_GRAY + "]" + ChatColor.BLACK + ": " + ChatColor.RESET);
         defaultConfiguration.set("serverName", "A Minecraft Server");
+        defaultConfiguration.set("debug", false);
         return defaultConfiguration;
     }
 
@@ -229,7 +234,11 @@ public class Settings {
         return API_TOKEN;
     }
 
-    public static File getSkinDirectory() {
-        return skinDirectory;
+    /**
+     * Getter for the configurationFileDirectory
+     * @return a File which contains the configuration file directory
+     */
+    public static File getConfigurationFileDirectory() {
+        return configurationFileDirectory;
     }
 }
