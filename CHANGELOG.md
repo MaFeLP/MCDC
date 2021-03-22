@@ -1,6 +1,7 @@
 # Changelog
 ## v0.4.1-beta
 ### Skins commenting update
+➕ Added commenting and JavaDoc to [Skin.java](./src/main/java/com/github/mafelp/minecraft/skins/Skin.java) <br>
 ➕ Added commenting and JavaDoc to [SkinManager.java](./src/main/java/com/github/mafelp/minecraft/skins/SkinManager.java) <br>
 ➕ Added new configuration variable info `config.yml`: `debug` <br> 
 ↳ Displays additional information <br>
