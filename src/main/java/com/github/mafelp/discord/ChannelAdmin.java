@@ -1,5 +1,6 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
@@ -55,43 +56,30 @@ public class ChannelAdmin {
      * @param server server on which to create the channel on
      * @param category category in which the channel should be created
      * @param topic the topic the channel should have
-     * @throws InterruptedException thrown when the thread is being stopped before the waiting loop could be fulfilled
      * @return success state
      */
     // type might change to ServerTextChannel later on
-    public static boolean createChannel(String name, Server server, ChannelCategory category, String topic) throws InterruptedException {
-        // TODO add channel creation support
-        CompletableFuture<ServerTextChannel> serverTextChannelCompletableFuture = new ServerTextChannelBuilder(server)
-                .setName(name)
-                .setCategory(category)
-                .setTopic(topic)
-                .setAuditLogReason("Creating Channel for communication with Minecraft Server")
-                .create();
-
-        // wait for the channel to become available
-        int i = 0;
-        // getting the state of the channel
-        while (!serverTextChannelCompletableFuture.isDone() && i < 10) {
-            // if channel is not present, print log an info and wait 10ms
-            Settings.minecraftServer.getLogger().info(Settings.prefix + "Channel creation not complete. Waiting 10 ms...");
-            i++;
-            Thread.sleep(10);
-        }
-
-        // try to get the server text channel
-        // might be the return value in the future
+    public static boolean createChannel(String name, Server server, ChannelCategory category, String topic) {
         try {
-            ServerTextChannel serverTextChannel = serverTextChannelCompletableFuture.get();
-            // TODO Add: channel id to the list of channels where to broadcast the messages to
-            // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
-            // return a success
+            // TODO add channel creation support
+            new ServerTextChannelBuilder(server)
+                    .setName(name)
+                    .setCategory(category)
+                    .setTopic(topic)
+                    .setAuditLogReason("Creating Channel for communication with Minecraft Server")
+                    .create()
+                    .thenAcceptAsync(serverTextChannel -> {
+                        // TODO Add: channel id to the list of channels where to broadcast the messages to
+                        // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
+                        // return a success
+                    });
+
             return true;
-        } catch (InterruptedException | ExecutionException e) {
-            Settings.minecraftServer.getLogger().warning(Settings.prefix + ChatColor.RED +
-                    "Something went while trying to create a channel! Error: " + e.getMessage());
-            // return a failure
+        } catch (Exception exception) {
+            Logging.logException(exception, "Something went wrong while trying to create a text channel.");
             return false;
         }
+
     }
 
     /**

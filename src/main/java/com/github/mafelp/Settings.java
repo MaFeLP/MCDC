@@ -9,6 +9,9 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import java.io.File;
 import java.io.IOException;
 
+import static com.github.mafelp.Logging.info;
+import static com.github.mafelp.Logging.logIOException;
+
 /**
  * Class containing all settings:
  * [
@@ -145,7 +148,7 @@ public class Settings {
 
             // if the configuration file directory was created: log success message
             if (success) {
-                minecraftServer.getLogger().info(prefix + "Created config directory plugins/MCDC");
+                info("Created config directory plugins/MCDC");
             }
         }
 
@@ -157,16 +160,13 @@ public class Settings {
             try {
                 success = configurationFile.createNewFile();
             } catch (IOException e) {
-                // if it fails, print the stack trace to the console
-                minecraftServer.getLogger().warning(prefix + ChatColor.RED +
-                        "something went wrong, while trying to create the configuration file. Error: " +
-                        e.getMessage());
+                logIOException(e, "something went wrong, while trying to create the configuration file.");
             }
 
             // if the file was successfully created
             if (success) {
                 // log success message
-                minecraftServer.getLogger().info(prefix + "Created config file plugins/MCDC/config.yml");
+                info("Created config file plugins/MCDC/config.yml");
 
                 // set the configuration to the default configuration
                 configuration = createDefaultConfig();
@@ -220,9 +220,7 @@ public class Settings {
             configuration.save(configurationFile);
             minecraftServer.getLogger().info(prefix + "Successfully saved Config File");
         } catch (IOException e) {
-            // if saving fails, log the error message as warning
-            minecraftServer.getLogger().warning(prefix + ChatColor.RED +
-                    "Something went wrong while trying to save the configuration. Error: " + e.getMessage());
+            logIOException(e, "Something went wrong while trying to save the configuration.");
         }
     }
 

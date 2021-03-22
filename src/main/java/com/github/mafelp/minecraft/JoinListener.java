@@ -1,5 +1,6 @@
 package com.github.mafelp.minecraft;
 
+import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import com.github.mafelp.minecraft.skins.Skin;
 import com.github.mafelp.minecraft.skins.SkinManager;
@@ -39,9 +40,9 @@ public class JoinListener implements Listener {
                 ChatColor.RESET
         );
 
-        Skin joinedPlayerSkin = new Skin(playerJoinEvent.getPlayer(), true);
+        // Downloads the skin from Mojang
+        new Skin(playerJoinEvent.getPlayer(), true);
 
         // TODO add discord message updating with online players.
     }
-
 }
