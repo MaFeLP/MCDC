@@ -1,5 +1,6 @@
 package com.github.mafelp.minecraft.commands;
 
+import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import com.github.mafelp.discord.DiscordMain;
 import org.bukkit.ChatColor;
@@ -50,8 +51,7 @@ public class Token implements CommandExecutor {
                 commandSender.sendMessage(Settings.prefix + ChatColor.RED + "Could not disconnect the Discord Bot!\n" +
                         "The full error message can be seen in the console!");
                 // also log the complete error stack trace to the console
-                Settings.minecraftServer.getLogger().warning(Settings.prefix + ChatColor.RED +
-                        "Disconnecting the bot, failed! Error: " + e.getMessage());
+                Logging.logException(e, "Disconnecting the bot, failed!");
                 return false;
             }
         }
@@ -77,9 +77,7 @@ public class Token implements CommandExecutor {
             commandSender.sendMessage(Settings.prefix +
                     "An error appeared during the part reload.\n" +
                     "The error has been logged to the console.");
-            Settings.minecraftServer.getLogger().warning(Settings.prefix +
-                    "An error appeared during the setting of the discord api token! Error:\n"
-                    + exception.getMessage());
+            Logging.logException(exception, "An error appeared during the setting of the discord api token!");
             return false;
         }
     }

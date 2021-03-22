@@ -1,5 +1,6 @@
 package com.github.mafelp.minecraft.skins;
 
+import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Base64;
 
+import static com.github.mafelp.Logging.info;
 import static com.github.mafelp.Settings.debug;
 
 /**
@@ -105,8 +107,7 @@ public class SkinManager {
         try {
             return ImageIO.read(skinFile);
         } catch (IOException ioException) {
-            Settings.minecraftServer.getLogger().warning(Settings.prefix + ChatColor.RED +
-                    "Something went wrong whilst trying to load th skin. Error: " + ioException.getMessage());
+            Logging.logIOException(ioException, "Something went wrong whilst trying to load th skin.");
         }
         return null;
     }
@@ -127,18 +128,16 @@ public class SkinManager {
         // Try to download the skin
         try {
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix + "Getting the URL for player "
-                        + player.getDisplayName());
+                info("Getting the URL for player " + player.getDisplayName());
             URL skinUrl = new URL(getSkinUrl(player.getUniqueId().toString()));
 
             // Read the skin from the URL and return he image
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix + "Reading the skin file in.");
+                info("Reading the skin file in.");
             return ImageIO.read(skinUrl);
 
         } catch (IOException e) {
-            Settings.minecraftServer.getLogger().warning(Settings.prefix + ChatColor.RED +
-                    "Something went wrong whilst trying to download th skin. Error: " + e.getMessage());
+            Logging.logIOException(e, "Something went wrong whilst trying to download th skin.");
         }
         return null;
     }
@@ -163,29 +162,17 @@ public class SkinManager {
             // Creates the skin file to return in the end
             File skinFile = new File(folder, imageName + fileExtension);
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix + "Creating Skin file " +
-                        skinFile.getAbsolutePath());
+                info("Creating skin file" + skinFile.getAbsolutePath());
 
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix + "Writing the skin to the file.");
-
+                info("Writing the skin to the file.");
             // Write the image to the file
             ImageIO.write(image, "png", skinFile);
 
             // Return the file
             return skinFile;
         } catch (IOException e) {
-            String errorCode;
-
-            // Only when debug is enabled, print the full stack trace.
-            if (debug)
-                errorCode = Arrays.toString(e.getStackTrace());
-            else
-                errorCode = e.getMessage();
-
-            Settings.minecraftServer.getLogger().warning(Settings.prefix + ChatColor.RED +
-                    "Error while trying to save skin image: " + errorCode);
-
+            Logging.logIOException(e, "Error while trying to save skin image.");
             return null;
         }
     }
@@ -198,8 +185,7 @@ public class SkinManager {
     private static String getContent(String link) {
         try {
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix +
-                        "Establishing a connection to Mojang's servers");
+                info("Establishing a connection to Mojang's servers");
             // Creates a URL from String
             URL url = new URL(link);
             // Establishes a https connection
@@ -209,7 +195,7 @@ public class SkinManager {
             StringBuilder outputLine = new StringBuilder();
 
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix + "Reading Response.");
+               info("Reading response");
             String inputLine;
 
             // read all the lines Mojang's API responded
@@ -219,23 +205,12 @@ public class SkinManager {
             // After reading everything, close the reader
             br.close();
             if (debug)
-                Settings.minecraftServer.getLogger().info(Settings.prefix + "Response is: "
-                        + outputLine.toString());
+                info("Response is: " + outputLine.toString());
             // Return the JSON Data
             return outputLine.toString();
 
         } catch (IOException e) {
-            String errorCode;
-
-            // Only when debug is enabled, print the full stack trace.
-            if (debug)
-                errorCode = Arrays.toString(e.getStackTrace());
-            else
-                errorCode = e.getMessage();
-
-            Settings.minecraftServer.getLogger().warning(Settings.prefix + ChatColor.RED +
-                    "Error while trying to save skin image: " + errorCode);
-
+            Logging.logIOException(e, "Error while trying to save skin image.");
             return null;
         }
     }
@@ -258,7 +233,7 @@ public class SkinManager {
 
         // Decoding field "value" of the JSON data
         if (debug)
-            Settings.minecraftServer.getLogger().info(Settings.prefix + "Decoding field \"value\"...");
+            info("Decoding field \"value\"...");
         // Get the value data
         String jsonBase64 = o.get("properties").getAsJsonArray().get(0).getAsJsonObject().get("value").getAsString();
         // Decode it and write it to bytes
@@ -266,14 +241,14 @@ public class SkinManager {
         // Create a new string from the bytes
         String decoded = new String(decodedBytes);
         if (debug)
-            Settings.minecraftServer.getLogger().info(Settings.prefix + "Decoded content is: " + decoded);
+            info("Decoded content is: " + decoded);
 
         // Get the decoded data (also JSON) as a JSON object
         o = parser.parse(decoded).getAsJsonObject();
         // Gets the value of the field "textures.SKIN.url"
         String out = o.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
         if (debug)
-            Settings.minecraftServer.getLogger().info(Settings.prefix + "Skin url is: " + out);
+            info("Skin url is: " + out);
         // Returns the skin URL
         return out;
     }

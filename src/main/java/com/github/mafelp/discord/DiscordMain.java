@@ -1,5 +1,6 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
@@ -42,7 +43,7 @@ public class DiscordMain {
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
-            Settings.minecraftServer.getConsoleSender().sendMessage(prefix + ChatColor.RED +
+            Settings.minecraftServer.getLogger().warning(prefix + ChatColor.RED +
                     "An error occurred whilst trying to create the discord instance! Error: " + exception.getMessage());
         }
     }
@@ -54,11 +55,11 @@ public class DiscordMain {
         // check if the bot is already logged out
         if (Settings.discordApi == null) {
             // if so, log a message and return
-            Settings.minecraftServer.getLogger().info("Discord API is already logged out!");
+            Logging.info("Discord API is already logged out!");
             return;
         }
         // Log that the bot is being shut down
-        Settings.minecraftServer.getLogger().info(prefix + ChatColor.DARK_GRAY +
+        Logging.info(prefix + ChatColor.DARK_GRAY +
                 "Shutting down Discord Instance...");
         // Disconnect the bot / shut the bot down
         Settings.discordApi.disconnect();
