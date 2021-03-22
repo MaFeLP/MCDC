@@ -85,7 +85,7 @@ public class SkinManager {
      * @param inputImage the image to crop
      * @return a sub-image with boundaries (x=8, y=8, width=8, height=8)
      */
-    public static BufferedImage getHead(BufferedImage inputImage) {
+    protected static BufferedImage getHead(BufferedImage inputImage) {
         return inputImage.getSubimage(8, 8, 8, 8);
     }
 
@@ -292,7 +292,7 @@ public class SkinManager {
      * @param player The player to grab the head of.
      * @return The file which contains the player's head
      */
-    public static File getHeadFile(Player player) {
+    protected static File getHeadFile(Player player) {
         return new File(Settings.getConfigurationFileDirectory(), "heads/" + player.getDisplayName() + fileExtension);
     }
 }
