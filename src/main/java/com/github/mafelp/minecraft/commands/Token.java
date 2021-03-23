@@ -60,8 +60,6 @@ public class Token implements CommandExecutor {
         try {
             // set the token in the configuration
             Settings.getConfiguration().set("apiToken", args[0]);
-            // save the configuration
-            Settings.saveConfiguration();
             // reload configuration
             Settings.init();
             // try to log the bot in
@@ -85,6 +83,6 @@ public class Token implements CommandExecutor {
     /**
      * The help message used, when the command had invalid parameters
      */
-    private static final String helpMessage = Settings.prefix + Settings.prefix
+    private static final String helpMessage = Settings.prefix
             + "Wrong usage!\nUse \"/token <Your Discord Token>\"!";
 }

@@ -1,5 +1,7 @@
 package com.github.mafelp;
 
+import org.bukkit.configuration.InvalidConfigurationException;
+
 import java.io.IOException;
 
 public class Logging {
@@ -26,6 +28,19 @@ public class Logging {
             for (StackTraceElement s :
                     exception.getStackTrace()) {
                 Settings.minecraftServer.getLogger().warning("\t" + s.toString());
+            }
+        }
+    }
+
+    public static void logInvalidConfigurationException(InvalidConfigurationException exception, String logMessage) {
+        Settings.minecraftServer.getLogger().warning(
+                Settings.prefix + logMessage + " Error: " + exception.getMessage()
+        );
+
+        if (Settings.debug) {
+            for (StackTraceElement stackTraceElement :
+                    exception.getStackTrace()) {
+                Settings.minecraftServer.getLogger().warning("\t" + stackTraceElement.toString());
             }
         }
     }

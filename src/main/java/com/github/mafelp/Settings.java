@@ -196,7 +196,7 @@ public class Settings {
      * when user didn't specify a value in config.yml
      * @return full configuration to set a default, when user didn't specify a value in config.yml
      */
-    private static YamlConfiguration createDefaultConfig() {
+    public static YamlConfiguration createDefaultConfig() {
         YamlConfiguration defaultConfiguration;
         defaultConfiguration = YamlConfiguration.loadConfiguration(configurationFile);
         defaultConfiguration.set("apiToken", null);

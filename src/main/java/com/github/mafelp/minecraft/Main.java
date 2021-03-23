@@ -1,11 +1,12 @@
 package com.github.mafelp.minecraft;
 
+import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import com.github.mafelp.discord.DiscordMain;
+import com.github.mafelp.minecraft.commands.Config;
 import com.github.mafelp.minecraft.commands.Link;
 import com.github.mafelp.minecraft.commands.Token;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import static com.github.mafelp.Settings.prefix;
@@ -54,6 +55,9 @@ public final class Main extends JavaPlugin {
 
         // Safely shut down the Discord bot instance
         DiscordMain.shutdown();
+
+        // Save the configuration
+        Settings.saveConfiguration();
     }
 
     /**
@@ -76,6 +80,10 @@ public final class Main extends JavaPlugin {
         // All commands
         // for more information read the Javadoc in the specific classes
         Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
+        Logging.info("Command \"link\" has been enabled.");
         Objects.requireNonNull(getCommand("token")).setExecutor(new Token());
+        Logging.info("Command \"token\" has been enabled.");
+        Objects.requireNonNull(getCommand("config")).setExecutor(new Config());
+        Logging.info("Command \"config\" has been enabled.");
     }
 }
