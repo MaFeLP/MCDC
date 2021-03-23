@@ -1,10 +1,10 @@
 # Changelog
 ## Configuration command support!
 ### v0.6-beta
-➕ Added "config" command
-↳ "config reload": reloads the config from the file
-↳ "config save": saves the current state of the configuration to the file
-↳ "config default": restores the cached config to the defaults
+➕ Added "config" command <br>
+↳ "config reload": reloads the config from the file <br>
+↳ "config save": saves the current state of the configuration to the file <br>
+↳ "config default": restores the cached config to the defaults <br>
 
 ---
 
