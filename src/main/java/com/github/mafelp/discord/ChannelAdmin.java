@@ -26,7 +26,6 @@ public class ChannelAdmin {
      * @return list of all channels of the ids
      */
     private static List<Channel> getMessageChannels() {
-        // Server[] servers = Settings.discordApi.getServers().toArray(new Server[0]);
         // creating new list to return
         List<Channel> serverTextChannels = new ArrayList<>();
 
@@ -51,34 +50,45 @@ public class ChannelAdmin {
      * @param name name of the channel
      * @param server server on which to create the channel on
      * @param topic the topic the channel should have
-     * @return success state
+     * @param successEmbed the embed to be sent into successChannel after completion
+     * @param successChannel the channel successEmbed is sent to
+     * @param welcomeEmbed the embed to sent to the newly created channel
+     * @return the newly created channel
      */
-    // type might change to ServerTextChannel later on
     public static ServerTextChannel createChannel(String name, Server server, String topic,
                                                   EmbedBuilder successEmbed, ServerTextChannel successChannel,
                                                   EmbedBuilder welcomeEmbed) {
         try {
-            AtomicReference<ServerTextChannel> out = new AtomicReference<ServerTextChannel>();
+            // return value
+            AtomicReference<ServerTextChannel> out = new AtomicReference<>();
 
-            // TODO add channel creation support
+            // Create the Channel
             new ServerTextChannelBuilder(server)
                     .setName(name)
                     .setTopic(topic)
                     .setAuditLogReason("Creating Channel for communication with Minecraft Server")
                     .create()
-                    .thenAcceptAsync(serverTextChannel -> {
-                        // TODO Add: channel id to the list of channels where to broadcast the messages to
+                    .thenAccept(serverTextChannel -> {
+                        // After the channel has been created
                         // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
-                        // return a success
                         Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
 
+                        // Add a field containing a link to the new channel and send the embed
                         successEmbed.addField("New Channel",
-                                "The enw channel is: <#" + serverTextChannel.getIdAsString() + ">");
+                                "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
                         successChannel.sendMessage(successEmbed);
 
+                        // Also send the welcome embed into the newly created channel
                         serverTextChannel.sendMessage(welcomeEmbed);
 
+                        // Set return channel to the newly created one
                         out.set(serverTextChannel);
+
+                        // Add the id of the new channel to the list of ids in the configuration and save/reload it
+                        List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
+                        ids.add(serverTextChannel.getId());
+                        Settings.getConfiguration().set("channelIDs", ids);
+                        Settings.saveConfiguration();
                     });
 
             return out.get();

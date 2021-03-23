@@ -3,7 +3,6 @@ package com.github.mafelp.discord.commands;
 import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
 import com.github.mafelp.discord.ChannelAdmin;
-import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
