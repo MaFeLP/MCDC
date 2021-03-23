@@ -61,7 +61,7 @@ public class DiscordMain {
             return;
         }
         // Log that the bot is being shut down
-        Logging.info(prefix + ChatColor.DARK_GRAY +
+        Logging.info(ChatColor.DARK_GRAY +
                 "Shutting down Discord Instance...");
         // Disconnect the bot / shut the bot down
         Settings.discordApi.disconnect();

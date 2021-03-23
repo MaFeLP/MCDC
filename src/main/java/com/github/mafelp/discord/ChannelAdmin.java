@@ -88,7 +88,6 @@ public class ChannelAdmin {
                         List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
                         ids.add(serverTextChannel.getId());
                         Settings.getConfiguration().set("channelIDs", ids);
-                        Settings.saveConfiguration();
                     });
 
             return out.get();
