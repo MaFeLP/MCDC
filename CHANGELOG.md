@@ -1,4 +1,17 @@
 # Changelog
+## Channel Creation update!
+### v0.5-beta 
+➕ Added Channel creation support: <br>
+➕ Added Channel [CreateChannelListener.java](./src/main/java/com/github/mafelp/discord/commands/CreateChannelListener.java) <br>
+↳ This allows you to send a message containing `.createChannel <name>` to a discord server and the bot creates the according channels <br>
+↳ You are being sent a help message on wrong usage. <br>
+↳ You are being sent a success message on success. <br>
+↳ A welcome message is sent to the new channel. <br>
+➕ Further implemented the new [Logging system](./src/main/java/com/github/mafelp/Logging.java) <br>
+➕ Added command filter so commands are not sent to the minecraft chat. <br>
+
+---
+
 ## v0.4.1-beta
 ### Skins commenting update
 ➕ Added commenting and JavaDoc to [Skin.java](./src/main/java/com/github/mafelp/minecraft/skins/Skin.java) <br>
