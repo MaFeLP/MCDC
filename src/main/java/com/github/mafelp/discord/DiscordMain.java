@@ -2,6 +2,7 @@ package com.github.mafelp.discord;
 
 import com.github.mafelp.Logging;
 import com.github.mafelp.Settings;
+import com.github.mafelp.discord.commands.CreateChannelListener;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
 
@@ -37,6 +38,7 @@ public class DiscordMain {
                     .setToken(Settings.getApiToken())
                     // register listeners
                     .addListener(new DiscordListener())
+                    .addListener(new CreateChannelListener())
                     // lof the bot in and join the servers
                     .login().join();
                     // TODO Add: activity

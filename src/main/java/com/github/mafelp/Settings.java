@@ -35,7 +35,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.4.1-beta";
+    public static final String version = "v0.5-beta";
 
     /**
      * enables more information being displayed while executing events
@@ -119,6 +119,11 @@ public class Settings {
         }
     }
 
+    /**
+     * The prefix used to identify commands in the discord chats.
+     */
+    public static String discordCommandPrefix = ".";
+
 
     // Configuration
     /**
@@ -183,6 +188,7 @@ public class Settings {
         prefix = configuration.getString("pluginPrefix");
         serverName = configuration.getString("serverName");
         debug = configuration.getBoolean("debug");
+        discordCommandPrefix = configuration.getString("discordCommandPrefix");
     }
 
     /**
@@ -199,6 +205,7 @@ public class Settings {
                 ChatColor.DARK_GRAY + "]" + ChatColor.BLACK + ": " + ChatColor.RESET);
         defaultConfiguration.set("serverName", "A Minecraft Server");
         defaultConfiguration.set("debug", false);
+        defaultConfiguration.set("discordCommandPrefix", ".");
         return defaultConfiguration;
     }
 

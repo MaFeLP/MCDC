@@ -6,19 +6,15 @@ import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.channel.Channel;
-import org.javacord.api.entity.channel.ChannelCategory;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerTextChannelBuilder;
-import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The class that manages the discord channels, whose messages are relayed to the
@@ -54,17 +50,19 @@ public class ChannelAdmin {
      * Creates a channel to send the minecraft messages to.
      * @param name name of the channel
      * @param server server on which to create the channel on
-     * @param category category in which the channel should be created
      * @param topic the topic the channel should have
      * @return success state
      */
     // type might change to ServerTextChannel later on
-    public static boolean createChannel(String name, Server server, ChannelCategory category, String topic) {
+    public static ServerTextChannel createChannel(String name, Server server, String topic,
+                                                  EmbedBuilder successEmbed, ServerTextChannel successChannel,
+                                                  EmbedBuilder welcomeEmbed) {
         try {
+            AtomicReference<ServerTextChannel> out = new AtomicReference<ServerTextChannel>();
+
             // TODO add channel creation support
             new ServerTextChannelBuilder(server)
                     .setName(name)
-                    .setCategory(category)
                     .setTopic(topic)
                     .setAuditLogReason("Creating Channel for communication with Minecraft Server")
                     .create()
@@ -72,12 +70,21 @@ public class ChannelAdmin {
                         // TODO Add: channel id to the list of channels where to broadcast the messages to
                         // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
                         // return a success
+                        Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
+
+                        successEmbed.addField("New Channel",
+                                "The enw channel is: <#" + serverTextChannel.getIdAsString() + ">");
+                        successChannel.sendMessage(successEmbed);
+
+                        serverTextChannel.sendMessage(welcomeEmbed);
+
+                        out.set(serverTextChannel);
                     });
 
-            return true;
+            return out.get();
         } catch (Exception exception) {
             Logging.logException(exception, "Something went wrong while trying to create a text channel.");
-            return false;
+            return null;
         }
 
     }
