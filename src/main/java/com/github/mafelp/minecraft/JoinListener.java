@@ -1,14 +1,12 @@
 package com.github.mafelp.minecraft;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.minecraft.skins.Skin;
-import com.github.mafelp.minecraft.skins.SkinManager;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import static com.github.mafelp.Settings.prefix;
+import static com.github.mafelp.utils.Settings.prefix;
 
 /**
  * Class handling Join events of players joining the server

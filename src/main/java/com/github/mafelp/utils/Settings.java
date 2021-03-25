@@ -1,4 +1,4 @@
-package com.github.mafelp;
+package com.github.mafelp.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -9,8 +9,8 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import java.io.File;
 import java.io.IOException;
 
-import static com.github.mafelp.Logging.info;
-import static com.github.mafelp.Logging.logIOException;
+import static com.github.mafelp.utils.Logging.info;
+import static com.github.mafelp.utils.Logging.logIOException;
 
 /**
  * Class containing all settings:

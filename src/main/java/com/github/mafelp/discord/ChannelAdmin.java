@@ -1,7 +1,7 @@
 package com.github.mafelp.discord;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

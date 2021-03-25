@@ -1,9 +1,9 @@
 package com.github.mafelp.discord;
 
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Settings;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
-import static com.github.mafelp.Settings.msgPrefix;
+import static com.github.mafelp.utils.Settings.msgPrefix;
 
 /**
  * Class that listens to all messages sent to a discord server

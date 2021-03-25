@@ -1,7 +1,6 @@
 package com.github.mafelp.minecraft.commands;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
 import com.github.mafelp.discord.DiscordMain;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,9 +11,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-import static com.github.mafelp.Settings.*;
+import static com.github.mafelp.utils.Settings.*;
 
+/**
+ * Class that implements the /config command in the minecraft chat.
+ */
 public class Config implements CommandExecutor {
+    /**
+     * The command executing task.
+     * @param commandSender The player/console who sent the command.
+     * @param command The command sent by the commandSender.
+     * @param s ???
+     * @param args Additional arguments passed into the command.
+     * @return The success state of the command and if the usage text should be displayed.
+     */
     @Override
     public boolean onCommand(CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] args) {
         // Only execute, if player is op
