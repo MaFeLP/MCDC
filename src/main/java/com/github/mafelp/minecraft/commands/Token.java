@@ -55,11 +55,14 @@ public class Token implements CommandExecutor {
                 return false;
             }
         }
+        // TODO Fix: token arg0 is null in command when correct token is given...
 
         // try to log the bot in
         try {
             // set the token in the configuration
             Settings.getConfiguration().set("apiToken", args[0]);
+            // Save the configuration to the file
+            Settings.saveConfiguration();
             // reload configuration
             Settings.init();
             // try to log the bot in
