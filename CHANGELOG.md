@@ -1,4 +1,10 @@
 # Changelog
+## Small bug fix update
+### v0.6.1-beta
+🐞 Fixed bug in /token: The command would not set the token and use it.
+
+---
+
 ## Configuration command support!
 ### v0.6-beta
 ➕ Added "config" command <br>
