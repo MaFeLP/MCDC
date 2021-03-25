@@ -1,7 +1,8 @@
 package com.github.mafelp.discord;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
+import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.channel.Channel;
@@ -116,8 +117,8 @@ public class ChannelAdmin {
         // create an embed for the message
         //TODO Add: show head of player as author picture
         EmbedBuilder embed = new EmbedBuilder()
-                .setAuthor(messageAuthor.getDisplayName())
-             // .setAuthor(messageAuthor.getDisplayName(), "", new File("PATH TO HEAD"))
+             // .setAuthor(messageAuthor.getDisplayName())
+                .setAuthor(messageAuthor.getDisplayName(), "", new Skin(messageAuthor, false).getHead(), ".png")
                 .setColor(Color.YELLOW)
                 .setFooter("On " + Settings.serverName)
                 .addInlineField("Message:", message);

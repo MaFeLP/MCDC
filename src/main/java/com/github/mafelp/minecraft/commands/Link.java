@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import static com.github.mafelp.Settings.prefix;
+import static com.github.mafelp.utils.Settings.prefix;
 
 /**
  * Class handling the linking of minecraft and discord accounts -

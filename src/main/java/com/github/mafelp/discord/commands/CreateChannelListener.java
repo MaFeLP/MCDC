@@ -1,7 +1,7 @@
 package com.github.mafelp.discord.commands;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.ChannelAdmin;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -11,10 +11,20 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.github.mafelp.Logging.info;
-import static com.github.mafelp.Settings.*;
+import static com.github.mafelp.utils.Logging.info;
+import static com.github.mafelp.utils.Settings.*;
 
+/**
+ * The class that listens to the discord chats, if the channel creation command is executed. -
+ * As discord announced just today, there will be an update to the bot API, that'll be adding
+ * slash command support. This class will be moved, if the update is available in this API.
+ */
 public class CreateChannelListener implements MessageCreateListener {
+    /**
+     * The method called by the discord API, for every chat message. -
+     * This method will filter them and execute commands accordingly.
+     * @param event The event containing information about the message.
+     */
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
         // If the message is sent by the bot, return
