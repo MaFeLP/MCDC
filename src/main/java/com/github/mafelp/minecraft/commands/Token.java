@@ -1,7 +1,7 @@
 package com.github.mafelp.minecraft.commands;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

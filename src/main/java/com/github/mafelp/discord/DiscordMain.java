@@ -1,14 +1,14 @@
 package com.github.mafelp.discord;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.commands.CreateChannelListener;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
 
 import java.util.concurrent.CompletionException;
 
-import static com.github.mafelp.Settings.prefix;
+import static com.github.mafelp.utils.Settings.prefix;
 
 /**
  * The class that handles initiation and destruction of the discord bot instance(s)

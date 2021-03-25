@@ -1,10 +1,9 @@
 package com.github.mafelp.minecraft.skins;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import javax.imageio.ImageIO;
@@ -12,11 +11,10 @@ import javax.net.ssl.HttpsURLConnection;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Base64;
 
-import static com.github.mafelp.Logging.info;
-import static com.github.mafelp.Settings.debug;
+import static com.github.mafelp.utils.Logging.info;
+import static com.github.mafelp.utils.Settings.debug;
 
 /**
  * Skin Manager used for managing getting skins from Mojang, saving them and getting head

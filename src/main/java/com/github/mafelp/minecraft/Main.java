@@ -1,7 +1,7 @@
 package com.github.mafelp.minecraft;
 
-import com.github.mafelp.Logging;
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
 import com.github.mafelp.minecraft.commands.Config;
 import com.github.mafelp.minecraft.commands.Link;
@@ -9,7 +9,7 @@ import com.github.mafelp.minecraft.commands.Token;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import static com.github.mafelp.Settings.prefix;
+import static com.github.mafelp.utils.Settings.prefix;
 import java.util.Objects;
 
 /**

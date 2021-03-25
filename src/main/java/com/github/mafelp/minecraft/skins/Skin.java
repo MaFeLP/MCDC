@@ -1,6 +1,6 @@
 package com.github.mafelp.minecraft.skins;
 
-import com.github.mafelp.Settings;
+import com.github.mafelp.utils.Settings;
 import org.bukkit.entity.Player;
 
 import java.awt.image.BufferedImage;
