@@ -1,4 +1,13 @@
 # Changelog
+## Small bug fix update
+### v0.6.3-beta
+🛠 Updated [Config.java](./src/main/java/com/github/mafelp/minecraft/commands/Config.java): <br>
+↳ Added subcommands `set`, `get`, `add` and `remove` to the `/config` command. <br>
+↳ Updated [plugin.yml](./src/main/resources/plugin.yml) to represent those changes in the usages part. <br>
+📗 Updated the javadoc <br>
+
+---
+
 ## Back-End update
 ### v0.6.2-beta
 ➕ Added command parsing: <br>
