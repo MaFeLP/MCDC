@@ -2,6 +2,7 @@ package com.github.mafelp.minecraft.commands;
 
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.discord.DiscordMain;
+import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,12 +22,12 @@ public class Config implements CommandExecutor {
      * The command executing task.
      * @param commandSender The player/console who sent the command.
      * @param command The command sent by the commandSender.
-     * @param s ???
+     * @param label The command being passed in, aka. argument 0.
      * @param args Additional arguments passed into the command.
      * @return The success state of the command and if the usage text should be displayed.
      */
     @Override
-    public boolean onCommand(CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] args) {
+    public boolean onCommand(CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         // Only execute, if player is op
         if (!commandSender.isOp()) {
             commandSender.sendMessage(prefix + ChatColor.RED + "You can only use this command as operator!");
@@ -43,7 +44,8 @@ public class Config implements CommandExecutor {
             // Reloads the configuration.
             case "reload" -> {
                 commandSender.sendMessage(prefix + ChatColor.AQUA + "The config is being reloaded...");
-                commandSender.sendMessage(prefix + ChatColor.RED + "Warning! The bot is being disconnected for the amount of time it takes to reload!");
+                commandSender.sendMessage(prefix + ChatColor.RED + "Warning! The bot is being disconnected for" +
+                        " the amount of time it takes to reload!");
                 // Shutdown sequence
                 DiscordMain.shutdown();
                 // Reload sequence
@@ -73,7 +75,8 @@ public class Config implements CommandExecutor {
                             // tries to set the configuration to the defaults.
                             getConfiguration().loadFromString(createDefaultConfig().saveToString());
                         } catch (InvalidConfigurationException e) {
-                            Logging.logInvalidConfigurationException(e, "Error whilst resetting the config to the defaults.");
+                            Logging.logInvalidConfigurationException(e,
+                                    "Error whilst resetting the config to the defaults.");
                         }
                     } else {
                         // If not, send a confirmation failed message.
@@ -86,7 +89,66 @@ public class Config implements CommandExecutor {
                     commandSender.sendMessage(prefix +  ChatColor.RED +
                             "Please type \"config default confirm\" to confirm your actions!");
                 }
-                // Return a successfull execution of the command.
+                // Return a successful execution of the command.
+                return true;
+            }
+            // subcommand set:
+            // sets a value in the configuration to the specified value
+            case "set" -> {
+                // if ONE additional argument was passed
+                if (args.length <= 2) {
+                    if (args.length == 2) {
+                        if (args[1].equalsIgnoreCase("help")) {
+                            commandSender.sendMessage(prefix + "Please use \"/config set <path> <value>\"");
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Not enough arguments!");
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config set <path> <value>\"");
+                        return true;
+                    }
+                }
+                // if TOO many arguments were passed
+                if (args.length > 3) {
+                    commandSender.sendMessage(prefix + "Too many arguments given!");
+                    commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config set <path> <value>\"");
+                    return true;
+                }
+
+                // TODO add boolean and long support for saving:
+                // e. g.:                       config set test true;   config set test 123456
+                // this should NOT result in:   test: 'true'            test: '123456'
+                // TODO add support for arguments with spaces
+                // e. g.: config set test "hello world"
+
+                Settings.getConfiguration().set(args[1], args[2]);
+
+                commandSender.sendMessage(prefix + ChatColor.GREEN +
+                        "Set value " + ChatColor.GRAY + args[1] + ChatColor.GREEN + " to " + ChatColor.GRAY +
+                        args[2] + ChatColor.GREEN + ".\n" +
+                        ChatColor.YELLOW + "Use " + ChatColor.GRAY + "/config save" + ChatColor.YELLOW +
+                        " to save the config to the file!");
+                // commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently not implemented.");
+                return true;
+            }
+            // subcommand get:
+            // gets the value of a path in the configuration
+            case "get" -> {
+                commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently ot implemented.");
+                return true;
+            }
+            // subcommand add
+            // adds a value to a list.
+            case "add" -> {
+                commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently ot implemented. ");
+                return true;
+            }
+            // subcommand remove
+            // removes a value from a list
+            case "remove" -> {
+                commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently ot implemented.  ");
                 return true;
             }
             // No subcommand is given:
