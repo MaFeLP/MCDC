@@ -1,4 +1,15 @@
 # Changelog
+## Back-End update
+### v0.6.2-beta
+➕ Added command parsing: <br>
+↳ ➕ Added Command.java: parses a string into a command and arguments. <br>
+↳ ➕ Added CommandNotFinishedException that is being thrown, when the string ends, and a quotation mark marked the beginning of an argument and never ended it. <br>
+↳ ➕ Added NoCommandGivenException that is being thrown, when the given String is null or has a length of 0. <br>
+➕ Added TestMain.java to debug classes and Methods. <br>
+↳ This is required, because the server calls the program, and it is not an independent program. <br>
+
+---
+
 ## Small bug fix update
 ### v0.6.1-beta
 🐞 Fixed bug in /token: The command would not set the token and use it.
@@ -22,7 +33,7 @@
 ↳ You are being sent a help message on wrong usage. <br>
 ↳ You are being sent a success message on success. <br>
 ↳ A welcome message is sent to the new channel. <br>
-➕ Further implemented the new [Logging system](./src/main/java/com/github/mafelp/Logging.java) <br>
+➕ Further implemented the new [Logging system](./src/main/java/com/github/mafelp/utils/Logging.java) <br>
 ➕ Added command filter so commands are not sent to the minecraft chat. <br>
 
 ---
