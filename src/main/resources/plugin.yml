@@ -16,5 +16,5 @@ commands:
     permission-message: Only administrators can run this command. Sorry
   config:
     description: Configuration Admin tools
-    usage: /config <reload|save>
+    usage: /config <reload|save|set|get|add|remove>
     permission-message: Only administrators can run this command. Sorry
