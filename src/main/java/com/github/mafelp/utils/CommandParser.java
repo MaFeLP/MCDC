@@ -4,6 +4,7 @@ import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -75,6 +76,24 @@ public class CommandParser {
         }
 
         return new Command(argsList.get(0), argumentList.toArray(String[]::new));
+    }
 
+    /**
+     * method for parsing commands and arguments into the command class.
+     * @param inputCommandArray the array to parse the commands from
+     * @return the built command
+     */
+    public static Command parseFromArray(String[] inputCommandArray) {
+        if (inputCommandArray.length == 0)
+            return new Command(null, null);
+
+        if (inputCommandArray.length == 1)
+            return new Command(inputCommandArray[0], null);
+
+        // Create the list of arguments without the command.
+        List<String> argumentList =
+                new ArrayList<>(Arrays.asList(inputCommandArray).subList(1, inputCommandArray.length));
+
+        return new Command(inputCommandArray[0], argumentList.toArray(String[]::new));
     }
 }
