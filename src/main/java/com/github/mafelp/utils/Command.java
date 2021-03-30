@@ -1,5 +1,7 @@
 package com.github.mafelp.utils;
 
+import java.util.Optional;
+
 /**
  * Class to parse strings to commands.
  */
@@ -25,8 +27,13 @@ public class Command {
      * @param index the index of the argument.
      * @return the value of the index.
      */
-    public String getStringArgument(int index) {
-        return arguments[index];
+    public Optional<String> getStringArgument(int index) {
+        if (argumentIsAvailable(index))
+            return Optional.of(arguments[index]);
+        else {
+            Logging.info("not available");
+            return Optional.empty();
+        }
     }
 
     /**
@@ -34,8 +41,11 @@ public class Command {
      * @param index index of the argument.
      * @return the value.
      */
-    public boolean getBooleanArgument(int index)     {
-        return Boolean.getBoolean(arguments[index]);
+    public Optional<Boolean> getBooleanArgument(int index) {
+        if (argumentIsAvailable(index)) {
+                return Optional.of(Boolean.getBoolean(arguments[index]));
+        }
+        return Optional.empty();
     }
 
     /**
@@ -43,8 +53,10 @@ public class Command {
      * @param index index of the argument.
      * @return the value.
      */
-    public long getLongArgument(int index) {
-        return Long.getLong(arguments[index]);
+    public Optional<Long> getLongArgument(int index) {
+        if (argumentIsAvailable(index))
+            return Optional.of(Long.getLong(arguments[index]));
+        return Optional.empty();
     }
 
     /**
@@ -61,5 +73,15 @@ public class Command {
      */
     public String getCommand() {
         return command;
+    }
+
+    /**
+     * Checks if the index to get the argument from is present. - checking this before trying to get the
+     * value of an index helps preventing an array out of bound exception.
+     * @param index the index to check if it is present
+     * @return success state - is the index available, yes/no
+     */
+    private boolean argumentIsAvailable(int index) {
+        return index < arguments.length;
     }
 }

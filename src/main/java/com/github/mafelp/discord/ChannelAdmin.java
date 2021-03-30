@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerTextChannelBuilder;
+import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 
@@ -56,7 +57,7 @@ public class ChannelAdmin {
      * @return the newly created channel
      */
     public static ServerTextChannel createChannel(String name, Server server, String topic,
-                                                  EmbedBuilder successEmbed, ServerTextChannel successChannel,
+                                                  EmbedBuilder successEmbed, TextChannel successChannel,
                                                   EmbedBuilder welcomeEmbed) {
         try {
             // return value
