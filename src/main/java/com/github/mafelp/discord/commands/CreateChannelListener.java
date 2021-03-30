@@ -114,9 +114,8 @@ public class CreateChannelListener implements MessageCreateListener {
             AtomicBoolean success = new AtomicBoolean(false);
 
             // If the server is present, create a new channel
-            Command finalCommand = command;
             event.getServer().ifPresent(server ->  {success.set(true);
-                    ChannelAdmin.createChannel(finalCommand.getStringArgument(1), server,
+                    ChannelAdmin.createChannel(command.getStringArgument(0), server,
                     "Cross communication channel with the Minecraft Server " + Settings.serverName,
                             successEmbed, event.getChannel().asServerTextChannel().get(),
                             welcomeEmbed);

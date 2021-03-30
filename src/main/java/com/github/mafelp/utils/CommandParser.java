@@ -55,7 +55,11 @@ public class CommandParser {
                     inArgument = !inArgument;
                 }
                 // For every other character: just add it to the current argument.
-                default -> currentArgument.append(c);
+                default -> {
+                    currentArgument.append(c);
+                    if (characterIndex == commandArgumentString.length())
+                        argsList.add(currentArgument.toString());
+                }
             } // End of switch
         } // End of for
 

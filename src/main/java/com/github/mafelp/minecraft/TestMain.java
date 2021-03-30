@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class TestMain {
     public static void main(String[] args) {
         try {
-            Command command = CommandParser.parseFromString(".createChannel 'hello world' \"whats up?\"");
+            Command command = CommandParser.parseFromString(".createChannel test");
             System.out.println(command.getCommand());
             System.out.println(Arrays.toString(command.getArguments()));
         } catch (CommandNotFinishedException | NoCommandGivenException e) {
