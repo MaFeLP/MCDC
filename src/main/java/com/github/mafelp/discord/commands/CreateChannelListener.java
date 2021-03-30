@@ -1,8 +1,12 @@
 package com.github.mafelp.discord.commands;
 
+import com.github.mafelp.utils.Command;
+import com.github.mafelp.utils.CommandParser;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.ChannelAdmin;
+import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
+import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -32,8 +36,6 @@ public class CreateChannelListener implements MessageCreateListener {
             return;
         }
 
-        minecraftServer.getLogger().info("In Method\n" + event.getReadableMessageContent());
-
         // If message does not start with the command prefix, return
         // if (event.getReadableMessageContent().startsWith(discordCommandPrefix) ||
         //        event.getReadableMessageContent() == null)
@@ -44,11 +46,19 @@ public class CreateChannelListener implements MessageCreateListener {
         if (debug)
             info("Readable Message content is: " + content);
 
+        Command command;
+
+        try {
+            command = CommandParser.parseFromString(content);
+        } catch (CommandNotFinishedException | NoCommandGivenException e) {
+            Logging.logException(e, "");
+            return;
+        }
+
         // Creates an array of arguments
         // TODO add argument parser
-        String[] args = content.split(" ");
         if (debug)
-            info("Arguments are: " + Arrays.toString(args));
+            info("Arguments are: " + command.getCommand() + " " + Arrays.toString(command.getArguments()));
 
         // help message for wrong usage
         EmbedBuilder helpMessage = new EmbedBuilder()
@@ -90,12 +100,12 @@ public class CreateChannelListener implements MessageCreateListener {
                 ;
 
         // If the message is empty/if the arguments are none, return
-        if (args.length == 0)
+        if (command.getCommand() == null)
             return;
 
         // Check if the message start with the command prefix
-        if (args[0].equalsIgnoreCase(discordCommandPrefix + "createChannel")) {
-            if (args.length != 2) {
+        if (command.getCommand().equalsIgnoreCase(discordCommandPrefix + "createChannel")) {
+            if (command.getArguments().length == 1) {
                 event.getChannel().sendMessage(helpMessage);
                 return;
             }
@@ -104,8 +114,9 @@ public class CreateChannelListener implements MessageCreateListener {
             AtomicBoolean success = new AtomicBoolean(false);
 
             // If the server is present, create a new channel
+            Command finalCommand = command;
             event.getServer().ifPresent(server ->  {success.set(true);
-                    ChannelAdmin.createChannel(args[1], server,
+                    ChannelAdmin.createChannel(finalCommand.getStringArgument(1), server,
                     "Cross communication channel with the Minecraft Server " + Settings.serverName,
                             successEmbed, event.getChannel().asServerTextChannel().get(),
                             welcomeEmbed);
