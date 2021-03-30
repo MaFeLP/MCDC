@@ -105,7 +105,7 @@ public class CreateChannelListener implements MessageCreateListener {
 
         // Check if the message start with the command prefix
         if (command.getCommand().equalsIgnoreCase(discordCommandPrefix + "createChannel")) {
-            if (command.getArguments().length == 1) {
+            if (command.getArguments().length != 1) {
                 event.getChannel().sendMessage(helpMessage);
                 return;
             }
