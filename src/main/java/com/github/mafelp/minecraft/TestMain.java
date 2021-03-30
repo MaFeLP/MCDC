@@ -9,12 +9,13 @@ import java.util.Arrays;
 
 public class TestMain {
     public static void main(String[] args) {
-        try {
-            Command command = CommandParser.parseFromString(".createChannel test");
+            String[] asdf = {};
+        // try {
+            Command command = CommandParser.parseFromArray(asdf);
             System.out.println(command.getCommand());
             System.out.println(Arrays.toString(command.getArguments()));
-        } catch (CommandNotFinishedException | NoCommandGivenException e) {
-            e.printStackTrace();
-        }
+        //} catch (CommandNotFinishedException | NoCommandGivenException e) {
+          //  e.printStackTrace();
+        //}
     }
 }
