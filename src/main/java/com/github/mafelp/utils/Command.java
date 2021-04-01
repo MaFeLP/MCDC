@@ -61,6 +61,7 @@ public class Command {
      */
     public Optional<Long> getLongArgument(int index) {
         if (argumentIsAvailable(index))
+            // Prevents an abort when not a long was passed.
             try {
                 return Optional.of(Long.parseLong(arguments[index]));
             } catch (NumberFormatException numberFormatException) {
