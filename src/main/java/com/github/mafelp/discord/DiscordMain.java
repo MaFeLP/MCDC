@@ -31,7 +31,7 @@ public class DiscordMain {
 
         // TODO Change: make this function a thread / use bukkit scheduler
         // Log that the instance is being started
-        Logging.info(prefix + ChatColor.DARK_GRAY + "Starting Discord Instance...");
+        Logging.info(ChatColor.DARK_GRAY + "Starting Discord Instance...");
         // try to log the instance in and set it in the settings
         try {
             // Create the API
@@ -49,7 +49,7 @@ public class DiscordMain {
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
-            Logging.logException(exception, prefix + ChatColor.RED +
+            Logging.logException(exception,  ChatColor.RED +
                     "An error occurred whilst trying to create the discord instance! Error: " + exception.getMessage());
         }
     }
