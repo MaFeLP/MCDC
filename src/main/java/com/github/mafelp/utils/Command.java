@@ -42,9 +42,8 @@ public class Command {
      * @return the value.
      */
     public Optional<Boolean> getBooleanArgument(int index) {
-        if (argumentIsAvailable(index)) {
-                return Optional.of(Boolean.getBoolean(arguments[index]));
-        }
+        if (argumentIsAvailable(index))
+            return Optional.of(Boolean.parseBoolean(arguments[index]));
         return Optional.empty();
     }
 
@@ -55,7 +54,7 @@ public class Command {
      */
     public Optional<Long> getLongArgument(int index) {
         if (argumentIsAvailable(index))
-            return Optional.of(Long.getLong(arguments[index]));
+            return Optional.of(Long.parseLong(arguments[index]));
         return Optional.empty();
     }
 
