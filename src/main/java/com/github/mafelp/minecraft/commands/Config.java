@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import com.github.mafelp.utils.Command;
 import com.github.mafelp.utils.CommandParser;
 
+import java.util.List;
+
 import static com.github.mafelp.utils.Settings.*;
 
 /**
@@ -193,8 +195,82 @@ public class Config implements CommandExecutor {
             // subcommand add
             // adds a value to a list.
             case "add" -> {
-                commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently ot implemented. ");
-                return true;
+                if (subCommand1.getArguments() == null) {
+                    commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
+                            ChatColor.GRAY + "\"config add <path> <value>\"" + ChatColor.RED + "!"
+                    );
+                    return true;
+                }
+
+                // if ONE additional argument was passed
+                if (subCommand1.getArguments().length <= 1) {
+                    // if only one argument was passed.
+                    if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isEmpty()) {
+                        if (subCommand1.getStringArgument(0).get().equalsIgnoreCase("help")) {
+                            commandSender.sendMessage(prefix + "Please use \"/config add <path> <value>\"");
+                            return true;
+                        } else {
+                            // if the argument is not "help"
+                            return false;
+                        }
+                    } else {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Not enough arguments!");
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config set <path> <value>\"");
+                        return true;
+                    }
+                }
+                // if TOO many arguments were passed
+                if (subCommand1.getArguments().length > 2) {
+                    commandSender.sendMessage(prefix + "Too many arguments given!");
+                    commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config add <path> <value>\"");
+                    return true;
+                }
+
+                // checks if an argument is present and if so,
+                // tries to get a boolean, long and at last a string from the argument.
+                subCommand1.getStringArgument(0).ifPresent(path -> {
+                    // Checks if the argument is a boolean
+                    if (subCommand1.getBooleanArgument(1).isPresent()) {
+                        boolean boolValue = subCommand1.getBooleanArgument(1).get();
+                        List<Boolean> booleanList = Settings.getConfiguration().getBooleanList(path);
+                        booleanList.add(boolValue);
+                        Settings.getConfiguration().set(path, booleanList);
+                    // Checks if the argument is a number (long)
+                    } else if (subCommand1.getLongArgument(1).isPresent()) {
+                        long longValue = subCommand1.getLongArgument(1).get();
+                        List<Long> longList = Settings.getConfiguration().getLongList(path);
+                        longList.add(longValue);
+                        Settings.getConfiguration().set(path, longList);
+
+                        Logging.info(longList.toString());
+                    // the last check is, if the argument is a String.
+                    } else if (subCommand1.getStringArgument(1).isPresent()){
+                        String stringValue = subCommand1.getStringArgument(1).get();
+                        List<String> stringList = Settings.getConfiguration().getStringList(path);
+                        stringList.add(stringValue);
+                        Settings.getConfiguration().set(path, stringList);
+                    // If the argument could not be parsed, we throw an error.
+                    } else {
+                        commandSender.sendMessage(prefix + ChatColor.RED +
+                                "An unknown error occurred. Sorry for the inconvenience...");
+                    }
+                });
+
+                // Send a success message
+                if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isPresent()) {
+                    commandSender.sendMessage(prefix + ChatColor.GREEN +
+                            "Added value " + ChatColor.GRAY + subCommand1.getStringArgument(0).get() +
+                            ChatColor.GREEN + " to " + ChatColor.GRAY +
+                            subCommand1.getStringArgument(1).get() + ChatColor.GREEN + ".\n" +
+
+                            ChatColor.YELLOW + "Use " + ChatColor.GRAY + "/config save" + ChatColor.YELLOW +
+                            " to save the config to the file!"
+                    );
+                    // commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently not implemented.");
+                    return true;
+                } else {
+                    return false;
+                }
             }
             // subcommand remove
             // removes a value from a list

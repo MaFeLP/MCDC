@@ -42,9 +42,16 @@ public class Command {
      * @return the value.
      */
     public Optional<Boolean> getBooleanArgument(int index) {
-        if (argumentIsAvailable(index))
-            return Optional.of(Boolean.parseBoolean(arguments[index]));
-        return Optional.empty();
+        if (this.getStringArgument(index).isPresent()) {
+            String arg = this.getStringArgument(index).get();
+
+            if (arg.equalsIgnoreCase("true"))
+                return Optional.of(true);
+            else if (arg.equalsIgnoreCase("false"))
+                return Optional.of(false);
+            else return Optional.empty();
+        } else
+            return Optional.empty();
     }
 
     /**
@@ -54,7 +61,11 @@ public class Command {
      */
     public Optional<Long> getLongArgument(int index) {
         if (argumentIsAvailable(index))
-            return Optional.of(Long.parseLong(arguments[index]));
+            try {
+                return Optional.of(Long.parseLong(arguments[index]));
+            } catch (NumberFormatException numberFormatException) {
+                return Optional.empty();
+            }
         return Optional.empty();
     }
 
