@@ -84,7 +84,7 @@ public class CommandParser {
      * @return the built command
      */
     public static Command parseFromArray(String[] inputCommandArray) {
-        if (inputCommandArray.length == 0)
+        if (inputCommandArray == null)
             return new Command(null, null);
 
         if (inputCommandArray.length == 1)
