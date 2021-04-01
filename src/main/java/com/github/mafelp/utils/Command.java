@@ -81,6 +81,9 @@ public class Command {
      * @return success state - is the index available, yes/no
      */
     private boolean argumentIsAvailable(int index) {
+        if (arguments == null)
+            return false;
+
         return index < arguments.length;
     }
 }
