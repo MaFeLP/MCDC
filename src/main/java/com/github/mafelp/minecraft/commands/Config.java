@@ -96,6 +96,14 @@ public class Config implements CommandExecutor {
             // subcommand set:
             // sets a value in the configuration to the specified value
             case "set" -> {
+                if (subCommand1.getArguments() == null) {
+                    commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
+                        ChatColor.GRAY + "\"config set <path> <value>\"" + ChatColor.RED + "!"
+                    );
+
+                    return true;
+                }
+
                 // if ONE additional argument was passed
                 if (subCommand1.getArguments().length <= 1) {
                     // if only one argument was passed.
