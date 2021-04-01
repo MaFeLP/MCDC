@@ -16,6 +16,7 @@ public class CommandParser {
      * @param commandArgumentString command and arguments contained in a string.
      * @throws CommandNotFinishedException if the command has an uneven number of quotation marks.
      * @throws NoCommandGivenException if the input is null.
+     * @return the command parsed from the string
      */
     public static Command parseFromString(String commandArgumentString) throws CommandNotFinishedException, NoCommandGivenException {
         // Checks if a command was even given.

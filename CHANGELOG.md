@@ -1,4 +1,15 @@
 # Changelog
+## Config, command parsing and more!
+### v0.6.4-beta
+📃 The project is now licensed under the GPLv3 license. View [the LICENSE file](./LICENSE) for more info. <br>
+⤵ Further implemented the new command parsing algorithm. <br>
+↳ Fixed all known bugs from the previous version. See the commits for more information! <br>
+↳ Moved some stuff around in the backend. <br>
+➕ Added the functionality for the subcommands `set`, `get`, `add` and `remove` to the `/config` command. <br>
+✏ ️Fixed a visual bug where the prefix would be shown twice on instance startup.
+
+---
+
 ## Small bug fix update
 ### v0.6.3-beta
 🛠 Updated [Config.java](./src/main/java/com/github/mafelp/minecraft/commands/Config.java): <br>

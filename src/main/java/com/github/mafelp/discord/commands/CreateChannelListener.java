@@ -55,8 +55,6 @@ public class CreateChannelListener implements MessageCreateListener {
             return;
         }
 
-        // Creates an array of arguments
-        // TODO add argument parser
         if (debug)
             info("Arguments are: " + command.getCommand() + " " + Arrays.toString(command.getArguments()));
 
@@ -113,7 +111,7 @@ public class CreateChannelListener implements MessageCreateListener {
             // Saves the states of the channel creation
             AtomicBoolean success = new AtomicBoolean(false);
 
-            String name = null;
+            String name;
 
             if (command.getStringArgument(0).isPresent())
                 name = command.getStringArgument(0).get();
