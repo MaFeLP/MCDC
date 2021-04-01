@@ -9,11 +9,14 @@ import java.util.Arrays;
 
 public class TestMain {
     public static void main(String[] args) {
-            String[] asdf = {};
+            String[] asdf = {"set", "asdf", "true", "1234"};
         // try {
+        System.out.println(Arrays.toString(asdf));
             Command command = CommandParser.parseFromArray(asdf);
             System.out.println(command.getCommand());
-            System.out.println(Arrays.toString(command.getArguments()));
+            System.out.println(command.getStringArgument(0).get());
+            System.out.println(command.getBooleanArgument(1).get());
+            System.out.println(command.getLongArgument(2).get());
         //} catch (CommandNotFinishedException | NoCommandGivenException e) {
           //  e.printStackTrace();
         //}
