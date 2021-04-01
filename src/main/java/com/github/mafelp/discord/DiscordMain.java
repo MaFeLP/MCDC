@@ -4,10 +4,12 @@ import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.commands.CreateChannelListener;
 import org.bukkit.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.javacord.api.DiscordApiBuilder;
 
 import java.util.concurrent.CompletionException;
 
+import static com.github.mafelp.utils.Settings.minecraftServer;
 import static com.github.mafelp.utils.Settings.prefix;
 
 /**
@@ -26,10 +28,10 @@ public class DiscordMain {
                     "No token given! Please use \"token <your token>\" to activate the plugin!");
             return;
         }
+
         // TODO Change: make this function a thread / use bukkit scheduler
         // Log that the instance is being started
-        Settings.minecraftServer.getConsoleSender().sendMessage(prefix + ChatColor.DARK_GRAY +
-                "Starting Discord Instance...");
+        Logging.info(prefix + ChatColor.DARK_GRAY + "Starting Discord Instance...");
         // try to log the instance in and set it in the settings
         try {
             // Create the API
@@ -42,10 +44,12 @@ public class DiscordMain {
                     // lof the bot in and join the servers
                     .login().join();
                     // TODO Add: activity
+
+            Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
-            Settings.minecraftServer.getLogger().warning(prefix + ChatColor.RED +
+            Logging.logException(exception, prefix + ChatColor.RED +
                     "An error occurred whilst trying to create the discord instance! Error: " + exception.getMessage());
         }
     }
