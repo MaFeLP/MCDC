@@ -1,5 +1,6 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.discord.commands.CreateRoleListener;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.commands.CreateChannelListener;
@@ -39,8 +40,9 @@ public class DiscordMain {
                     // set the token, specified in the config.yml or with command "/token <TOKEN>"
                     .setToken(Settings.getApiToken())
                     // register listeners
-                    .addListener(new DiscordListener())
-                    .addListener(new CreateChannelListener())
+                    .addListener(DiscordListener::new)
+                    .addListener(CreateChannelListener::new)
+                    .addListener(CreateRoleListener::new)
                     // lof the bot in and join the servers
                     .login().join();
                     // TODO Add: activity

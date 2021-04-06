@@ -6,7 +6,7 @@
 
     <groupId>com.github.mafelp</groupId>
     <artifactId>mcdc</artifactId>
-    <version>0.6.4-beta</version>
+    <version>0.7.0-beta</version>
     <packaging>jar</packaging>
 
     <name>Mcdc</name>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>org.javacord</groupId>
             <artifactId>javacord</artifactId>
-            <version>3.1.2</version>
+            <version>3.2.0</version>
             <type>pom</type>
         </dependency>
         <dependency>

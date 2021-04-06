@@ -1,4 +1,12 @@
 # Changelog
+## Role Creation Update!
+### v0.7.0-beta
+➕ Added Role creation support <br>
+↳ The Role is being created in any discord server chat with the command `<prefix>createRole <name>` <br>
+⚠️The role can currently be created by everyone with write access to a server's channel!
+
+---
+
 ## Config, command parsing and more!
 ### v0.6.4-beta
 📃 The project is now licensed under the GPLv3 license. View [the LICENSE file](./LICENSE) for more info. <br>
