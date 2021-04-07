@@ -1,5 +1,6 @@
 package com.github.mafelp.minecraft;
 
+import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;

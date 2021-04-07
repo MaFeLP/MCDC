@@ -76,4 +76,9 @@ public class Logging {
     public static void info(String message) {
         Settings.minecraftServer.getLogger().info(Settings.prefix + message);
     }
+
+    public static void debug(String message) {
+        if (Settings.debug)
+            Settings.minecraftServer.getLogger().info(Settings.prefix + message);
+    }
 }

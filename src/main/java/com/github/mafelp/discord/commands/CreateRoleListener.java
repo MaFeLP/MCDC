@@ -3,6 +3,7 @@ package com.github.mafelp.discord.commands;
 import com.github.mafelp.utils.Command;
 import com.github.mafelp.utils.CommandParser;
 import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
