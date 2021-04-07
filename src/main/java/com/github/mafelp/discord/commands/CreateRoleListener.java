@@ -136,5 +136,13 @@ public class CreateRoleListener implements MessageCreateListener {
         // TODO add linking and automatic linking of roles.
 
         info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + event.getServer().get().getName() + "!");
+
+        discordApi.getYourself().addRole(role, "MCDC needs to see the channel as well!");
+        info("Added role \"" + role.getName() + "\" to the discord API.");
+
+        event.getMessageAuthor().asUser().ifPresent(user -> {
+            user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
+            info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
+        });
     }
 }
