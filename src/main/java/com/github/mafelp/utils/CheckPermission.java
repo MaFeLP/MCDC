@@ -11,6 +11,8 @@ import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
 
+import static com.github.mafelp.utils.Logging.debug;
+import static com.github.mafelp.utils.Settings.debug;
 import static com.github.mafelp.utils.Settings.getConfiguration;
 
 /**
@@ -106,7 +108,7 @@ public class CheckPermission {
         // because multiple players are stored in this file.
         JsonArray jsonObject = parser.parse(stringBuilder.toString()).getAsJsonArray();
 
-        Logging.debug("Getting permission level for Player " + player.getDisplayName());
+        debug("Getting permission level for Player " + player.getDisplayName());
 
         for (JsonElement jo : jsonObject) {
             // Logging.debug("In Loop");
@@ -114,7 +116,7 @@ public class CheckPermission {
             final String uuid = jo.getAsJsonObject().get("uuid").getAsString();
             final short opLevel = jo.getAsJsonObject().get("level").getAsShort();
 
-            Logging.debug("UUID: " + uuid + "; opLevel: " + opLevel);
+            debug("UUID: " + uuid + "; opLevel: " + opLevel);
 
             if (player.getUniqueId().toString().equalsIgnoreCase(uuid))
                 return opLevel;
@@ -131,5 +133,48 @@ public class CheckPermission {
      */
     public static boolean hasAdminLevel(final Player player, final int level) {
         return getAdminLevel(player) >= level;
+    }
+
+    /**
+     * Checks the configuration if the user id is in the configuration path.
+     * @param permission The permission to have.
+     * @param id The id of the user to check the permission of
+     * @return if the permission is granted or not.
+     */
+    public static boolean checkPermission(final Permissions permission, final long id) {
+        debug("searching configuration for id " + id + "...");
+        debug("looking for long list " + "permissions." + permission.toString() + ".allowedUserIDs");
+        debug("The long list contents are: " + Settings.getConfiguration().getLongList("permission." + permission + ".allowedUserIDs"));
+        for (long configID : Settings.getConfiguration().getLongList("permission." + permission + ".allowedUserIDs")) {
+            if (configID == id)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks the configuration if a player has a specific permission or has a specific level.
+     * @param permission The permission to check the level of.
+     * @param player the player to check the permission of.
+     * @return if the player ahs the required permission.
+     */
+    public static boolean checkPermission(final Permissions permission, final Player player) {
+        String UUID = player.getUniqueId().toString();
+        int opLevel = getAdminLevel(player);
+
+        int requiredPermissionLevel = Settings.getConfiguration().getInt("permissions." + permission.toString() + ".level");
+
+        // Check the OP Level
+        if (opLevel >= requiredPermissionLevel)
+            return true;
+
+        // Check the configuration
+        for (String configUUID : Settings.getConfiguration().getStringList("permissions." + permission + ".allowedUserUUIDs")) {
+            if (configUUID.equalsIgnoreCase(UUID))
+                return true;
+        }
+
+        return false;
     }
 }

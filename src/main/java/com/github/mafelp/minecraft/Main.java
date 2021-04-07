@@ -1,6 +1,8 @@
 package com.github.mafelp.minecraft;
 
+import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
 import com.github.mafelp.minecraft.commands.Config;
@@ -9,7 +11,12 @@ import com.github.mafelp.minecraft.commands.Token;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import static com.github.mafelp.utils.Logging.debug;
+import static com.github.mafelp.utils.Settings.debug;
 import static com.github.mafelp.utils.Settings.prefix;
+import static java.lang.System.out;
+
 import java.util.Objects;
 
 /**
@@ -42,6 +49,9 @@ public final class Main extends JavaPlugin {
         // Initialize and try starting up the discord bot.
         DiscordMain.init();
 
+        debug("ID: 459019618686730271 has the following permissions: \n" +
+                "discordServerAdmin:\t" + CheckPermission.checkPermission(Permissions.discordServerAdmin, 459019618686730271L) + "\n" +
+                "discordBotAdmin:\t\t" + CheckPermission.checkPermission(Permissions.discordBotAdmin, 459019618686730271L));
     }
 
     /**

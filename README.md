@@ -7,11 +7,11 @@ The bot can currently do all the checked items, unchecked will be implemented in
     - [X] Discord messages can be sent to the bot via direct message
     - [X] Discord messages can be sent to any server channel the bot is present on
  - [X] Display minecraft messages in a discord chat
+ - [X] managing a "#mincraft-server" channel on a specific discord server
+   - [ ] this includes that only members with a role can see this channel and write in it
  <br><br>
  - [ ] whisper between a discord user and a minecraft user
  - [ ] linking between a discord and a minecraft account
- - [ ] managing a "#mincraft-server" channel on a specific discord server
-   - [ ] this includes that only members with a role can see this channel and write in it
 <div class="alert alert-danger" role="alert">Remember that this plugin is currently in its beta phase!<br>
 All the functionalities will be added in the future!</div>
 
@@ -24,7 +24,8 @@ All the functionalities will be added in the future!</div>
     3. Give you application a name and click `Create`
     4. Go to the side bar on the left and click `Bot`
     5. Click `Copy` on the right-hand side underneath `Token` and `Click to reveal token`.
-4. Go into the console of your server and type `token <your discord bot token>`
+4. Go into the console of your server and type `token <your discord bot token>` <br>
+   OR go into the `<serverDirectory>/plugins/MCDC/config.yml` file and change the value of `apiToken` to your token.
 
 ---
 
@@ -32,15 +33,61 @@ All the functionalities will be added in the future!</div>
 ### \<server directory\>/plugins/MCDC/config.yml:
 #### Default config:
 ```yaml
-apiToken: <Your API Token goes here. See Installation>      # string
-useShortMsgFormat: true                                     # boolean
-pluginPrefix: <Formatted Plugin Prefix for console>         # String, optional 
-serverName: <A name for your server, displayed in Messages> # String
-debug: <should additional information should be displayed>  # boolean
-channelIDs:                                                 # long list
-  - <ID of your first channel>                              # long
-  - <ID of your second channel>                             # long
-  - ...
+# Configuration file for plugin MCDC
+# Author: MaFeLP (https://github.com/MaFeLP/MCDC/)
+
+# if the message should be shortened
+# Allowed values: <true|false>
+useShortMessageFormat: false
+
+# the prefix displayed in the console before logs and in
+# Allowed values: any String
+pluginPrefix: '§8[§6MCDC§8]§0: §r'
+
+# The name of the server displayed in discord messages
+# Allowed values: any string
+serverName: 'A Minecraft Server'
+
+# If additional information should be displayed.
+# Allowed values: <true|false>
+debug: false
+
+# The Token used to create your bot instance
+# Allowed values: any String
+apiToken: 'Your API Token goes here!'
+
+# The String used before commands in the discord channels
+# Allowed values: any String
+discordCommandPrefix: '.'
+
+# Discord Channel IDs to broadcast messages to.
+channelIDs:
+   - 1234
+
+
+# Permission section for setting permission levels
+permission:
+
+   # Permission for minecraft command /config
+   configEdit:
+      # Required OP level
+      level: 3
+      # A list of UUIDs of Players who have a wildcard to use this command.
+      allowedUserUUIDs:
+         - a unique ID
+
+
+   # Discord Server Admins are allowed to create Channels and Roles
+   discordServerAdmin:
+      # A list of discord IDs of users who have a wildcard to use this command
+      allowedUserIDs:
+         - 1234
+
+   # Discord Bot admins, use cases may follow.
+   discordBotAdmin:
+      # A list of authorised bot users.
+      allowedUserIDs:
+         - 1234
 ```
 
 ### Get the ID of a text channel:

@@ -103,7 +103,7 @@ public class CreateRoleListener implements MessageCreateListener {
             return;
         }
 
-        Permissions permissions = new PermissionsBuilder()
+        org.javacord.api.entity.permission.Permissions permissions = new PermissionsBuilder()
                 .setAllowed(PermissionType.ADD_REACTIONS)
                 .setDenied(PermissionType.ADMINISTRATOR)
                 .setDenied(PermissionType.ATTACH_FILE)

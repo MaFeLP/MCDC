@@ -6,8 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.event.message.MessageCreateEvent;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Logging.logIOException;
@@ -201,11 +202,15 @@ public class Settings {
         defaultConfiguration = YamlConfiguration.loadConfiguration(configurationFile);
         defaultConfiguration.set("apiToken", null);
         defaultConfiguration.set("useShortMessageFormat", true);
-        defaultConfiguration.set("pluginPrefix",  ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" +
-                ChatColor.DARK_GRAY + "]" + ChatColor.BLACK + ": " + ChatColor.RESET);
+        defaultConfiguration.set("pluginPrefix",  ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "]" + ChatColor.BLACK + ": " + ChatColor.RESET);
         defaultConfiguration.set("serverName", "A Minecraft Server");
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
+        defaultConfiguration.set("permission.configEdit.level", 3);
+        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", null);
+        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", null);
+        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", null);
+
         return defaultConfiguration;
     }
 

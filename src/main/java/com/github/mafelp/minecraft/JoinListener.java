@@ -1,12 +1,16 @@
 package com.github.mafelp.minecraft;
 
 import com.github.mafelp.utils.CheckPermission;
+import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import static com.github.mafelp.utils.Logging.debug;
+import static com.github.mafelp.utils.Settings.debug;
 import static com.github.mafelp.utils.Settings.prefix;
 
 /**
@@ -41,6 +45,10 @@ public class JoinListener implements Listener {
 
         // Downloads the skin from Mojang
         new Skin(playerJoinEvent.getPlayer(), true);
+
+        debug("Player \"" + playerJoinEvent.getPlayer().getDisplayName() + "\" has the permissions: " +
+                "configEdit: " + CheckPermission.checkPermission(Permissions.configEdit, playerJoinEvent.getPlayer())
+        );
 
         // TODO add discord message updating with online players.
     }
