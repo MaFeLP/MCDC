@@ -3,7 +3,6 @@ package com.github.mafelp.discord.commands;
 import com.github.mafelp.utils.Command;
 import com.github.mafelp.utils.CommandParser;
 import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Settings;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
@@ -13,12 +12,9 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.*;
-import static com.github.mafelp.utils.Settings.serverName;
 
 public class CreateRoleListener implements MessageCreateListener {
     @Override
@@ -88,6 +84,7 @@ public class CreateRoleListener implements MessageCreateListener {
 
         if (event.getServer().isEmpty()) {
             event.getChannel().sendMessage(serverNotPresentError);
+            Logging.info("Could not create the new Server Role: Server is not present. Sending Error Reply.");
             return;
         }
 
@@ -125,16 +122,19 @@ public class CreateRoleListener implements MessageCreateListener {
                 .build()
                 ;
 
-        new RoleBuilder(event.getServer().get())
+        Role role = new RoleBuilder(event.getServer().get())
                 .setColor(new Color(194, 98, 94))
                 .setAuditLogReason("MCDC: Minecraft Server Role creation")
                 .setDisplaySeparately(false)
                 .setMentionable(true)
                 .setName(command.getStringArgument(0).get())
                 .setPermissions(permissions)
-                .create().thenAccept(role -> {
-                    event.getChannel().sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!"));
-                    info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + event.getServer().get().getName() + "!");
-        });
+                .create().join();
+
+        event.getChannel().sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
+        .addField("Usage:","Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
+        // TODO add linking and automatic linking of roles.
+
+        info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + event.getServer().get().getName() + "!");
     }
 }
