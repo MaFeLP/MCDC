@@ -77,6 +77,10 @@ public class Logging {
         Settings.minecraftServer.getLogger().info(Settings.prefix + message);
     }
 
+    /**
+     * Log a info message, if the <code>debug</code> option is enabled in the <code>config.yml</code> file
+     * @param message The message that should be logged.
+     */
     public static void debug(String message) {
         if (Settings.debug)
             Settings.minecraftServer.getLogger().info(Settings.prefix + message);
