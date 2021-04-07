@@ -16,7 +16,16 @@ import java.awt.*;
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.*;
 
+/**
+ * CreateRoleListenerClass implements role creation with the command <code>prefix+createRole name</code>
+ * on the server, where the command was executed.
+ */
 public class CreateRoleListener implements MessageCreateListener {
+    /**
+     * The method that is being called every time a message was sent to the discord channel. <br>
+     * It first checks if the content of the message is the command createRole and then creates the role accordingly.
+     * @param event The event passed in by the api containing information about the message.
+     */
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
         // If the message is sent by the bot, return
