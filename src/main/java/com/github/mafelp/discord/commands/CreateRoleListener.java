@@ -1,9 +1,6 @@
 package com.github.mafelp.discord.commands;
 
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
-import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Settings;
+import com.github.mafelp.utils.*;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
@@ -38,6 +35,7 @@ public class CreateRoleListener implements MessageCreateListener {
         // if (event.getReadableMessageContent().startsWith(discordCommandPrefix) ||
         //        event.getReadableMessageContent() == null)
         //    return;
+
 
         // Gets the content of the message as strings (prints it, if debug is enabled)
         String content = event.getReadableMessageContent();
@@ -85,6 +83,13 @@ public class CreateRoleListener implements MessageCreateListener {
 
         if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "createRole"))
             return;
+
+        // Checks the permission of the message author.
+        if (!CheckPermission.hasAdminPermission(event.getMessageAuthor())) {
+            Logging.info("User \"" + event.getMessageAuthor().getDisplayName() + "\" tried to execute command \"createChannel\"!");
+            event.getChannel().sendMessage(CheckPermission.getPermissionDeniedEmbed(event.getMessageAuthor(), "create Role"));
+            return;
+        }
 
         if (command.getStringArgument(0).isEmpty() || command.getStringArgument(1).isPresent()) {
             info("Person " + ChatColor.GRAY + event.getMessageAuthor().getDisplayName() + ChatColor.RESET + " used the command createRole wrong. Sending help embed.");

@@ -1,4 +1,17 @@
 # Changelog
+## Permission Update!
+### v0.7.1-beta
+➕ Added Permission support! <br>
+↳ Added long lists `permission.botAdminIDs` for bot Admin and `permission.adminIDs` for server admin commands. <br>
+↳ You now need to have one of the following permissions to execute admin commands on the discord server:
+ - config.yml:
+   - permission.adminIDs
+ - be bot owner
+ - be server admin
+➕ You can now configure commands in this plugin to require a specific OP level in the server's `ops.json` for executing commands.
+
+---
+
 ## Role Creation Update!
 ### v0.7.0-beta
 ➕ Added Role creation support <br>

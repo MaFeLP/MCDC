@@ -1,9 +1,6 @@
 package com.github.mafelp.discord.commands;
 
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
-import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Settings;
+import com.github.mafelp.utils.*;
 import com.github.mafelp.discord.ChannelAdmin;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
@@ -45,6 +42,7 @@ public class CreateChannelListener implements MessageCreateListener {
         String content = event.getReadableMessageContent();
         if (debug)
             info("Readable Message content is: " + content);
+
 
         Command command;
 
@@ -102,43 +100,51 @@ public class CreateChannelListener implements MessageCreateListener {
             return;
 
         // Check if the message start with the command prefix
-        if (command.getCommand().equalsIgnoreCase(discordCommandPrefix + "createChannel")) {
-            if (command.getArguments().length != 1) {
-                event.getChannel().sendMessage(helpMessage);
-                return;
-            }
+        if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "createChannel"))
+            return;
 
-            // Saves the states of the channel creation
-            AtomicBoolean success = new AtomicBoolean(false);
+        // Checks the permission of the message author.
+        if (!CheckPermission.hasAdminPermission(event.getMessageAuthor())) {
+            Logging.info("User \"" + event.getMessageAuthor().getDisplayName() + "\" tried to execute command \"createChannel\"!");
+            event.getChannel().sendMessage(CheckPermission.getPermissionDeniedEmbed(event.getMessageAuthor(), "create Channel"));
+            return;
+        }
 
-            String name;
+        if (command.getArguments().length != 1) {
+            event.getChannel().sendMessage(helpMessage);
+            return;
+        }
 
-            if (command.getStringArgument(0).isPresent())
-                name = command.getStringArgument(0).get();
-            else {
-                event.getChannel().sendMessage(helpMessage);
-                return;
-            }
+        // Saves the states of the channel creation
+        AtomicBoolean success = new AtomicBoolean(false);
 
-            // If the server is present, create a new channel
-            final String finalName = name;
-            event.getServer().ifPresent(server ->  {success.set(true);
-                    ChannelAdmin.createChannel(finalName, server,
+        String name;
+
+        if (command.getStringArgument(0).isPresent())
+            name = command.getStringArgument(0).get();
+        else {
+            event.getChannel().sendMessage(helpMessage);
+            return;
+        }
+
+        // If the server is present, create a new channel
+        final String finalName = name;
+        event.getServer().ifPresent(server ->  {success.set(true);
+            ChannelAdmin.createChannel(finalName, server,
                     "Cross communication channel with the Minecraft Server " + Settings.serverName,
-                            successEmbed, event.getChannel(),
-                            welcomeEmbed);
-            });
+                    successEmbed, event.getChannel(),
+                    welcomeEmbed);
+        });
 
-            // If the channel could not be created, print an error warning
-             if(!success.get()) {
-                Settings.minecraftServer.getLogger().warning(Settings.prefix + "Channel not present.");
-                Settings.minecraftServer.getLogger().warning(Settings.prefix + "Could not execute Command createChannel");
+        // If the channel could not be created, print an error warning
+        if(!success.get()) {
+            Settings.minecraftServer.getLogger().warning(Settings.prefix + "Channel not present.");
+            Settings.minecraftServer.getLogger().warning(Settings.prefix + "Could not execute Command createChannel");
 
-                // Reply to the sender with the error embed
-                event.getChannel().sendMessage(serverNotPresentError).thenAcceptAsync(message ->
-                        Logging.info("Send error embed to " + event.getMessageAuthor().getDisplayName())
-                );
-            }
+            // Reply to the sender with the error embed
+            event.getChannel().sendMessage(serverNotPresentError).thenAcceptAsync(message ->
+                    Logging.info("Send error embed to " + event.getMessageAuthor().getDisplayName())
+            );
         }
     }
 }

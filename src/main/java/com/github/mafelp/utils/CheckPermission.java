@@ -29,7 +29,7 @@ public class CheckPermission {
                 .setAuthor(messageAuthor)
                 .setTitle("Error")
                 .addField("Permission denied!","Sorry, you do not have the required permission to " + action + "! Please ask the bot administrator and/or server owner, if you believe this is a mistake.")
-                .setColor(Color.RED.brighter())
+                .setColor(Color.RED.darker())
                 .setFooter("PermissionDeniedError")
         ;
     }
@@ -44,6 +44,9 @@ public class CheckPermission {
         // Checking if the sender has the required permissions
 
         if (messageAuthor.isServerAdmin())
+            return true;
+
+        if (messageAuthor.isBotOwner())
             return true;
 
         for (long person :
