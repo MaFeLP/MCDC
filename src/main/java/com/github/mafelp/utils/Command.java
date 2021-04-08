@@ -10,6 +10,9 @@ public class Command {
      * The arguments of the command as an argument
      */
     private final String[] arguments;
+    /**
+     * The command aka. the first argument passed in.
+     */
     private final String command;
 
     /**
