@@ -10,6 +10,7 @@ import org.javacord.api.DiscordApiBuilder;
 
 import java.util.concurrent.CompletionException;
 
+import static com.github.mafelp.utils.Settings.discordApi;
 import static com.github.mafelp.utils.Settings.prefix;
 
 /**
@@ -48,6 +49,7 @@ public class DiscordMain {
                     // TODO Add: activity
 
             Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
+            Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite());
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
