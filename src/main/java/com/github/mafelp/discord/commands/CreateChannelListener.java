@@ -61,7 +61,7 @@ public class CreateChannelListener implements MessageCreateListener {
                 .setAuthor(event.getMessageAuthor())
                 .setTitle("Error")
                 .addField("Usage", discordCommandPrefix + "createChannel <name>")
-                .setColor(Color.RED)
+                .setColor(new Color(0xFFB500))
                 .setFooter("Help message for command \"createChannel\"")
                 ;
 

@@ -55,8 +55,8 @@ public class CreateRoleListener implements MessageCreateListener {
                 .setAuthor(event.getMessageAuthor())
                 .setTitle("Error")
                 .addField("Usage", discordCommandPrefix + "createRole <name>")
-                .setColor(Color.RED)
                 .setFooter("Help message for command \"createRole\"")
+                .setColor(new Color(0xFFB500))
                 ;
 
         // error embed for server not present
@@ -122,7 +122,5 @@ public class CreateRoleListener implements MessageCreateListener {
                     .addField("ServerTextChannelNotPresentError","Could not get this Channel as a server text channel. Maybe you sent this message in private message?")
             );
         }
-
-
     }
 }
