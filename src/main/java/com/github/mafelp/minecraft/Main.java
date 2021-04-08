@@ -46,10 +46,6 @@ public final class Main extends JavaPlugin {
 
         // Initialize and try starting up the discord bot.
         DiscordMain.init();
-
-        debug("ID: 459019618686730271 has the following permissions: \n" +
-                "discordServerAdmin:\t" + CheckPermission.checkPermission(Permissions.discordServerAdmin, 459019618686730271L) + "\n" +
-                "discordBotAdmin:\t\t" + CheckPermission.checkPermission(Permissions.discordBotAdmin, 459019618686730271L));
     }
 
     /**
