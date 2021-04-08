@@ -12,7 +12,6 @@ import java.io.*;
 import java.util.Scanner;
 
 import static com.github.mafelp.utils.Logging.debug;
-import static com.github.mafelp.utils.Settings.debug;
 import static com.github.mafelp.utils.Settings.getConfiguration;
 
 /**

@@ -5,12 +5,10 @@ import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.commands.CreateChannelListener;
 import org.bukkit.ChatColor;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.javacord.api.DiscordApiBuilder;
 
 import java.util.concurrent.CompletionException;
 
-import static com.github.mafelp.utils.Settings.minecraftServer;
 import static com.github.mafelp.utils.Settings.prefix;
 
 /**

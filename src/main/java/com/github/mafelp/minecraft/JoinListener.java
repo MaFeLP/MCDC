@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.github.mafelp.utils.Logging.debug;
-import static com.github.mafelp.utils.Settings.debug;
 import static com.github.mafelp.utils.Settings.prefix;
 
 /**

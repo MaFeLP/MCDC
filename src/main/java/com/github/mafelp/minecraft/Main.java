@@ -13,9 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static com.github.mafelp.utils.Logging.debug;
-import static com.github.mafelp.utils.Settings.debug;
 import static com.github.mafelp.utils.Settings.prefix;
-import static java.lang.System.out;
 
 import java.util.Objects;
 

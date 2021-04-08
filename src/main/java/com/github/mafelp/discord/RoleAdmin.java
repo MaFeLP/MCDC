@@ -1,9 +1,7 @@
 package com.github.mafelp.discord;
 
 import org.bukkit.ChatColor;
-import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.ServerTextChannel;
-import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.*;
 import org.javacord.api.entity.server.Server;

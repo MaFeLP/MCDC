@@ -7,8 +7,6 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Logging.logIOException;
