@@ -16,10 +16,16 @@ import static com.github.mafelp.utils.Settings.discordApi;
 /**
  * Class to manage the role that allows users to see the channel,
  * specified in ChannelAdmin
- *
- * Warning This class in currently not implemented.
  */
 public class RoleAdmin {
+    /**
+     * Method creates a new Role on a server with the specified name.
+     * @param server The server to create the new role on.
+     * @param name The name of the new role.
+     * @param successEmbed The embed to sent the user on success.
+     * @param successChannel The channel to sent the successEmbed to.
+     * @return The newly created role
+     */
     public static Role createNewRole(Server server, String name,
                                      EmbedBuilder successEmbed, ServerTextChannel successChannel) {
         Permissions permissions = new PermissionsBuilder()
