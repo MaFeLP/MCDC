@@ -1,5 +1,6 @@
 package com.github.mafelp.discord.commands;
 
+import com.github.mafelp.discord.RoleAdmin;
 import com.github.mafelp.utils.*;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
@@ -103,61 +104,25 @@ public class CreateRoleListener implements MessageCreateListener {
             return;
         }
 
-        org.javacord.api.entity.permission.Permissions permissions = new PermissionsBuilder()
-                .setAllowed(PermissionType.ADD_REACTIONS)
-                .setDenied(PermissionType.ADMINISTRATOR)
-                .setDenied(PermissionType.ATTACH_FILE)
-                .setDenied(PermissionType.BAN_MEMBERS)
-                .setAllowed(PermissionType.CHANGE_NICKNAME)
-                .setDenied(PermissionType.CONNECT)
-                .setDenied(PermissionType.CREATE_INSTANT_INVITE)
-                .setDenied(PermissionType.DEAFEN_MEMBERS)
-                .setAllowed(PermissionType.EMBED_LINKS)
-                .setDenied(PermissionType.KICK_MEMBERS)
-                .setDenied(PermissionType.MANAGE_CHANNELS)
-                .setDenied(PermissionType.MANAGE_EMOJIS)
-                .setDenied(PermissionType.MANAGE_MESSAGES)
-                .setDenied(PermissionType.MANAGE_NICKNAMES)
-                .setDenied(PermissionType.MANAGE_ROLES)
-                .setDenied(PermissionType.MANAGE_SERVER)
-                .setDenied(PermissionType.MANAGE_WEBHOOKS)
-                .setAllowed(PermissionType.MENTION_EVERYONE)
-                .setDenied(PermissionType.MOVE_MEMBERS)
-                .setDenied(PermissionType.MUTE_MEMBERS)
-                .setDenied(PermissionType.PRIORITY_SPEAKER)
-                .setAllowed(PermissionType.READ_MESSAGE_HISTORY)
-                .setAllowed(PermissionType.READ_MESSAGES)
-                .setAllowed(PermissionType.SEND_MESSAGES)
-                .setDenied(PermissionType.SEND_TTS_MESSAGES)
-                .setAllowed(PermissionType.SPEAK)
-                .setAllowed(PermissionType.STREAM)
-                .setAllowed(PermissionType.USE_EXTERNAL_EMOJIS)
-                .setAllowed(PermissionType.USE_VOICE_ACTIVITY)
-                .setDenied(PermissionType.VIEW_AUDIT_LOG)
-                .build()
-                ;
-
-        Role role = new RoleBuilder(event.getServer().get())
-                .setColor(new Color(194, 98, 94))
-                .setAuditLogReason("MCDC: Minecraft Server Role creation")
-                .setDisplaySeparately(false)
-                .setMentionable(true)
-                .setName(command.getStringArgument(0).get())
-                .setPermissions(permissions)
-                .create().join();
-
-        event.getChannel().sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
-        .addField("Usage:","Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
         // TODO add linking and automatic linking of roles.
 
-        info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + event.getServer().get().getName() + "!");
+        if (event.getChannel().asServerTextChannel().isPresent()) {
+            Role role = RoleAdmin.createNewRole(event.getServer().get(), command.getStringArgument(0).get(), successEmbed, event.getChannel().asServerTextChannel().get());
+            event.getMessageAuthor().asUser().ifPresent(user -> {
+                user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
+                info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
+            });
+        } else {
+            minecraftServer.getLogger().warning(prefix + "Could not get the ServerTextChannel. Sending error embed.");
+            event.getChannel().sendMessage(
+                    new EmbedBuilder()
+                    .setAuthor(event.getMessageAuthor())
+                    .setColor(Color.RED)
+                    .setTitle("Error!")
+                    .addField("ServerTextChannelNotPresentError","Could not get this Channel as a server text channel. Maybe you sent this message in private message?")
+            );
+        }
 
-        discordApi.getYourself().addRole(role, "MCDC needs to see the channel as well!");
-        info("Added role \"" + role.getName() + "\" to the discord API.");
 
-        event.getMessageAuthor().asUser().ifPresent(user -> {
-            user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
-            info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
-        });
     }
 }
