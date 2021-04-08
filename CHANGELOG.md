@@ -1,4 +1,18 @@
 # Changelog
+## Bug Fix update
+### v0.8.1-beta
+🐞 Fixed a bug in the console, where there would an error be shown, when the command was executed successfully. <br>
+🐞 Fixed a bug in the setup command where two replies would be sent.
+
+---
+
+## Setup Update
+### v0.8.0-beta
+➕ Added display of the bot invite link on enable of the bot. <br>
+➕ Added discord command `<prefix>setup <name>` which creates a new channel called `<name>` and a new role, also called `<name>`. 
+
+---
+
 ## Permission Update!
 ### v0.7.1-beta
 ➕ Added Permission support! <br>

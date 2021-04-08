@@ -60,43 +60,37 @@ public class ChannelAdmin {
                                                   EmbedBuilder successEmbed, TextChannel successChannel,
                                                   EmbedBuilder welcomeEmbed) {
         try {
-            // return value
-            AtomicReference<ServerTextChannel> out = new AtomicReference<>();
-
             // Create the Channel
-            new ServerTextChannelBuilder(server)
+            ServerTextChannel serverTextChannel = new ServerTextChannelBuilder(server)
                     .setName(name)
                     .setTopic(topic)
                     .setAuditLogReason("Creating Channel for communication with Minecraft Server")
                     .create()
-                    .thenAccept(serverTextChannel -> {
-                        // After the channel has been created
-                        // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
-                        Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
+                    .join();
 
-                        // Add a field containing a link to the new channel and send the embed
-                        successEmbed.addField("New Channel",
-                                "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
-                        successChannel.sendMessage(successEmbed);
+                // After the channel has been created
+                // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
+                Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
 
-                        // Also send the welcome embed into the newly created channel
-                        serverTextChannel.sendMessage(welcomeEmbed);
+                // Add a field containing a link to the new channel and send the embed
+                successEmbed.addField("New Channel",
+                        "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
+                successChannel.sendMessage(successEmbed);
 
-                        // Set return channel to the newly created one
-                        out.set(serverTextChannel);
+                // Also send the welcome embed into the newly created channel
+                serverTextChannel.sendMessage(welcomeEmbed);
 
-                        // Add the id of the new channel to the list of ids in the configuration and save/reload it
-                        List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
-                        ids.add(serverTextChannel.getId());
-                        Settings.getConfiguration().set("channelIDs", ids);
-                    });
+                // Add the id of the new channel to the list of ids in the configuration and save/reload it
+                List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
+                ids.add(serverTextChannel.getId());
+                Settings.getConfiguration().set("channelIDs", ids);
 
-            return out.get();
+                return serverTextChannel;
+
         } catch (Exception exception) {
             Logging.logException(exception, "Something went wrong while trying to create a text channel.");
             return null;
         }
-
     }
 
     /**

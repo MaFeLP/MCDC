@@ -135,7 +135,7 @@ public class SetupListener implements MessageCreateListener {
 
         String name = command.getStringArgument(0).get();
 
-        Role role = RoleAdmin.createNewRole(event.getServer().get(), name, successEmbed, event.getChannel().asServerTextChannel().get());
+        Role role = RoleAdmin.createNewRole(event.getServer().get(), name, null, event.getChannel().asServerTextChannel().get());
         event.getMessageAuthor().asUser().ifPresent(user -> {
             user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
             info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
@@ -145,13 +145,13 @@ public class SetupListener implements MessageCreateListener {
             return;
         }
 
-        ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
+        ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
 
         if (serverTextChannel == null) {
             minecraftServer.getLogger().warning("Could not create the server Text channel. Unknown error!");
             return;
         }
 
-        Logging.info("Added channel \"" + serverTextChannel.getMentionTag() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
+        Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
     }
 }

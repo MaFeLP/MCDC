@@ -71,8 +71,9 @@ public class RoleAdmin {
 
         info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + server.getName() + "!");
 
-        successChannel.sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
-                .addField("Usage:","Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
+        if (successEmbed != null)
+            successChannel.sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
+                    .addField("Usage:","Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
 
         discordApi.getYourself().addRole(role, "MCDC needs to see the channel as well!");
         info("Added role \"" + role.getName() + "\" to the discord API.");
