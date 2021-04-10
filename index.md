@@ -8,7 +8,7 @@ The bot can currently do all the checked items, unchecked will be implemented in
     - [X] Discord messages can be sent to any server channel the bot is present on
  - [X] Display minecraft messages in a discord chat
  - [X] managing a "#mincraft-server" channel on a specific discord server
-   -[ ] this includes that only members with a role can see this channel and write in it
+   - [ ] this includes that only members with a role can see this channel and write in it
  <br><br>
  - [ ] whisper between a discord user and a minecraft user
  - [ ] linking between a discord and a minecraft account
