@@ -22,7 +22,7 @@ All the functionalities will be added in the future!</div>
     1. Log in to your discord account
     2. Click on `New Application` in the top right corner.
     3. Give you application a name and click `Create`
-    4. Go to the side bar on the left and click `Bot`
+    4. Go to the sidebar on the left and click `Bot`
     5. Click `Copy` on the right-hand side underneath `Token` and `Click to reveal token`.
 4. Go into the console of your server and type `token <your discord bot token>` <br>
    OR go into the `<serverDirectory>/plugins/MCDC/config.yml` file and change the value of `apiToken` to your token.
@@ -125,3 +125,8 @@ mvn verify
 ```
 4. Copy the file `MCDC/target/mcdc-VERSION.jar` into your servers plugin folder.
 5. Continue with [Installation](#installation)
+
+## Documentation
+The documentation cna be found either on
+[my main project page](https://mafelp.github.io/documentation/MCDC/doc/development/index.html)
+or [on this project's page](./doc/index.html).
