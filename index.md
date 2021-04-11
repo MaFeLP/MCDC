@@ -129,4 +129,4 @@ mvn verify
 ## Documentation
 The documentation cna be found either on
 [my main project page](https://mafelp.github.io/documentation/MCDC/doc/development/index.html)
-or [on this project's page](./doc/index.html).
+or [on this project's page](./doc/development/index.html).
