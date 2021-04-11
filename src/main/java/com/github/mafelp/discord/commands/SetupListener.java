@@ -77,10 +77,7 @@ public class SetupListener implements MessageCreateListener {
         EmbedBuilder successEmbed = new EmbedBuilder()
                 .setAuthor(event.getMessageAuthor())
                 .setTitle("Success!")
-                .addField("Successful role creation",
-                        "Successfully created a new role to sync permissions for the channel to!")
                 .setColor(Color.GREEN)
-                .setFooter("")
                 ;
 
         EmbedBuilder welcomeEmbed = new EmbedBuilder()
@@ -140,6 +137,8 @@ public class SetupListener implements MessageCreateListener {
             user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
             info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
         });
+
+        successEmbed.addField("Successful role creation", "Successfully created the new role " + role.getMentionTag() + " to sync permissions for the Minecraft Channels to.");
 
         if (event.getServerTextChannel().isEmpty()) {
             return;
