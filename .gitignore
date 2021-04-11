@@ -114,3 +114,6 @@ run/
 
 # Minecraft Server
 Server/
+
+# Moved doc to github pages
+doc/
