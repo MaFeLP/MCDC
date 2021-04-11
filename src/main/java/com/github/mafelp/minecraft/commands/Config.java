@@ -3,6 +3,8 @@ package com.github.mafelp.minecraft.commands;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.discord.DiscordMain;
 import com.github.mafelp.utils.Settings;
+import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
+import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import com.github.mafelp.utils.Command;
 import com.github.mafelp.utils.CommandParser;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,14 +40,22 @@ public class Config implements CommandExecutor {
             return false;
         }
 
-        // aka. the first argument: e. g. reload
-        Command subCommand1 = CommandParser.parseFromArray(args);
+        // Creates the command and checks for errors.
+        Command subcommandConstruction;
 
-        // aka. the second argument> e. g. (reload) CONFIRM
-        Command subcommand2 = CommandParser.parseFromArray(subCommand1.getArguments());
+        try {
+            subcommandConstruction = CommandParser.parseFromArray(args);
+        } catch (NoCommandGivenException | CommandNotFinishedException exception) {
+            Logging.logException(exception, "Command not finished/given. CommandParser: 'config'");
+            return false;
+        }
+
+        final Command subCommand = subcommandConstruction;
+
+        Logging.debug("Executing command 'config'. Subcommand is: " + subCommand.getCommand() + " and arguments are: " + Arrays.toString(subCommand.getArguments()));
 
         // The first argument defines the subcommand
-        switch (subCommand1.getCommand()) {
+        switch (subCommand.getCommand()) {
             // subcommand reload:
             // Reloads the configuration.
             case "reload" -> {
@@ -71,7 +82,7 @@ public class Config implements CommandExecutor {
             // resets the configuration to its defaults.
             case "default" -> {
                 // if the subcommand has arguments, check them
-                subCommand1.getStringArgument(0).ifPresent(argument -> {
+                subCommand.getStringArgument(0).ifPresent(argument -> {
                     // if the argument is confirm, reset the configuration
                     if (argument.equalsIgnoreCase("confirm")) {
                         commandSender.sendMessage(prefix + ChatColor.DARK_RED +
@@ -89,7 +100,7 @@ public class Config implements CommandExecutor {
                     }
                 });
 
-                if (subCommand1.getArguments().length == 0)
+                if (subCommand.getArguments().length == 0)
                     commandSender.sendMessage(prefix + "Please type " + ChatColor.GRAY + "config default confirm" +
                             ChatColor.RESET + " to confirm your actions!");
 
@@ -99,7 +110,7 @@ public class Config implements CommandExecutor {
             // subcommand set:
             // sets a value in the configuration to the specified value
             case "set" -> {
-                if (subCommand1.getArguments() == null) {
+                if (subCommand.getArguments() == null) {
                     commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
                         ChatColor.GRAY + "\"config set <path> <value>\"" + ChatColor.RED + "!"
                     );
@@ -108,10 +119,10 @@ public class Config implements CommandExecutor {
                 }
 
                 // if ONE additional argument was passed
-                if (subCommand1.getArguments().length <= 1) {
+                if (subCommand.getArguments().length <= 1) {
                     // if only one argument was passed.
-                    if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isEmpty()) {
-                        if (subCommand1.getStringArgument(0).get().equalsIgnoreCase("help")) {
+                    if (subCommand.getStringArgument(0).isPresent() && subCommand.getStringArgument(1).isEmpty()) {
+                        if (subCommand.getStringArgument(0).get().equalsIgnoreCase("help")) {
                             commandSender.sendMessage(prefix + "Please use \"/config set <path> <value>\"");
                             return true;
                         } else {
@@ -125,7 +136,7 @@ public class Config implements CommandExecutor {
                     }
                 }
                 // if TOO many arguments were passed
-                if (subCommand1.getArguments().length > 2) {
+                if (subCommand.getArguments().length > 2) {
                     commandSender.sendMessage(prefix + "Too many arguments given!");
                     commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config set <path> <value>\"");
                     return true;
@@ -133,18 +144,18 @@ public class Config implements CommandExecutor {
 
                 // checks if an argument is present and if so,
                 // tries to get a boolean, long and at last a string from the argument.
-                subCommand1.getStringArgument(0).ifPresent(path -> {
+                subCommand.getStringArgument(0).ifPresent(path -> {
                     // Checks if the argument is a boolean
-                    if (subCommand1.getBooleanArgument(1).isPresent()) {
-                        boolean boolValue = subCommand1.getBooleanArgument(1).get();
+                    if (subCommand.getBooleanArgument(1).isPresent()) {
+                        boolean boolValue = subCommand.getBooleanArgument(1).get();
                         Settings.getConfiguration().set(path, boolValue);
                     // Checks if the argument is a number (long)
-                    } else if (subCommand1.getLongArgument(1).isPresent()) {
-                        long longValue = subCommand1.getLongArgument(1).get();
+                    } else if (subCommand.getLongArgument(1).isPresent()) {
+                        long longValue = subCommand.getLongArgument(1).get();
                         Settings.getConfiguration().set(path, longValue);
                     // the last check is, if the argument is a String.
-                    } else if (subCommand1.getStringArgument(1).isPresent()){
-                        String stringValue = subCommand1.getStringArgument(1).get();
+                    } else if (subCommand.getStringArgument(1).isPresent()){
+                        String stringValue = subCommand.getStringArgument(1).get();
                         Settings.getConfiguration().set(path, stringValue);
                     // If the argument could not be parsed, we throw an error.
                     } else {
@@ -154,11 +165,11 @@ public class Config implements CommandExecutor {
                 });
 
                 // Send a success message
-                if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isPresent()) {
+                if (subCommand.getStringArgument(0).isPresent() && subCommand.getStringArgument(1).isPresent()) {
                     commandSender.sendMessage(prefix + ChatColor.GREEN +
-                            "Set value " + ChatColor.GRAY + subCommand1.getStringArgument(0).get() +
+                            "Set value " + ChatColor.GRAY + subCommand.getStringArgument(0).get() +
                             ChatColor.GREEN + " to " + ChatColor.GRAY +
-                            subCommand1.getStringArgument(1).get() + ChatColor.GREEN + ".\n" +
+                            subCommand.getStringArgument(1).get() + ChatColor.GREEN + ".\n" +
 
                             ChatColor.YELLOW + "Use " + ChatColor.GRAY + "/config save" + ChatColor.YELLOW +
                             " to save the config to the file!"
@@ -173,14 +184,14 @@ public class Config implements CommandExecutor {
             // gets the value of a path in the configuration
             case "get" -> {
                 // if there is a argument after get, execute.
-                if (subCommand1.getStringArgument(0).isPresent()) {
-                    String path = subCommand1.getStringArgument(0).get();
+                if (subCommand.getStringArgument(0).isPresent()) {
+                    String path = subCommand.getStringArgument(0).get();
                     Object value = Settings.getConfiguration().get(path);
 
                     if (value != null) {
                         commandSender.sendMessage(prefix + ChatColor.GREEN +
                                 "The configuration entry to " + ChatColor.GRAY + path + ChatColor.GREEN + " is: " +
-                                ChatColor.GRAY + value.toString()
+                                ChatColor.GRAY + value
                         );
                     } else {
                         commandSender.sendMessage(prefix + ChatColor.RED + "There was an error parsing the value.\n" +
@@ -196,7 +207,7 @@ public class Config implements CommandExecutor {
             // subcommand add
             // adds a value to a list.
             case "add" -> {
-                if (subCommand1.getArguments() == null) {
+                if (subCommand.getArguments() == null) {
                     commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
                             ChatColor.GRAY + "\"config add <path> <value>\"" + ChatColor.RED + "!"
                     );
@@ -204,10 +215,10 @@ public class Config implements CommandExecutor {
                 }
 
                 // if ONE additional argument was passed
-                if (subCommand1.getArguments().length <= 1) {
+                if (subCommand.getArguments().length <= 1) {
                     // if only one argument was passed.
-                    if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isEmpty()) {
-                        if (subCommand1.getStringArgument(0).get().equalsIgnoreCase("help")) {
+                    if (subCommand.getStringArgument(0).isPresent() && subCommand.getStringArgument(1).isEmpty()) {
+                        if (subCommand.getStringArgument(0).get().equalsIgnoreCase("help")) {
                             commandSender.sendMessage(prefix + "Please use \"/config add <path> <value>\"");
                             return true;
                         } else {
@@ -221,7 +232,7 @@ public class Config implements CommandExecutor {
                     }
                 }
                 // if TOO many arguments were passed
-                if (subCommand1.getArguments().length > 2) {
+                if (subCommand.getArguments().length > 2) {
                     commandSender.sendMessage(prefix + "Too many arguments given!");
                     commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config add <path> <value>\"");
                     return true;
@@ -229,24 +240,24 @@ public class Config implements CommandExecutor {
 
                 // checks if an argument is present and if so,
                 // tries to get a boolean, long and at last a string from the argument.
-                subCommand1.getStringArgument(0).ifPresent(path -> {
+                subCommand.getStringArgument(0).ifPresent(path -> {
                     // Checks if the argument is a boolean
-                    if (subCommand1.getBooleanArgument(1).isPresent()) {
-                        boolean boolValue = subCommand1.getBooleanArgument(1).get();
+                    if (subCommand.getBooleanArgument(1).isPresent()) {
+                        boolean boolValue = subCommand.getBooleanArgument(1).get();
                         List<Boolean> booleanList = Settings.getConfiguration().getBooleanList(path);
                         booleanList.add(boolValue);
                         Settings.getConfiguration().set(path, booleanList);
                     // Checks if the argument is a number (long)
-                    } else if (subCommand1.getLongArgument(1).isPresent()) {
-                        long longValue = subCommand1.getLongArgument(1).get();
+                    } else if (subCommand.getLongArgument(1).isPresent()) {
+                        long longValue = subCommand.getLongArgument(1).get();
                         List<Long> longList = Settings.getConfiguration().getLongList(path);
                         longList.add(longValue);
                         Settings.getConfiguration().set(path, longList);
 
                         Logging.info(longList.toString());
                     // the last check is, if the argument is a String.
-                    } else if (subCommand1.getStringArgument(1).isPresent()){
-                        String stringValue = subCommand1.getStringArgument(1).get();
+                    } else if (subCommand.getStringArgument(1).isPresent()){
+                        String stringValue = subCommand.getStringArgument(1).get();
                         List<String> stringList = Settings.getConfiguration().getStringList(path);
                         stringList.add(stringValue);
                         Settings.getConfiguration().set(path, stringList);
@@ -258,25 +269,12 @@ public class Config implements CommandExecutor {
                 });
 
                 // Send a success message
-                if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isPresent()) {
-                    commandSender.sendMessage(prefix + ChatColor.GREEN +
-                            "Added value " + ChatColor.GRAY + subCommand1.getStringArgument(0).get() +
-                            ChatColor.GREEN + " to " + ChatColor.GRAY +
-                            subCommand1.getStringArgument(1).get() + ChatColor.GREEN + ".\n" +
-
-                            ChatColor.YELLOW + "Use " + ChatColor.GRAY + "/config save" + ChatColor.YELLOW +
-                            " to save the config to the file!"
-                    );
-                    // commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently not implemented.");
-                    return true;
-                } else {
-                    return false;
-                }
+                return sendSuccessMessage(commandSender, subCommand);
             }
             // subcommand remove
             // removes a value from a list
             case "remove" -> {
-                if (subCommand1.getArguments() == null) {
+                if (subCommand.getArguments() == null) {
                     commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
                             ChatColor.GRAY + "\"config remove <path> <value>\"" + ChatColor.RED + "!"
                     );
@@ -284,10 +282,10 @@ public class Config implements CommandExecutor {
                 }
 
                 // if ONE additional argument was passed
-                if (subCommand1.getArguments().length <= 1) {
+                if (subCommand.getArguments().length <= 1) {
                     // if only one argument was passed.
-                    if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isEmpty()) {
-                        if (subCommand1.getStringArgument(0).get().equalsIgnoreCase("help")) {
+                    if (subCommand.getStringArgument(0).isPresent() && subCommand.getStringArgument(1).isEmpty()) {
+                        if (subCommand.getStringArgument(0).get().equalsIgnoreCase("help")) {
                             commandSender.sendMessage(prefix + "Please use \"/config remove <path> <value>\"");
                             return true;
                         } else {
@@ -301,7 +299,7 @@ public class Config implements CommandExecutor {
                     }
                 }
                 // if TOO many arguments were passed
-                if (subCommand1.getArguments().length > 2) {
+                if (subCommand.getArguments().length > 2) {
                     commandSender.sendMessage(prefix + "Too many arguments given!");
                     commandSender.sendMessage(prefix + ChatColor.RED + "Please use \"/config remove <path> <value>\"");
                     return true;
@@ -309,24 +307,24 @@ public class Config implements CommandExecutor {
 
                 // checks if an argument is present and if so,
                 // tries to get a boolean, long and at last a string from the argument.
-                subCommand1.getStringArgument(0).ifPresent(path -> {
+                subCommand.getStringArgument(0).ifPresent(path -> {
                     // Checks if the argument is a boolean
-                    if (subCommand1.getBooleanArgument(1).isPresent()) {
-                        boolean boolValue = subCommand1.getBooleanArgument(1).get();
+                    if (subCommand.getBooleanArgument(1).isPresent()) {
+                        boolean boolValue = subCommand.getBooleanArgument(1).get();
                         List<Boolean> booleanList = Settings.getConfiguration().getBooleanList(path);
                         booleanList.removeAll(Collections.singleton(boolValue));
                         Settings.getConfiguration().set(path, booleanList);
                         // Checks if the argument is a number (long)
-                    } else if (subCommand1.getLongArgument(1).isPresent()) {
-                        long longValue = subCommand1.getLongArgument(1).get();
+                    } else if (subCommand.getLongArgument(1).isPresent()) {
+                        long longValue = subCommand.getLongArgument(1).get();
                         List<Long> longList = Settings.getConfiguration().getLongList(path);
                         longList.removeAll(Collections.singleton(longValue));
                         Settings.getConfiguration().set(path, longList);
 
                         Logging.info(longList.toString());
                         // the last check is, if the argument is a String.
-                    } else if (subCommand1.getStringArgument(1).isPresent()){
-                        String stringValue = subCommand1.getStringArgument(1).get();
+                    } else if (subCommand.getStringArgument(1).isPresent()){
+                        String stringValue = subCommand.getStringArgument(1).get();
                         List<String> stringList = Settings.getConfiguration().getStringList(path);
                         stringList.removeAll(Collections.singleton(stringValue));
                         Settings.getConfiguration().set(path, stringList);
@@ -338,26 +336,36 @@ public class Config implements CommandExecutor {
                 });
 
                 // Send a success message
-                if (subCommand1.getStringArgument(0).isPresent() && subCommand1.getStringArgument(1).isPresent()) {
-                    commandSender.sendMessage(prefix + ChatColor.GREEN +
-                            "Added value " + ChatColor.GRAY + subCommand1.getStringArgument(0).get() +
-                            ChatColor.GREEN + " to " + ChatColor.GRAY +
-                            subCommand1.getStringArgument(1).get() + ChatColor.GREEN + ".\n" +
-
-                            ChatColor.YELLOW + "Use " + ChatColor.GRAY + "/config save" + ChatColor.YELLOW +
-                            " to save the config to the file!"
-                    );
-                    // commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently not implemented.");
-                    return true;
-                } else {
-                    return false;
-                }
+                return sendSuccessMessage(commandSender, subCommand);
             }
             // No subcommand is given:
             default -> {
                 // Return an unsuccessful execution of the command.
                 return false;
             }
+        }
+    }
+
+    /**
+     * Sends a success message for the subcommands 'remove' and 'add'
+     * @param commandSender The person who initially sent the message.
+     * @param subCommand The subcommand the person executed.
+     * @return the success of the execution.
+     */
+    private boolean sendSuccessMessage(CommandSender commandSender, Command subCommand) {
+        if (subCommand.getStringArgument(0).isPresent() && subCommand.getStringArgument(1).isPresent()) {
+            commandSender.sendMessage(prefix + ChatColor.GREEN +
+                    "Added value " + ChatColor.GRAY + subCommand.getStringArgument(0).get() +
+                    ChatColor.GREEN + " to " + ChatColor.GRAY +
+                    subCommand.getStringArgument(1).get() + ChatColor.GREEN + ".\n" +
+
+                    ChatColor.YELLOW + "Use " + ChatColor.GRAY + "/config save" + ChatColor.YELLOW +
+                    " to save the config to the file!"
+            );
+            // commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command is currently not implemented.");
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -82,19 +82,33 @@ public class CommandParser {
     /**
      * method for parsing commands and arguments into the command class.
      * @param inputCommandArray the array to parse the commands from
+     * @throws NoCommandGivenException if no command was given, the input is null or has a length of 0 aka. is empty.
+     * @throws CommandNotFinishedException if there is an uneven number of quotation marks.
      * @return the built command
      */
-    public static Command parseFromArray(String[] inputCommandArray) {
+    public static Command parseFromArray(String[] inputCommandArray) throws NoCommandGivenException, CommandNotFinishedException{
         if (inputCommandArray == null)
-            return new Command(null, null);
+            throw new NoCommandGivenException("No command was given!");
+
+        if (inputCommandArray.length == 0)
+            throw new NoCommandGivenException("No command was given!");
 
         if (inputCommandArray.length == 1)
             return new Command(inputCommandArray[0], null);
 
-        // Create the list of arguments without the command.
-        List<String> argumentList =
-                new ArrayList<>(Arrays.asList(inputCommandArray).subList(1, inputCommandArray.length));
+        // Builds a string out of all the arguments and parses it into the parseFromString method.
+        StringBuilder argumentString = new StringBuilder();
 
-        return new Command(inputCommandArray[0], argumentList.toArray(String[]::new));
+        int index = 0;
+        for (String argument : inputCommandArray) {
+            if (index == 0)
+                argumentString.append(argument);
+            else
+                argumentString.append(' ').append(argument);
+
+            index++;
+        }
+
+        return parseFromString(argumentString.toString());
     }
 }
