@@ -118,6 +118,18 @@ public class Config implements CommandExecutor {
                     return true;
                 }
 
+                // Prevents IllegalArgumentException and CommandException
+                // because a string must be passed in to set the value to.
+                if (subCommand.getStringArgument(0).isPresent()) {
+                    if (subCommand.getStringArgument(0).get().equalsIgnoreCase("")) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
+                                ChatColor.GRAY + "\"config set <path> <value>\"" + ChatColor.RED + "!"
+                        );
+
+                        return true;
+                    }
+                }
+
                 // if ONE additional argument was passed
                 if (subCommand.getArguments().length <= 1) {
                     // if only one argument was passed.
