@@ -110,6 +110,14 @@ public class CreateChannelListener implements MessageCreateListener {
             return;
         }
 
+        if (command.getStringArgument(0).isPresent()) {
+            if (command.getStringArgument(0).get().equalsIgnoreCase("")) {
+                Logging.info("User \"" + event.getMessageAuthor().getDisplayName() + "\" tried to execute command \"createChannel\"!");
+                event.getChannel().sendMessage(helpMessage);
+                return;
+            }
+        }
+
         if (command.getArguments().length != 1) {
             event.getChannel().sendMessage(helpMessage);
             return;
