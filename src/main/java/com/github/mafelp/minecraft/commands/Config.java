@@ -1,22 +1,21 @@
 package com.github.mafelp.minecraft.commands;
 
-import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.*;
 import com.github.mafelp.discord.DiscordMain;
-import com.github.mafelp.utils.Settings;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.mafelp.utils.Settings.*;
 
@@ -33,11 +32,29 @@ public class Config implements CommandExecutor {
      * @return The success state of the command and if the usage text should be displayed.
      */
     @Override
-    public boolean onCommand(CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
-        // Only execute, if player is op
-        if (!commandSender.isOp()) {
-            commandSender.sendMessage(prefix + ChatColor.RED + "You can only use this command as operator!");
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
+        // Only execute, if player has the required permissions.
+        boolean hasRequiredPermission;
+
+        if (commandSender instanceof ConsoleCommandSender) {
+            Logging.debug("Command 'config' executed by console. Granting permission...");
+            hasRequiredPermission = true;
+        } else if (commandSender instanceof Player) {
+            Logging.debug("Player " + commandSender.getName() + " executed the command '/config'. Checking permissions...");
+            Player commandSenderAsPlayer = ((Player) commandSender).getPlayer();
+            if (commandSenderAsPlayer == null) {
+                commandSender.sendMessage(prefix + "Wait. You are a player, and at the same time not? Weired...");
+                return true;
+            }
+            hasRequiredPermission = CheckPermission.checkPermission(Permissions.configEdit, commandSenderAsPlayer);
+        } else {
+            commandSender.sendMessage(prefix + "Are you a player or a console? I don't know...\nBut what I know, is that only players and consoles can execute this command!");
             return false;
+        }
+
+        if (!hasRequiredPermission) {
+            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you do not have the required permissions to execute this command.");
+            return true;
         }
 
         // Creates the command and checks for errors.

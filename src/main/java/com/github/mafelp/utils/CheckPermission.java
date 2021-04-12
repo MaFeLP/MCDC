@@ -162,16 +162,20 @@ public class CheckPermission {
         String UUID = player.getUniqueId().toString();
         int opLevel = getAdminLevel(player);
 
-        int requiredPermissionLevel = Settings.getConfiguration().getInt("permissions." + permission.toString() + ".level");
+        int requiredPermissionLevel = Settings.getConfiguration().getInt("permission." + permission.toString() + ".level");
 
         // Check the OP Level
-        if (opLevel >= requiredPermissionLevel)
+        if (opLevel >= requiredPermissionLevel) {
+            // debug("Granted permission with OP level. Level: " + opLevel + "; requiredOPLevel: " + requiredPermissionLevel);
             return true;
+        }
 
         // Check the configuration
-        for (String configUUID : Settings.getConfiguration().getStringList("permissions." + permission + ".allowedUserUUIDs")) {
-            if (configUUID.equalsIgnoreCase(UUID))
+        for (String configUUID : Settings.getConfiguration().getStringList("permission." + permission + ".allowedUserUUIDs")) {
+            if (configUUID.equalsIgnoreCase(UUID)) {
+                // debug("Granted permission with wildcard.");
                 return true;
+            }
         }
 
         return false;
