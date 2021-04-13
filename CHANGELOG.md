@@ -1,4 +1,17 @@
 # Changelog
+## More Bug fixes
+### v0.8.2-beta and v0.8.3-beta (stable)
+➕ Added permission checking to the commands `/token`, `/config`,`.setup`,`.createChannel` and `.createRole`. <br>
+➕ Added differentiation of `'` and `"` in arguments. You can now use commands like this: `hello "mafelp's friend!"` with no problems! <br>
+➕ Added escape sequences for quotation marks.
+↳ Added a toggle in the configuration to change, if these marks should be displayed in the config as well. <br>
+🐞 Fixed a bug, where giving an empty argument ("") would cause an error and the user would not be notified. <br>
+🐞 Fixed a bug, where setting up or creating channels with an 'empty' argument ("") would cause an error to occure and the user would not be notified about the error. <br>
+🐞 Fixed a bug, where the long message format would not display corrently in the console and would display in two lines. <br>
+🐞 Fixed a bug where an uneven amount of quotation marks (`'` and `"`) would cause a CommandNotFinishedException and the user would not be notified. <br>
+
+---
+
 ## Bug Fix update
 ### v0.8.1-beta
 🐞 Fixed a bug in the console, where there would an error be shown, when the command was executed successfully. <br>
