@@ -1,8 +1,11 @@
 package com.github.mafelp.minecraft.commands;
 
+import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
+import jdk.jshell.spi.SPIResolutionException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,17 +26,16 @@ public class Token implements CommandExecutor {
      * @return success state
      */
     @Override
-    public boolean onCommand(CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         // Only execute if the sender is an operator
-        if (!commandSender.isOp()) {
-            // if the sender is not an operator, return a fail
-            // and send him/her a sorry message
-            commandSender.sendMessage(Settings.prefix + "Sorry, you are not allowed to use this command!");
-            return false;
+        if (!CheckPermission.checkPermission(Permissions.configEdit, commandSender)) {
+            commandSender.sendMessage(Settings.prefix + ChatColor.RED + "Sorry, you do not have the permissions to execute this command.\n" + Settings.prefix + ChatColor.RED + "This incident will be reported.");
+            Logging.info("User " + commandSender.getName() + " tried to execute command /token.");
+            return true;
         }
 
         // check if no, or more then one argument were passed
-        if (args.length != 1) {
+        if (args == null || args.length != 1) {
             // if so, return a fail
             // and send the sender the help message
             commandSender.sendMessage(helpMessage);
@@ -55,8 +57,6 @@ public class Token implements CommandExecutor {
                 return false;
             }
         }
-        // TODO Fix: token arg0 is null in command when correct token is given...
-
         // try to log the bot in
         try {
             // set the token in the configuration

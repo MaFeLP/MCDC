@@ -34,25 +34,7 @@ public class Config implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
         // Only execute, if player has the required permissions.
-        boolean hasRequiredPermission;
-
-        if (commandSender instanceof ConsoleCommandSender) {
-            Logging.debug("Command 'config' executed by console. Granting permission...");
-            hasRequiredPermission = true;
-        } else if (commandSender instanceof Player) {
-            Logging.debug("Player " + commandSender.getName() + " executed the command '/config'. Checking permissions...");
-            Player commandSenderAsPlayer = ((Player) commandSender).getPlayer();
-            if (commandSenderAsPlayer == null) {
-                commandSender.sendMessage(prefix + "Wait. You are a player, and at the same time not? Weired...");
-                return true;
-            }
-            hasRequiredPermission = CheckPermission.checkPermission(Permissions.configEdit, commandSenderAsPlayer);
-        } else {
-            commandSender.sendMessage(prefix + "Are you a player or a console? I don't know...\nBut what I know, is that only players and consoles can execute this command!");
-            return false;
-        }
-
-        if (!hasRequiredPermission) {
+        if (!CheckPermission.checkPermission(Permissions.configEdit, commandSender)) {
             commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you do not have the required permissions to execute this command.");
             return true;
         }
