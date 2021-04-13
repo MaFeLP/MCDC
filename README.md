@@ -64,7 +64,6 @@ discordCommandPrefix: '.'
 channelIDs:
    - 1234
 
-
 # Permission section for setting permission levels
 permission:
 
@@ -88,6 +87,10 @@ permission:
       # A list of authorised bot users.
       allowedUserIDs:
          - 1234
+
+# If the command parser should treat \ as a normal character
+# Allowed values: <true|false>
+saveEscapeCharacterInConfig: true
 ```
 
 ### Get the ID of a text channel:
