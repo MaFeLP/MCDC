@@ -31,64 +31,9 @@ All the functionalities will be added in the future!</div>
 
 ## Configuration
 ### \<server directory\>/plugins/MCDC/config.yml:
-#### Default config:
-```yaml
-# Configuration file for plugin MCDC
-# Author: MaFeLP (https://github.com/MaFeLP/MCDC/)
+See [configuration](./configuration) for more information.
 
-# if the message should be shortened
-# Allowed values: <true|false>
-useShortMessageFormat: false
-
-# the prefix displayed in the console before logs and in
-# Allowed values: any String
-pluginPrefix: '§8[§6MCDC§8]§0: §r'
-
-# The name of the server displayed in discord messages
-# Allowed values: any string
-serverName: 'A Minecraft Server'
-
-# If additional information should be displayed.
-# Allowed values: <true|false>
-debug: false
-
-# The Token used to create your bot instance
-# Allowed values: any String
-apiToken: 'Your API Token goes here!'
-
-# The String used before commands in the discord channels
-# Allowed values: any String
-discordCommandPrefix: '.'
-
-# Discord Channel IDs to broadcast messages to.
-channelIDs:
-   - 1234
-
-
-# Permission section for setting permission levels
-permission:
-
-   # Permission for minecraft command /config
-   configEdit:
-      # Required OP level
-      level: 3
-      # A list of UUIDs of Players who have a wildcard to use this command.
-      allowedUserUUIDs:
-         - a unique ID
-
-
-   # Discord Server Admins are allowed to create Channels and Roles
-   discordServerAdmin:
-      # A list of discord IDs of users who have a wildcard to use this command
-      allowedUserIDs:
-         - 1234
-
-   # Discord Bot admins, use cases may follow.
-   discordBotAdmin:
-      # A list of authorised bot users.
-      allowedUserIDs:
-         - 1234
-```
+---
 
 ### Get the ID of a text channel:
 1. In your discord app open the user settings (next to your mute buttons)
