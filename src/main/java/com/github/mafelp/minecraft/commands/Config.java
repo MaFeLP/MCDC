@@ -64,7 +64,8 @@ public class Config implements CommandExecutor {
             subcommandConstruction = CommandParser.parseFromArray(args);
         } catch (NoCommandGivenException | CommandNotFinishedException exception) {
             Logging.logException(exception, "Command not finished/given. CommandParser: 'config'");
-            return false;
+            commandSender.sendMessage(prefix + ChatColor.RED + "Error processing command! Exception " + exception.getMessage() + ". Please make sure, that you have an even amount of quotation marks and a subcommand.");
+            return true;
         }
 
         final Command subCommand = subcommandConstruction;
