@@ -24,7 +24,8 @@ public class CommandParser {
             throw new NoCommandGivenException("No command was given!");
 
         // Variables used in the parsing.
-        boolean inArgument = false;
+        boolean inSingleQuotedArgument = false;
+        boolean inDoubleQuotedArgument = false;
         boolean escaped = false;
         StringBuilder currentArgument = new StringBuilder();
         List<String> argsList = new ArrayList<>();
@@ -47,7 +48,7 @@ public class CommandParser {
                     case ' ' -> {
                         // normally space means new argument.
                         // if we are in an Argument, ignore the space.
-                        if (inArgument)
+                        if (inSingleQuotedArgument || inDoubleQuotedArgument)
                             currentArgument.append(c);
                         else {
                             // Create a new Argument and  add the old one to the list of arguments.
@@ -56,12 +57,26 @@ public class CommandParser {
                         }
                     }
                     // quotation marks mark the beginning/end of an argument.
-                    case '"', '\'' -> {
+                    // if we are already in an argument, the other marks should be ignored.
+                    case '"' -> {
                         // check if this is the last character, if yes, append the current argument to the list of arguments.
                         if (characterIndex == commandArgumentString.length())
                             argsList.add(currentArgument.toString());
                         // Mark if the following is part of this argument or not.
-                        inArgument = !inArgument;
+                        if (!inSingleQuotedArgument)
+                            inDoubleQuotedArgument = !inDoubleQuotedArgument;
+                        else
+                            currentArgument.append(c);
+                    }
+                    case '\'' -> {
+                        // check if this is the last character, if yes, append the current argument to the list of arguments.
+                        if (characterIndex == commandArgumentString.length())
+                            argsList.add(currentArgument.toString());
+                        // Mark if the following is part of this argument or not.
+                        if (!inDoubleQuotedArgument)
+                            inSingleQuotedArgument= !inSingleQuotedArgument;
+                        else
+                            currentArgument.append(c);
                     }
                     // treats escaping characters as normal characters.
                     case '\\' -> {
@@ -83,7 +98,7 @@ public class CommandParser {
 
         // if we are still in an argument, that means that we have an uneven number of of quotation marks.
         // Then throw the exception.
-        if (inArgument)
+        if (inSingleQuotedArgument)
             throw new CommandNotFinishedException("The command is not valid! Still in Parameter!");
 
         // Create the list of arguments without the command.
