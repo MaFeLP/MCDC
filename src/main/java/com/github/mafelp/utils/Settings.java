@@ -251,6 +251,7 @@ public class Settings {
         defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", null);
         defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", null);
         defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", null);
+        defaultConfiguration.set("saveEscapeCharacterInConfig", true);
 
         return defaultConfiguration;
     }

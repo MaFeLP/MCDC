@@ -25,44 +25,60 @@ public class CommandParser {
 
         // Variables used in the parsing.
         boolean inArgument = false;
+        boolean escaped = false;
         StringBuilder currentArgument = new StringBuilder();
         List<String> argsList = new ArrayList<>();
         int characterIndex = 0;
 
         // Parsing of the string into an array.
-        for (char c :
-                commandArgumentString.toCharArray()) {
+        for (char c : commandArgumentString.toCharArray()) {
             characterIndex++;   // increments the character index for checks, if the command has already ended.
 
-            // Handles different characters: quotes, spaces, all the rest.
-            switch (c) {
-                // space:
-                case ' ' -> {
-                    // normally space means new argument.
-                    // if we are in an Argument, ignore the space.
-                    if (inArgument)
-                        currentArgument.append(c);
-                    else {
-                        // Create a new Argument and  add the old one to the list of arguments.
-                        argsList.add(currentArgument.toString());
-                        currentArgument = new StringBuilder();
+            // ignores the next character after a backslash.
+            if (escaped) {
+                escaped = false;
+                currentArgument.append(c);
+                if (characterIndex == commandArgumentString.length())
+                    argsList.add(currentArgument.toString());
+            } else {
+                // Handles different characters: quotes, spaces, all the rest.
+                switch (c) {
+                    // space:
+                    case ' ' -> {
+                        // normally space means new argument.
+                        // if we are in an Argument, ignore the space.
+                        if (inArgument)
+                            currentArgument.append(c);
+                        else {
+                            // Create a new Argument and  add the old one to the list of arguments.
+                            argsList.add(currentArgument.toString());
+                            currentArgument = new StringBuilder();
+                        }
                     }
-                }
-                // quotation marks mark the beginning/end of an argument.
-                case '"', '\'' -> {
-                    // check if this is the last character, if yes, append the current argument to the list of arguments.
-                    if (characterIndex == commandArgumentString.length())
-                        argsList.add(currentArgument.toString());
-                    // Mark if the following is part of this argument or not.
-                    inArgument = !inArgument;
-                }
-                // For every other character: just add it to the current argument.
-                default -> {
-                    currentArgument.append(c);
-                    if (characterIndex == commandArgumentString.length())
-                        argsList.add(currentArgument.toString());
-                }
-            } // End of switch
+                    // quotation marks mark the beginning/end of an argument.
+                    case '"', '\'' -> {
+                        // check if this is the last character, if yes, append the current argument to the list of arguments.
+                        if (characterIndex == commandArgumentString.length())
+                            argsList.add(currentArgument.toString());
+                        // Mark if the following is part of this argument or not.
+                        inArgument = !inArgument;
+                    }
+                    // treats escaping characters as normal characters.
+                    case '\\' -> {
+                        escaped = true;
+                        if (Settings.getConfiguration().getBoolean("saveEscapeCharacterInConfig"))
+                            currentArgument.append(c);
+                        if (characterIndex == commandArgumentString.length())
+                            argsList.add(currentArgument.toString());
+                    }
+                    // For every other character: just add it to the current argument.
+                    default -> {
+                        currentArgument.append(c);
+                        if (characterIndex == commandArgumentString.length())
+                            argsList.add(currentArgument.toString());
+                    }
+                } // End of switch
+            } // End of else
         } // End of for
 
         // if we are still in an argument, that means that we have an uneven number of of quotation marks.
