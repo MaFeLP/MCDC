@@ -53,3 +53,7 @@ permission:
     # A list of authorised bot users.
     allowedUserIDs:
       - 1234
+
+# If the command parser should treat \ as a normal character
+# Allowed values: <true|false>
+saveEscapeCharacterInConfig: true

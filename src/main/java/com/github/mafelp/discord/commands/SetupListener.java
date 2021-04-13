@@ -111,6 +111,12 @@ public class SetupListener implements MessageCreateListener {
             return;
         }
 
+        if (command.getStringArgument(0).get().equalsIgnoreCase("")) {
+            info("Person " + ChatColor.GRAY + event.getMessageAuthor().getDisplayName() + ChatColor.RESET + " used the command setup wrong. Sending help embed.");
+            event.getChannel().sendMessage(helpMessage);
+            return;
+        }
+
         if (event.getServer().isEmpty()) {
             event.getChannel().sendMessage(serverNotPresentError);
             Logging.info("Could not setup the server: Server is not present. Sending Error Reply.");

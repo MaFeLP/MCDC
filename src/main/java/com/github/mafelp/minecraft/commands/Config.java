@@ -1,22 +1,21 @@
 package com.github.mafelp.minecraft.commands;
 
-import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.*;
 import com.github.mafelp.discord.DiscordMain;
-import com.github.mafelp.utils.Settings;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.github.mafelp.utils.Settings.*;
 
@@ -33,11 +32,11 @@ public class Config implements CommandExecutor {
      * @return The success state of the command and if the usage text should be displayed.
      */
     @Override
-    public boolean onCommand(CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
-        // Only execute, if player is op
-        if (!commandSender.isOp()) {
-            commandSender.sendMessage(prefix + ChatColor.RED + "You can only use this command as operator!");
-            return false;
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
+        // Only execute, if player has the required permissions.
+        if (!CheckPermission.checkPermission(Permissions.configEdit, commandSender)) {
+            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you do not have the required permissions to execute this command.");
+            return true;
         }
 
         // Creates the command and checks for errors.
@@ -47,7 +46,8 @@ public class Config implements CommandExecutor {
             subcommandConstruction = CommandParser.parseFromArray(args);
         } catch (NoCommandGivenException | CommandNotFinishedException exception) {
             Logging.logException(exception, "Command not finished/given. CommandParser: 'config'");
-            return false;
+            commandSender.sendMessage(prefix + ChatColor.RED + "Error processing command! Exception " + exception.getMessage() + ". Please make sure, that you have an even amount of quotation marks and a subcommand.");
+            return true;
         }
 
         final Command subCommand = subcommandConstruction;
@@ -116,6 +116,18 @@ public class Config implements CommandExecutor {
                     );
 
                     return true;
+                }
+
+                // Prevents IllegalArgumentException and CommandException
+                // because a string must be passed in to set the value to.
+                if (subCommand.getStringArgument(0).isPresent()) {
+                    if (subCommand.getStringArgument(0).get().equalsIgnoreCase("")) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Wrong usage! Please use " +
+                                ChatColor.GRAY + "\"config set <path> <value>\"" + ChatColor.RED + "!"
+                        );
+
+                        return true;
+                    }
                 }
 
                 // if ONE additional argument was passed

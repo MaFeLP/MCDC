@@ -1,9 +1,12 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
+import org.bukkit.entity.Player;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
-import static com.github.mafelp.utils.Settings.msgPrefix;
+
+import static com.github.mafelp.utils.Settings.*;
 
 /**
  * Class that listens to all messages sent to a discord server
@@ -42,8 +45,14 @@ public class DiscordListener implements MessageCreateListener {
         // Send the readable content of the message into the minecraft chat
         // for everyone to read.
         // TODO broadcast version of message WITHOUT line break to the console and messages with line breaks to the players if Settings.shortMsg == true
-        Settings.minecraftServer.broadcastMessage(
-                msgPrefix(event) + event.getReadableMessageContent()
-        );
+        // Settings.minecraftServer.broadcastMessage(
+                // msgPrefix(event) + event.getReadableMessageContent()
+        //);
+
+        for (Player p : Settings.minecraftServer.getOnlinePlayers()) {
+            p.sendMessage(msgPrefix(event) + event.getReadableMessageContent());
+        }
+        //Logging.info(consoleMessagePrefix(event));
+        minecraftServer.getConsoleSender().sendMessage(consoleMessagePrefix(event) + event.getReadableMessageContent());
     }
 }

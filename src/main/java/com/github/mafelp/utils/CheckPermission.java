@@ -3,6 +3,8 @@ package com.github.mafelp.utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -13,6 +15,7 @@ import java.util.Scanner;
 
 import static com.github.mafelp.utils.Logging.debug;
 import static com.github.mafelp.utils.Settings.getConfiguration;
+import static com.github.mafelp.utils.Settings.prefix;
 
 /**
  * Class used to check permissions on Discord or on the Minecraft server
@@ -162,18 +165,46 @@ public class CheckPermission {
         String UUID = player.getUniqueId().toString();
         int opLevel = getAdminLevel(player);
 
-        int requiredPermissionLevel = Settings.getConfiguration().getInt("permissions." + permission.toString() + ".level");
+        int requiredPermissionLevel = Settings.getConfiguration().getInt("permission." + permission.toString() + ".level");
 
         // Check the OP Level
-        if (opLevel >= requiredPermissionLevel)
+        if (opLevel >= requiredPermissionLevel) {
+            // debug("Granted permission with OP level. Level: " + opLevel + "; requiredOPLevel: " + requiredPermissionLevel);
             return true;
+        }
 
         // Check the configuration
-        for (String configUUID : Settings.getConfiguration().getStringList("permissions." + permission + ".allowedUserUUIDs")) {
-            if (configUUID.equalsIgnoreCase(UUID))
+        for (String configUUID : Settings.getConfiguration().getStringList("permission." + permission + ".allowedUserUUIDs")) {
+            if (configUUID.equalsIgnoreCase(UUID)) {
+                // debug("Granted permission with wildcard.");
                 return true;
+            }
         }
 
         return false;
+    }
+
+    /**
+     * Checks the configuration if a command executor has a specific permission or has a specific level.
+     * @param permission The permission to check the level of.
+     * @param commandSender the executor of a command to check the permission of.
+     * @return if the command sender has the permission.
+     */
+    public static boolean checkPermission(final Permissions permission, final CommandSender commandSender) {
+        if (commandSender instanceof ConsoleCommandSender) {
+            Logging.debug("Granting permission " + permission + " to " + commandSender.getName() + ": is console.");
+            return true;
+        } else if (commandSender instanceof Player) {
+            Logging.debug("Checking permission " + permission + " for player " + commandSender.getName() + "...");
+            Player commandSenderAsPlayer = ((Player) commandSender).getPlayer();
+            if (commandSenderAsPlayer == null) {
+                commandSender.sendMessage(prefix + "Wait. You are a player, and at the same time not? Weired...");
+                return false;
+            }
+            return CheckPermission.checkPermission(permission, commandSenderAsPlayer);
+        } else {
+            commandSender.sendMessage(prefix + "Are you a player or a console? I don't know...\nBut what I know, is that only players and consoles can execute this command!");
+            return false;
+        }
     }
 }

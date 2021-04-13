@@ -34,7 +34,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.8.0-beta";
+    public static final String version = "v0.8.3-beta";
 
     /**
      * enables more information being displayed while executing events
@@ -106,6 +106,49 @@ public class Settings {
             String last = ChatColor.DARK_GRAY + "]" +
                     ChatColor.BLACK + ": " +
                     ChatColor.GRAY + "\n\u255A\u25B6" +
+                    ChatColor.RESET;
+
+            return first +
+                    event.getMessageAuthor().getDisplayName() +
+                    second +
+                    event.getServerTextChannel().get().getName() +
+                    third +
+                    event.getServer().get().getName() +
+                    last;
+        }
+    }
+
+
+    /**
+     * Creates a prefix, without special characters, for a console message.
+     * @param event Message create event made by the discord API containing information about the message and its
+     *              source and author
+     * @return usable message prefix, one or two lines. two lines include unicode characters
+     */
+    public static String consoleMessagePrefix(MessageCreateEvent event) {
+        if ((event.getServer().isEmpty() || event.getServerTextChannel().isEmpty())) {
+            String first = ChatColor.DARK_GRAY + "[" +
+                    ChatColor.LIGHT_PURPLE + "DC" +
+                    ChatColor.DARK_GRAY + "/" +
+                    ChatColor.GOLD;
+            String last = ChatColor.DARK_GRAY + "]" +
+                    ChatColor.BLACK + ": " +
+                    ChatColor.RESET;
+
+            return first +
+                    event.getMessageAuthor().getDisplayName() +
+                    last;
+        } else {
+            String first = ChatColor.DARK_GRAY + "[" +
+                    ChatColor.LIGHT_PURPLE + "DC" +
+                    ChatColor.DARK_GRAY + "/" +
+                    ChatColor.GOLD;
+            String second = ChatColor.DARK_GRAY + " in " +
+                    ChatColor.DARK_AQUA;
+            String third = ChatColor.DARK_GRAY + " on " +
+                    ChatColor.DARK_AQUA;
+            String last = ChatColor.DARK_GRAY + "]" +
+                    ChatColor.BLACK + ": " +
                     ChatColor.RESET;
 
             return first +
@@ -208,6 +251,7 @@ public class Settings {
         defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", null);
         defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", null);
         defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", null);
+        defaultConfiguration.set("saveEscapeCharacterInConfig", true);
 
         return defaultConfiguration;
     }
