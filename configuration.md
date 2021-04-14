@@ -1,6 +1,6 @@
 # MCDC Configuration
 ## General
-Where to put the file: <code><your server directory>/plugins/MCDC/config.yml</code>
+Where to put the file: <code>\<your server directory\>/plugins/MCDC/config.yml</code>
 
 ## Types
 <table>
@@ -30,21 +30,47 @@ Where to put the file: <code><your server directory>/plugins/MCDC/config.yml</co
 ---
 
 ## Options:
-| Option | Type | Default Value | Description |
-|--------|---------|---------|----------|
-| useShortMessageFormat | Boolean | `false` | If the minecraft message should not contain additional information about the message, such as the server and channel the message was sent to |
-| pluginPrefix | String | `§8[§6MCDC§8]§0: §r` | The prefix before every log entry and other messages sent by the plugin. |
-| serverName | String | `A Minecraft Server` | The name of ther server displayed in discord messages |
-| debug | Boolean | `false` | If additional information should be displayed. <br> Can be helpful for developers and debugging, but also spams your log files. |
-| apiToken | String | Must be filled in before usage | The Token used to create and identify the bot on discord. See [here](./Installation) for more information! |
-| discordCommandPrefix | String | `.` | The String used before discord commands, to identify messages as commands and treat them as such. |
-| channelIDs | long list | none | The IDs of the channels to broadcast messages to. |
-| permission.configEdit.level | Integer | 3 | The OP level defined in `ops.json` that the player must have to execute the command `/config`. <br> Setting it to 0 or lower enables the command for everyone. <br> Setting it to 5 or higher disables it for every player. The console can still execute this command. |
-| permission.configEdit.allowedUserUUIDs | String list | none | The UUIDs of players who can execute the `/config` command, and do not have the required OP level. This is also known as a wildcard. |
-| permission.discordServerAdmin.allowedUserIDs | long list | none | The list of IDs of discord users who should be allowed to create new channel and roles for MCDC to use. |
-| permission.discordBotAdmin.allowedUserIDs | long list | none | The list of IDs of discord users who should be allowed to change settings of the bot (not implemented yet). |
-| saveEscapeCharacterInConfig | Boolean | true | Decides if escape characters should be skipped when typing arguments (they will keep their dunctionality tho) or if they should be added to the string. <br> Example: The command `/config set test "foo \" bar"` results in the outputs: <br> if true: `test: foo \" bar"` <br> if false: `test: foo " bar`. |
-
+<table>
+<tr>
+	<th>Option</th> <th>Type</th> <th>Default Value</th> <th>Description</th>
+</tr>
+<tr>
+<td>useShortMessageFormat</td> <td>Boolean</td> <td><code>false</code></td> <td>If the minecraft message should not contain additional information about the message, such as the server and channel the message was sent to</td>
+</tr>
+<tr>
+<td>pluginPrefix</td> <td>String</td> <td><code>§8[§6MCDC§8]§0: §r</code></td> <td>The prefix before every log entry and other messages sent by the plugin.</td>
+</tr>
+<tr>
+<td>serverName</td> <td>String</td> <td><code>A Minecraft Server</code></td> <td>The name of ther server displayed in discord messages</td>
+</tr>
+<tr>
+<td>debug</td> <td>Boolean</td> <td><code>false</code></td> <td>If additional information should be displayed. <br> Can be helpful for developers and debugging, but also spams your log files.</td>
+</tr>
+<tr>
+<td>apiToken</td> <td>String</td> <td>Must be filled in before usage</td> <td>The Token used to create and identify the bot on discord. See [here](./Installation) for more information!</td>
+</tr>
+<tr>
+<td>discordCommandPrefix</td> <td>String</td> <td><code>.</code></td> <td>The String used before discord commands, to identify messages as commands and treat them as such.</td>
+</tr>
+<tr>
+<td>channelIDs</td> <td>long list</td> <td>none</td> <td>The IDs of the channels to broadcast messages to.</td>
+</tr>
+<tr>
+<td>permission.configEdit.level</td> <td>Integer</td> <td>3</td> <td>The OP level defined in <code>ops.json</code> that the player must have to execute the command <code>/config</code>. <br> Setting it to 0 or lower enables the command for everyone. <br> Setting it to 5 or higher disables it for every player. The console can still execute this command.</td>
+</tr>
+<tr>
+<td>permission.configEdit.allowedUserUUIDs</td> <td>String list</td> <td>none</td> <td>The UUIDs of players who can execute the <code>/config</code> command, and do not have the required OP level. This is also known as a wildcard.</td>
+</tr>
+<tr>
+<td>permission.discordServerAdmin.allowedUserIDs</td> <td>long list</td> <td>none</td> <td>The list of IDs of discord users who should be allowed to create new channel and roles for MCDC to use.</td>
+</tr>
+<tr>
+<td>permission.discordBotAdmin.allowedUserIDs</td> <td>long list</td> <td>none</td> <td>The list of IDs of discord users who should be allowed to change settings of the bot (not implemented yet).</td>
+</tr>
+<tr>
+<td>saveEscapeCharacterInConfig</td> <td>Boolean</td> <td>true</td> <td>Decides if escape characters should be skipped when typing arguments (they will keep their dunctionality tho) or if they should be added to the string. <br> Example: The command <code>/config set test "foo \" bar"</code> results in the outputs: <br> if true: <code>test: foo \" bar"</code> <br> if false: <code>test: foo " bar</code>.</td>
+</tr>
+</table>
 ---
 
 ## Default Configuration
