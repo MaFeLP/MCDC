@@ -1,5 +1,5 @@
 theme: jekyll-theme-cayman
 show_downloads: false
-markdown: GFM
+markdown: kramdown
 include:
   - configuration.md

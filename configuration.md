@@ -4,7 +4,7 @@ Where to put the file: `<your server directory>/plugins/MCDC/config.yml`
 
 ## Types
 | Type | Description | Example |
-| ----------- | -------- | ------ |
+|-----------|--------|-----|
 | Boolean | Either `true` or `false` | `true` |
 | String | character(s) that are in a line to get a chain of characters | `Hello World` |
 | String list | a list of Strings seperated by new lines, two spaces and a `-` | `list:` <br> `  - hello world` <br> `- please star this repository` |
@@ -17,7 +17,7 @@ Where to put the file: `<your server directory>/plugins/MCDC/config.yml`
 
 ## Options:
 | Option | Type | Default Value | Description |
-| --------- | --------- | --------- | ---------- |
+|--------|---------|---------|----------|
 | useShortMessageFormat | Boolean | `false` | If the minecraft message should not contain additional information about the message, such as the server and channel the message was sent to |
 | pluginPrefix | String | `§8[§6MCDC§8]§0: §r` | The prefix before every log entry and other messages sent by the plugin. |
 | serverName | String | `A Minecraft Server` | The name of ther server displayed in discord messages |
