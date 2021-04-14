@@ -1,18 +1,32 @@
 # MCDC Configuration
 ## General
-Where to put the file: `<your server directory>/plugins/MCDC/config.yml`
+Where to put the file: <code><your server directory>/plugins/MCDC/config.yml</code>
 
 ## Types
-| Type | Description | Example |
-|-----------|--------|-----|
-| Boolean | Either `true` or `false` | `true` |
-| String | character(s) that are in a line to get a chain of characters | `Hello World` |
-| String list | a list of Strings seperated by new lines, two spaces and a `-` | `list:` <br> `  - hello world` <br> `- please star this repository` |
-| Short | A number between `-32768` and `32767` | `1` |
-| Integer | A number between `-2147483648` and `2147483647` | `1234` |
-| long | a number between `-2147483648` and `2147483647`. | `123457890` |
-| long list | a list of longs seperated by new lines, two spaces and a `-` | `list:` <br> `  - 1234` <br> `- 1234567890` |
-
+<table>
+<tr><th>Type</th> <th>Description</th> <th>Example</th></tr>
+<tr>
+	<td>Boolean</td> <td>Either <code>true</code> or <code>false</code></td><td><code>true</code></td>
+</tr>
+<tr>
+	<td>String</td> <td>character(s) that are in a line to get a chain of characters</td><td><code>Hello World</code></td>
+</tr>
+<tr>
+	<td>String list</td> <td>a list of Strings seperated by new lines, two spaces and a <code>-</code></td><td><code>list:</code> <br> <code>  - hello world</code> <br> <code>- please star this repository</code></td>
+</tr>
+<tr>
+	<td>Short</td> <td>A number between <code>-32768</code> and <code>32767</code></td><td><code>1</code></td>
+</tr>
+<tr>
+	<td>Integer</td> <td>A number between <code>-2147483648</code> and <code>2147483647</code></td><td><code>1234</code></td>
+</tr>
+<tr>
+	<td>long</td> <td>a number between <code>-2147483648</code> and <code>2147483647</code>.</td><td><code>123457890</code></td>
+</tr>
+<tr>
+	<td>long list</td> <td>a list of longs seperated by new lines, two spaces and a <code>-</code></td><td><code>list:</code> <br> <code>  - 1234</code> <br> <code>- 1234567890</code></td>
+</tr>
+</table>
 ---
 
 ## Options:
