@@ -7,44 +7,45 @@
 4. OR Go into the console of your server and type `token <your discord bot token>` <br>
 
 ## Detailed installation
+### Get the files
 1. Go to this page [https://github.com/MaFeLP/MCDC/releases/latest](https://github.com/MaFeLP/MCDC/releases/latest) and scroll down,until you see a text called `assets`.<br>
 ![Step 1](./assets/installation/files1.png)
 2. If not done so, expand the Assets tab by clicking on it..<br>
 ![Step 2](./assets/installation/files2.png)
 3. Download either the `mcdc-0.8.3-beta-package.tar.gz` or the `mcdc-0.8.3-beta-package.zip` file, by clicking on it. Use the `mcdc-0.8.3-beta-package.tar.gz` file, if your server runs Linux/MacOS, and `mcdc-0.8.3-beta-package.zip` if your server runs Windows.<br>
 ![Step 3](./assets/installation/files3.png)
-4. Unpack the contents of the archive.
-  - On Windows:
-     1. Go to `"C:\Users\YOUR USERNAME\Downloads"`.
-     2. Double click on the ZIP-File.<br>
-![ZIP File inside](./assets/installation/windows/1.png)
-     3. In the toolbar, click on `Compressed Folder Tools`.<br>
-![ZIP File toolbar](./assets/installation/windows/2.png)
-     4. There, click on `Extract All`.<br>
-![Extract the ZIP-File - Preparation](./assets/installation/windows/3.png)
-     5. Choose the location, where your Server is. If your followed this Guide, it should be located in `"C:\Users\YOUR USERNAME\Desktop\MCDC Server"` and click on OK.<br>
-![Extract dialogue](./assets/installation/windows/4.png)
-     6. Then open a command prompt, by Pressing and holding the `windows key` and then pressing the `R` key.<br>
-![Run box](./assets/installation/windows/5.png)
-     7. Then release all the keys and type `cmd`.<br>
-![Run box filled in](./assets/installation/windows/6.png)
-     8. Click the ok button.<br>
-![Run box OK button](./assets/installation/windows/7.png)
-<br>
 
-  - On MacOS:
-     1. Press and hold the `command key` on your keyboard. Then press and release the `space bar`. Your can not release the command key. The Spotlight-Search should now be opened.
-     2. Type `Terminal` and press `enter`.
-     3. Enter the following command into your terminal. If you installed the server somewhere else, replace `"${HOME}/Desktop/MCDC Server"` with the Path to your server's main directory.
+### Unpack the contents of the archive.
+#### On Windows:
+1. Go to `"C:\Users\YOUR USERNAME\Downloads"`.
+2. Double click on the ZIP-File.<br>
+![ZIP File inside](./assets/installation/windows/1.png)
+3. In the toolbar, click on `Compressed Folder Tools`.<br>
+![ZIP File toolbar](./assets/installation/windows/2.png)
+4. There, click on `Extract All`.<br>
+![Extract the ZIP-File - Preparation](./assets/installation/windows/3.png)
+5. Choose the location, where your Server is. If your followed this Guide, it should be located in `"C:\Users\YOUR USERNAME\Desktop\MCDC Server"` and click on OK.<br>
+![Extract dialogue](./assets/installation/windows/4.png)
+6. Then open a command prompt, by Pressing and holding the `windows key` and then pressing the `R` key.<br>
+![Run box](./assets/installation/windows/5.png)
+7. Then release all the keys and type `cmd`.<br>
+![Run box filled in](./assets/installation/windows/6.png)
+8. Click the ok button.<br>
+![Run box OK button](./assets/installation/windows/7.png)
+
+#### On MacOS:
+1. Press and hold the `command key` on your keyboard. Then press and release the `space bar`. Your can not release the command key. The Spotlight-Search should now be opened.
+2. Type `Terminal` and press `enter`.
+3. Enter the following command into your terminal. If you installed the server somewhere else, replace `"${HOME}/Desktop/MCDC Server"` with the Path to your server's main directory.
 
 ```bash
 tar -xf "${HOME}/Downloads/mcdc-0.8.3-beta-package.tar.gz" --directory "${HOME}/Desktop/MCDC Server"
 ```
 
-  - On Linux:
-     1. Press and hold the `Ctrl` and `Alt` Keys. 
-     2. Press and release the `T` key. After that, release all the keys. A new Terminal windows should now be opened.
-     3. Enter the following command into your terminal. If you installed the server somewhere else, replace `"${HOME}/Desktop/MCDC Server"` with the Path to your server's main directory.
+#### On Linux:
+1. Press and hold the `Ctrl` and `Alt` Keys. 
+2. Press and release the `T` key. After that, release all the keys. A new Terminal windows should now be opened.
+3. Enter the following command into your terminal. If you installed the server somewhere else, replace `"${HOME}/Desktop/MCDC Server"` with the Path to your server's main directory.
 
 ```bash
 tar -xf "${HOME}/Downloads/mcdc-0.8.3-beta-package.tar.gz" --directory "${HOME}/Desktop/MCDC Server"
