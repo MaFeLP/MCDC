@@ -15,15 +15,15 @@ The bot can currently do all the checked items, unchecked will be implemented in
 <div class="alert alert-danger" role="alert">Remember that this plugin is currently in its beta phase!<br>
 All the functionalities will be added in the future!</div>
 
+---
+
 ## Installation
+See [Installation](./installation) for detailed installation instructions with pictures.
+
+### Quick install:
 1. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
 2. Restart the server.
-3. Create a new discord bot [here](https://discord.com/developers/applications).
-    1. Log in to your discord account
-    2. Click on `New Application` in the top right corner.
-    3. Give you application a name and click `Create`
-    4. Go to the sidebar on the left and click `Bot`
-    5. Click `Copy` on the right-hand side underneath `Token` and `Click to reveal token`.
+3. Create a new discord bot and app [here](https://discord.com/developers/applications).
 4. Go into the console of your server and type `token <your discord bot token>` <br>
    OR go into the `<serverDirectory>/plugins/MCDC/config.yml` file and change the value of `apiToken` to your token.
 
