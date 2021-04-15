@@ -3,3 +3,5 @@ show_downloads: false
 markdown: kramdown
 include:
   - configuration.md
+  - assets/
+  - installation.md
