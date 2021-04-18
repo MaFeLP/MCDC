@@ -44,32 +44,7 @@ See [configuration](./configuration) for more information.
 ---
 
 ## Building from source
-1. Install the following dependencies:
-   - [maven](https://maven.apache.org/download.cgi)
-   - [JavaSE 15](https://www.oracle.com/java/technologies/javase-downloads.html)
-   - [git](https://git-scm.com/downloads)
-2. Open a shell and paste the following command in
-```bash
-git clone https://github.com/MaFeLP/MCDC.git
-cd MCDC/
-```
-
-3. In this shell run:
-### Automated in macOS and Linux:
-```bash
-sh -c "./bash-scripts/build.sh"
-```
-### On Windows, (macOS and Linux: not automated):
-```bash
-mvn clean
-mvn validate
-mvn compile
-mvn test
-mvn package
-mvn verify
-```
-4. Copy the file `MCDC/target/mcdc-VERSION.jar` into your servers plugin folder.
-5. Continue with [Installation](#installation)
+See [Building from Source](./building-from-source) for information, on how to do this.
 
 ## Documentation
 The documentation cna be found either on
