@@ -36,10 +36,7 @@ See [configuration](./configuration) for more information.
 ---
 
 ### Get the ID of a text channel:
-1. In your discord app open the user settings (next to your mute buttons)
-2. Go to the tab `Appearence`
-3. Scroll down and in the tab `Advanced` check the box `Developer Mode`
-4. Close the settings and right click on a text channel. Then click `Copy ID`
+See [get the channel ID](./get-channel-ID) for information on this.
 
 ---
 

@@ -6,3 +6,4 @@ include:
   - assets/
   - installation.md
   - building-from-source.md
+  - get-channel-ID.md
