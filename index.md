@@ -43,6 +43,8 @@ See [get the channel ID](./get-channel-ID) for information on this.
 ## Building from source
 See [Building from Source](./building-from-source) for information, on how to do this.
 
+---
+
 ## Documentation
 The documentation cna be found either on
 [my main project page](https://mafelp.github.io/documentation/MCDC/doc/development/index.html)
