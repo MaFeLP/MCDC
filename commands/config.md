@@ -31,7 +31,7 @@ As a player:
     <tr>
         <td>save</td>
         <td>Saves the current state of the configuration, which is currently loaded, to the file. This is also ebing executed on disable of this plugin.</td>
-        <td><code>true</code</td></tr>
+        <td><code>true</code></td></tr>
     <tr>
         <td>default</td>
         <td>Restores the configuration to its defaults.</td>
@@ -40,22 +40,22 @@ As a player:
     <tr>
         <td>set</td>
         <td>Sets a PATH in the configuration to the VALUE</td>
-        <td><code>true</code</td>
+        <td><code>true</code></td>
     </tr>
     <tr>
         <td>get</td>
         <td>Gets the value, specified in the PATH</td>
-        <td><code>false</code</td>
+        <td><code>false</code></td>
     </tr>
     <tr>
         <td>add</td>
         <td>Adds a value to a list from a list of values, specifeid in PATH.</td>
-        <td><code>true</code</td>
+        <td><code>true</code></td>
     </tr>
     <tr>
         <td>remove</td>
         <td>Removes a value from a list of values, specified in PATH.</td>
-        <td><code>true</code</td>
+        <td><code>true</code></td>
     </tr>
 </table>
 
