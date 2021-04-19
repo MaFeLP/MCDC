@@ -26,6 +26,7 @@ See [Installation](./installation) for detailed installation instructions with p
 3. Create a new discord bot and app [here](https://discord.com/developers/applications).
 4. Go into the console of your server and type `token <your discord bot token>` <br>
    OR go into the `<serverDirectory>/plugins/MCDC/config.yml` file and change the value of `apiToken` to your token.
+5. Invite the bot to your servers, by clicking on the link in your console. (Instructions [here](./invite-bot))
 
 ---
 

@@ -3,9 +3,10 @@
 1. Setup a paper server. The latest JAr can be gotton from [here](https://papwemc.io/downloads).
 2. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
 3. Restart the server.
-5. Get your discord bot token.
-4. Go into the `<serverDirectory>/plugins/MCDC/config.yml` file and change the value of `apiToken` to your token.
-4. OR Go into the console of your server and type `token <your discord bot token>` <br>
+4. Get your discord bot token.
+5. Go into the `<serverDirectory>/plugins/MCDC/config.yml` file and change the value of `apiToken` to your token.
+5. OR Go into the console of your server and type `token <your discord bot token>` <br>
+6. Invite the bot to your servers.
 
 
 ## Detailed installation
@@ -110,3 +111,7 @@ java -jar server.jar nogui
 ![Step 7 - Copy button](./assets/token/7.png)
 or clicking on `Click to Reveal Token` and then mark your Token and copy it.
 ![Step 7 - Revealing the Token](./assets/token/8-1.png) ![Step 7 - copy the token](./assets/token/8-2.png)
+
+
+## Invite the bot
+Click [here](./invite-bot) for information on how to invite the bot.
