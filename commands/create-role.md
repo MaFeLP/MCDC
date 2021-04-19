@@ -15,7 +15,7 @@ Arguments:
 ### For the user
 See configuration: <br>
 permission.discordServerAdmin.allowedUserIDs <br> <br>
-The users [ID](./../get-channel-id#user-id) must be present in this configuratin list entry. Or use `config add permission.discordServerAdmin.allowedUserIDs THE_ID` to add the users ID to the trusted IDs.
+The users [ID](./../get-channel-ID#user-id) must be present in this configuratin list entry. Or use `config add permission.discordServerAdmin.allowedUserIDs THE_ID` to add the users ID to the trusted IDs.
 
 ### For the bot
 The bot must have the permission to create and manage roles. For the best, the bot would have Administrator priviledges.
