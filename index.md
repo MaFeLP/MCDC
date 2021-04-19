@@ -30,6 +30,49 @@ See [Installation](./installation) for detailed installation instructions with p
 
 ---
 
+## Commands
+### Discord commands
+<table>
+	<tr>
+		<th>Command</th>
+		<th>Instructions Link</th>
+	</tr>
+	<tr>
+		<td>setup</td>
+		<td><a href="./commands/setup">setup</a></td>
+	</tr>
+	<tr>
+		<td>createChannel</td>
+		<td><a href="./commands/create-channel">create-channel</a></td>
+	</tr>
+	<tr>
+		<td>createRole</td>
+		<td><a href="./commands/create-role">create-role</a></td>
+	</tr>
+</table>
+
+## Minecraft commands
+<table>
+	<tr>
+		<th>Command</th>
+		<th>Instructions Link</th>
+	</tr>
+	<tr>
+		<td>token</td>
+		<td><a href="./commands/token">token</a></td>
+	</tr>
+	<tr>
+		<td>config</td>
+		<td><a href="./commands/config">config</a></td>
+	</tr>
+	<tr>
+		<td>link</td>
+		<td><a href="./commands/link">link</a></td>
+	</tr>
+</table>
+
+---
+
 ## Configuration
 ### \<server directory\>/plugins/MCDC/config.yml:
 See [configuration](./configuration) for more information.
