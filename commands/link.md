@@ -1,17 +1,8 @@
-# [Discord]: Setup command
-## What does it do?
-
-
----
-
-## How to use it?
-
+# [Minecraft]: Link command
+## Warning
+⚠️⚠️ This command is currently not available⚠️⚠️
 
 ---
 
-## Which permissions are required?
-### For the user
-
-
-### For the bot
-
+## Future
+In the future you can use this command to lik your minecraft and discord accounts, to enable cross-platform whispering aka. direcet messages.
