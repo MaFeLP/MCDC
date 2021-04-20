@@ -45,7 +45,9 @@ public final class Main extends JavaPlugin {
         commandRegistration();
 
         // Initialize and try starting up the discord bot.
-        DiscordMain.init();
+        Thread discordInitThread = new DiscordMain();
+        discordInitThread.setName("Initializing the Discord instance.");
+        discordInitThread.start();
     }
 
     /**

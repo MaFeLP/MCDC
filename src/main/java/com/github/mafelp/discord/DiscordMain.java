@@ -16,11 +16,12 @@ import static com.github.mafelp.utils.Settings.prefix;
 /**
  * The class that handles initiation and destruction of the discord bot instance(s)
  */
-public class DiscordMain {
+public class DiscordMain extends Thread {
     /**
      * Method used to create the bot instance and log it in
      */
-    public static void init() {
+    @Override
+    public void run() {
         // check if a token was specified
         if (Settings.getApiToken() == null) {
             // if no token was specified:

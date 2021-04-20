@@ -66,7 +66,9 @@ public class Token implements CommandExecutor {
             // reload configuration
             Settings.init();
             // try to log the bot in
-            DiscordMain.init();
+            Thread discordInitThread = new DiscordMain();
+            discordInitThread.setName("Initializing the Discord instance.");
+            discordInitThread.start();
             // send success messages and return
             commandSender.sendMessage(Settings.prefix + ChatColor.GREEN + "Successfully saved config file!");
             commandSender.sendMessage(Settings.prefix + ChatColor.GREEN + "Using token: " + ChatColor.GRAY + Settings.getApiToken());
