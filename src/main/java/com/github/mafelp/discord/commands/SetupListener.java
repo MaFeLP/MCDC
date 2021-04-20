@@ -10,14 +10,13 @@ import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
 import org.javacord.api.entity.channel.ServerTextChannel;
-import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
+import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.*;
@@ -171,7 +170,7 @@ public class SetupListener implements MessageCreateListener {
             }
 
             Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
-        } catch (MissingPermissionsException exception) {
+        } catch (CompletionException exception) {
             event.getChannel().sendMessage(noPermissionEmbed);
             Logging.info(ChatColor.RED + "Could not execute Setup command. Do not have the required permissions.");
         }

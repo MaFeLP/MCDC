@@ -8,10 +8,10 @@ import org.bukkit.ChatColor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.*;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
+import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.*;
@@ -133,9 +133,9 @@ public class CreateRoleListener implements MessageCreateListener {
                                 .addField("ServerTextChannelNotPresentError", "Could not get this Channel as a server text channel. Maybe you sent this message in private message?")
                 );
             }
-        } catch (MissingPermissionsException exception) {
+        } catch (CompletionException exception) {
             event.getChannel().sendMessage(noPermissionEmbed);
-            Logging.info(ChatColor.RED + "Could not execute Setup command. Do not have the required permissions.");
+            Logging.info(ChatColor.RED + "Could not execute createRole command. Do not have the required permissions.");
         }
     }
 }

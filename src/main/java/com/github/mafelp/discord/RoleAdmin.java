@@ -1,14 +1,13 @@
 package com.github.mafelp.discord;
 
-import com.github.mafelp.utils.Logging;
 import org.bukkit.ChatColor;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.*;
 import org.javacord.api.entity.server.Server;
-import org.javacord.api.exception.MissingPermissionsException;
 
 import java.awt.*;
+import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.discordApi;
@@ -27,7 +26,7 @@ public class RoleAdmin {
      * @return The newly created role
      */
     public static Role createNewRole(Server server, String name,
-                                     EmbedBuilder successEmbed, ServerTextChannel successChannel) throws MissingPermissionsException {
+                                     EmbedBuilder successEmbed, ServerTextChannel successChannel) throws CompletionException {
         Permissions permissions = new PermissionsBuilder()
                 .setAllowed(PermissionType.ADD_REACTIONS)
                 .setDenied(PermissionType.ADMINISTRATOR)

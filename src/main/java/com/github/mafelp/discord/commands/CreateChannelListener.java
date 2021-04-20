@@ -4,13 +4,14 @@ import com.github.mafelp.utils.*;
 import com.github.mafelp.discord.ChannelAdmin;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
+import org.bukkit.ChatColor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.*;
@@ -124,7 +125,7 @@ public class CreateChannelListener implements MessageCreateListener {
         }
 
         // Saves the states of the channel creation
-        AtomicBoolean success = new AtomicBoolean(false);
+        boolean success = false;
 
         String name;
 
@@ -136,16 +137,26 @@ public class CreateChannelListener implements MessageCreateListener {
         }
 
         // If the server is present, create a new channel
-        final String finalName = name;
-        event.getServer().ifPresent(server ->  {success.set(true);
-            ChannelAdmin.createChannel(finalName, server,
-                    "Cross communication channel with the Minecraft Server " + Settings.serverName,
-                    successEmbed, event.getChannel(),
-                    welcomeEmbed);
-        });
+        if (event.getServer().isPresent()) {
+            try {
+                ChannelAdmin.createChannel(name, event.getServer().get(),
+                        "Cross communication channel with the Minecraft Server " + Settings.serverName,
+                        successEmbed, event.getChannel(),
+                        welcomeEmbed);
+            } catch (CompletionException exception) {
+                // Embed to send, when the bot does not have the required Permissions.
+                EmbedBuilder noPermissionEmbed = new EmbedBuilder()
+                        .setAuthor(discordApi.getYourself())
+                        .setTitle("Error!")
+                        .addField("PermissionDeniedException","Could not execute this command, because the bot lacks permissions to do so!")
+                        .addField("how to fix", "Please refer to this projects website https://mafelp.github.io/MCDC/create-admin-role for instructions, on how to do so.")
+                        .setColor(Color.RED)
+                        ;
 
-        // If the channel could not be created, print an error warning
-        if(!success.get()) {
+                event.getChannel().sendMessage(noPermissionEmbed);
+                Logging.info(ChatColor.RED + "Could not execute createChannel command. Do not have the required permissions.");
+            }
+        } else {
             Settings.minecraftServer.getLogger().warning(Settings.prefix + "Channel not present.");
             Settings.minecraftServer.getLogger().warning(Settings.prefix + "Could not execute Command createChannel");
 

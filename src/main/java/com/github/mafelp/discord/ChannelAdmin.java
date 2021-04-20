@@ -15,7 +15,7 @@ import org.javacord.api.entity.server.Server;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.CompletionException;
 
 /**
  * The class that manages the discord channels, whose messages are relayed to the
@@ -58,39 +58,33 @@ public class ChannelAdmin {
      */
     public static ServerTextChannel createChannel(String name, Server server, String topic,
                                                   EmbedBuilder successEmbed, TextChannel successChannel,
-                                                  EmbedBuilder welcomeEmbed) {
-        try {
-            // Create the Channel
-            ServerTextChannel serverTextChannel = new ServerTextChannelBuilder(server)
-                    .setName(name)
-                    .setTopic(topic)
-                    .setAuditLogReason("Creating Channel for communication with Minecraft Server")
-                    .create()
-                    .join();
+                                                  EmbedBuilder welcomeEmbed) throws CompletionException {
+        // Create the Channel
+        ServerTextChannel serverTextChannel = new ServerTextChannelBuilder(server)
+                .setName(name)
+                .setTopic(topic)
+                .setAuditLogReason("Creating Channel for communication with Minecraft Server")
+                .create()
+                .join();
 
-                // After the channel has been created
-                // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
-                Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
+        // After the channel has been created
+        // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
+        Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
 
-                // Add a field containing a link to the new channel and send the embed
-                successEmbed.addField("New Channel",
-                        "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
-                successChannel.sendMessage(successEmbed);
+        // Add a field containing a link to the new channel and send the embed
+        successEmbed.addField("New Channel",
+                "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
+        successChannel.sendMessage(successEmbed);
 
-                // Also send the welcome embed into the newly created channel
-                serverTextChannel.sendMessage(welcomeEmbed);
+        // Also send the welcome embed into the newly created channel
+        serverTextChannel.sendMessage(welcomeEmbed);
 
-                // Add the id of the new channel to the list of ids in the configuration and save/reload it
-                List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
-                ids.add(serverTextChannel.getId());
-                Settings.getConfiguration().set("channelIDs", ids);
+        // Add the id of the new channel to the list of ids in the configuration and save/reload it
+        List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
+        ids.add(serverTextChannel.getId());
+        Settings.getConfiguration().set("channelIDs", ids);
 
-                return serverTextChannel;
-
-        } catch (Exception exception) {
-            Logging.logException(exception, "Something went wrong while trying to create a text channel.");
-            return null;
-        }
+        return serverTextChannel;
     }
 
     /**
