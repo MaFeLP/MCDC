@@ -8,3 +8,4 @@ include:
   - building-from-source.md
   - get-channel-ID.md
   - invite-bot.md
+  - create-admin-role.md
