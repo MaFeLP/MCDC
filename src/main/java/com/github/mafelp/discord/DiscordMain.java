@@ -7,6 +7,9 @@ import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.commands.CreateChannelListener;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.permission.PermissionType;
+import org.javacord.api.entity.permission.Permissions;
+import org.javacord.api.entity.permission.PermissionsBuilder;
 
 import java.util.concurrent.CompletionException;
 
@@ -31,6 +34,23 @@ public class DiscordMain extends Thread {
             return;
         }
 
+        // Permissions, the bot needs to have
+        Permissions botPermissions = new PermissionsBuilder()
+                .setAllowed(PermissionType.VIEW_AUDIT_LOG)
+                .setAllowed(PermissionType.MANAGE_ROLES)
+                .setAllowed(PermissionType.MANAGE_CHANNELS)
+                .setAllowed(PermissionType.CREATE_INSTANT_INVITE)
+                .setAllowed(PermissionType.CHANGE_NICKNAME)
+                .setAllowed(PermissionType.SEND_MESSAGES)
+                .setAllowed(PermissionType.EMBED_LINKS)
+                .setAllowed(PermissionType.ATTACH_FILE)
+                .setAllowed(PermissionType.READ_MESSAGE_HISTORY)
+                .setAllowed(PermissionType.READ_MESSAGES)
+                .setAllowed(PermissionType.MENTION_EVERYONE)
+                .setAllowed(PermissionType.USE_EXTERNAL_EMOJIS)
+                .setAllowed(PermissionType.ADD_REACTIONS)
+                .build();
+
         // TODO Change: make this function a thread / use bukkit scheduler
         // Log that the instance is being started
         Logging.info(ChatColor.DARK_GRAY + "Starting Discord Instance...");
@@ -50,7 +70,7 @@ public class DiscordMain extends Thread {
                     // TODO Add: activity
 
             Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
-            Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite());
+            Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite(botPermissions));
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
