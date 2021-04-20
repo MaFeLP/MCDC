@@ -10,9 +10,11 @@ import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
 import org.javacord.api.entity.channel.ServerTextChannel;
+import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.event.message.MessageCreateEvent;
+import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
@@ -91,6 +93,15 @@ public class SetupListener implements MessageCreateListener {
                 .setFooter("Made by MaFeLP: https://github.com/mafelp")
                 ;
 
+        // Embed to send, when the bot does not have the required Permissions.
+        EmbedBuilder noPermissionEmbed = new EmbedBuilder()
+                .setAuthor(discordApi.getYourself())
+                .setTitle("Error!")
+                .addField("PermissionDeniedException","Could not execute this command, because the bot lacks permissions to do so!")
+                .addField("how to fix", "Please refer to this projects website https://mafelp.github.io/MCDC/create-admin-role for instructions, on how to do so.")
+                .setColor(Color.RED)
+                ;
+
         // If the message is empty/if the arguments are none, return
         if (command.getCommand() == null)
             return;
@@ -138,25 +149,31 @@ public class SetupListener implements MessageCreateListener {
 
         String name = command.getStringArgument(0).get();
 
-        Role role = RoleAdmin.createNewRole(event.getServer().get(), name, null, event.getChannel().asServerTextChannel().get());
-        event.getMessageAuthor().asUser().ifPresent(user -> {
-            user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
-            info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
-        });
+        try {
+            Role role = RoleAdmin.createNewRole(event.getServer().get(), name, null, event.getChannel().asServerTextChannel().get());
 
-        successEmbed.addField("Successful role creation", "Successfully created the new role " + role.getMentionTag() + " to sync permissions for the Minecraft Channels to.");
+            event.getMessageAuthor().asUser().ifPresent(user -> {
+                user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
+                info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
+            });
 
-        if (event.getServerTextChannel().isEmpty()) {
-            return;
+            successEmbed.addField("Successful role creation", "Successfully created the new role " + role.getMentionTag() + " to sync permissions for the Minecraft Channels to.");
+
+            if (event.getServerTextChannel().isEmpty()) {
+                return;
+            }
+
+            ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
+
+            if (serverTextChannel == null) {
+                minecraftServer.getLogger().warning("Could not create the server Text channel. Unknown error!");
+                return;
+            }
+
+            Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
+        } catch (MissingPermissionsException exception) {
+            event.getChannel().sendMessage(noPermissionEmbed);
+            Logging.info(ChatColor.RED + "Could not execute Setup command. Do not have the required permissions.");
         }
-
-        ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
-
-        if (serverTextChannel == null) {
-            minecraftServer.getLogger().warning("Could not create the server Text channel. Unknown error!");
-            return;
-        }
-
-        Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
     }
 }

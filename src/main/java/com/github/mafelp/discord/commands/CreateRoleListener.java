@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.*;
 import org.javacord.api.event.message.MessageCreateEvent;
+import org.javacord.api.exception.MissingPermissionsException;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
@@ -78,6 +79,15 @@ public class CreateRoleListener implements MessageCreateListener {
                 .setFooter("")
                 ;
 
+        // Embed to send, when the bot does not have the required Permissions.
+        EmbedBuilder noPermissionEmbed = new EmbedBuilder()
+                .setAuthor(discordApi.getYourself())
+                .setTitle("Error!")
+                .addField("PermissionDeniedException","Could not execute this command, because the bot lacks permissions to do so!")
+                .addField("how to fix", "Please refer to this projects website https://mafelp.github.io/MCDC/create-admin-role for instructions, on how to do so.")
+                .setColor(Color.RED)
+                ;
+
         // If the message is empty/if the arguments are none, return
         if (command.getCommand() == null)
             return;
@@ -106,21 +116,26 @@ public class CreateRoleListener implements MessageCreateListener {
 
         // TODO add linking and automatic linking of roles.
 
-        if (event.getChannel().asServerTextChannel().isPresent()) {
-            Role role = RoleAdmin.createNewRole(event.getServer().get(), command.getStringArgument(0).get(), successEmbed, event.getChannel().asServerTextChannel().get());
-            event.getMessageAuthor().asUser().ifPresent(user -> {
-                user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
-                info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
-            });
-        } else {
-            minecraftServer.getLogger().warning(prefix + "Could not get the ServerTextChannel. Sending error embed.");
-            event.getChannel().sendMessage(
-                    new EmbedBuilder()
-                    .setAuthor(event.getMessageAuthor())
-                    .setColor(Color.RED)
-                    .setTitle("Error!")
-                    .addField("ServerTextChannelNotPresentError","Could not get this Channel as a server text channel. Maybe you sent this message in private message?")
-            );
+        try {
+            if (event.getChannel().asServerTextChannel().isPresent()) {
+                Role role = RoleAdmin.createNewRole(event.getServer().get(), command.getStringArgument(0).get(), successEmbed, event.getChannel().asServerTextChannel().get());
+                event.getMessageAuthor().asUser().ifPresent(user -> {
+                    user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
+                    info("Added role \"" + role.getName() + "\" to player \"" + user.getName() + "\".");
+                });
+            } else {
+                minecraftServer.getLogger().warning(prefix + "Could not get the ServerTextChannel. Sending error embed.");
+                event.getChannel().sendMessage(
+                        new EmbedBuilder()
+                                .setAuthor(event.getMessageAuthor())
+                                .setColor(Color.RED)
+                                .setTitle("Error!")
+                                .addField("ServerTextChannelNotPresentError", "Could not get this Channel as a server text channel. Maybe you sent this message in private message?")
+                );
+            }
+        } catch (MissingPermissionsException exception) {
+            event.getChannel().sendMessage(noPermissionEmbed);
+            Logging.info(ChatColor.RED + "Could not execute Setup command. Do not have the required permissions.");
         }
     }
 }
