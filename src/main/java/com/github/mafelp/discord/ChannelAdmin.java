@@ -26,7 +26,7 @@ public class ChannelAdmin {
      * gets all the channels whose IDs were defined in the config.yml
      * @return list of all channels of the ids
      */
-    private static List<Channel> getMessageChannels() {
+    protected static List<Channel> getMessageChannels() {
         // creating new list to return
         List<Channel> serverTextChannels = new ArrayList<>();
 
@@ -91,36 +91,10 @@ public class ChannelAdmin {
      * Sends an embed with the message string to all channels returned by getMessageChannels()
      * @param messageAuthor messageAuthor who sent the message to the minecraft chat
      * @param message the message String to broadcast to the channels
-     * @return success state
      */
-    public static boolean broadcastMessage(Player messageAuthor, String message) {
-        // get all channels, where the message should be send to
-        List<Channel> channels = getMessageChannels();
-
-        // if the list is empty, return a failure and log an error
-        if (channels.isEmpty()) {
-            Settings.minecraftServer.getLogger().warning("Could not broadcast message: No Channels were selected");
-            return false;
-        }
-
-        // create an embed for the message
-        //TODO Add: show head of player as author picture
-        EmbedBuilder embed = new EmbedBuilder()
-             // .setAuthor(messageAuthor.getDisplayName())
-                .setAuthor(messageAuthor.getDisplayName(), "", new Skin(messageAuthor, false).getHead(), ".png")
-                .setColor(Color.YELLOW)
-                .setFooter("On " + Settings.serverName)
-                .addInlineField("Message:", message);
-
-        // send the embed to all channels in the list
-        for (Channel channel : channels) {
-            // only send the embed, if the channel is present, to avoid exceptions
-            if (channel.asServerTextChannel().isPresent()) {
-                channel.asServerTextChannel().get().sendMessage(embed);
-            }
-        }
-
-        // return a success
-        return true;
+    public static void broadcastMessage(Player messageAuthor, String message) {
+        Thread broadcastingThread = new DiscordMessageBroadcast(messageAuthor, message);
+        broadcastingThread.setName("DiscordMessageBroadcastingThread");
+        broadcastingThread.start();
     }
 }
