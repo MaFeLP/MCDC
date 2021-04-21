@@ -19,7 +19,10 @@ import java.util.Scanner;
  * The thread, which loads the accounts into AccountManager.linkedAccounts.
  */
 public class AccountLoader extends Thread{
-    JsonParser jsonParser = new JsonParser();
+    /**
+     * The Json Parser used to parse Json from the Accounts File.
+     */
+    private static final JsonParser jsonParser = new JsonParser();
 
     /**
      * The file in which all the accounts are stored.

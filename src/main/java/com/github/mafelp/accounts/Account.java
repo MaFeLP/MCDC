@@ -82,12 +82,18 @@ public class Account {
 
     /**
      * The setter for the {@link Account#username}.
+     * @param username the username to set.
      * @return The {@link Account#username} field.
      */
     public Account setUsername(String username) {
         this.username = username;
         return this;
     }
+
+    /**
+     * The getter for the {@link Account#mentionTag}.
+     * @return The {@link Account#mentionTag} field.
+     */
     public String getMentionTag() {
         return mentionTag;
     }
