@@ -7,6 +7,7 @@ import org.javacord.api.entity.permission.*;
 import org.javacord.api.entity.server.Server;
 
 import java.awt.*;
+import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Settings.discordApi;
@@ -25,7 +26,7 @@ public class RoleAdmin {
      * @return The newly created role
      */
     public static Role createNewRole(Server server, String name,
-                                     EmbedBuilder successEmbed, ServerTextChannel successChannel) {
+                                     EmbedBuilder successEmbed, ServerTextChannel successChannel) throws CompletionException {
         Permissions permissions = new PermissionsBuilder()
                 .setAllowed(PermissionType.ADD_REACTIONS)
                 .setDenied(PermissionType.ADMINISTRATOR)
@@ -73,7 +74,7 @@ public class RoleAdmin {
 
         if (successEmbed != null)
             successChannel.sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
-                    .addField("Usage:","Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
+                    .addField("Usage:", "Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
 
         discordApi.getYourself().addRole(role, "MCDC needs to see the channel as well!");
         info("Added role \"" + role.getName() + "\" to the discord API.");

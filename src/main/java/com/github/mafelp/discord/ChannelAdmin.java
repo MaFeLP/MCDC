@@ -15,7 +15,7 @@ import org.javacord.api.entity.server.Server;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.CompletionException;
 
 /**
  * The class that manages the discord channels, whose messages are relayed to the
@@ -26,7 +26,7 @@ public class ChannelAdmin {
      * gets all the channels whose IDs were defined in the config.yml
      * @return list of all channels of the ids
      */
-    private static List<Channel> getMessageChannels() {
+    protected static List<Channel> getMessageChannels() {
         // creating new list to return
         List<Channel> serverTextChannels = new ArrayList<>();
 
@@ -58,75 +58,43 @@ public class ChannelAdmin {
      */
     public static ServerTextChannel createChannel(String name, Server server, String topic,
                                                   EmbedBuilder successEmbed, TextChannel successChannel,
-                                                  EmbedBuilder welcomeEmbed) {
-        try {
-            // Create the Channel
-            ServerTextChannel serverTextChannel = new ServerTextChannelBuilder(server)
-                    .setName(name)
-                    .setTopic(topic)
-                    .setAuditLogReason("Creating Channel for communication with Minecraft Server")
-                    .create()
-                    .join();
+                                                  EmbedBuilder welcomeEmbed) throws CompletionException {
+        // Create the Channel
+        ServerTextChannel serverTextChannel = new ServerTextChannelBuilder(server)
+                .setName(name)
+                .setTopic(topic)
+                .setAuditLogReason("Creating Channel for communication with Minecraft Server")
+                .create()
+                .join();
 
-                // After the channel has been created
-                // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
-                Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
+        // After the channel has been created
+        // TODO Add: Only the role specified in RoleAdmin can see and write to the channel
+        Logging.info("Added channel " + serverTextChannel.getName() + " to server " + serverTextChannel.getServer().getName());
 
-                // Add a field containing a link to the new channel and send the embed
-                successEmbed.addField("New Channel",
-                        "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
-                successChannel.sendMessage(successEmbed);
+        // Add a field containing a link to the new channel and send the embed
+        successEmbed.addField("New Channel",
+                "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
+        successChannel.sendMessage(successEmbed);
 
-                // Also send the welcome embed into the newly created channel
-                serverTextChannel.sendMessage(welcomeEmbed);
+        // Also send the welcome embed into the newly created channel
+        serverTextChannel.sendMessage(welcomeEmbed);
 
-                // Add the id of the new channel to the list of ids in the configuration and save/reload it
-                List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
-                ids.add(serverTextChannel.getId());
-                Settings.getConfiguration().set("channelIDs", ids);
+        // Add the id of the new channel to the list of ids in the configuration and save/reload it
+        List<Long> ids = Settings.getConfiguration().getLongList("channelIDs");
+        ids.add(serverTextChannel.getId());
+        Settings.getConfiguration().set("channelIDs", ids);
 
-                return serverTextChannel;
-
-        } catch (Exception exception) {
-            Logging.logException(exception, "Something went wrong while trying to create a text channel.");
-            return null;
-        }
+        return serverTextChannel;
     }
 
     /**
      * Sends an embed with the message string to all channels returned by getMessageChannels()
      * @param messageAuthor messageAuthor who sent the message to the minecraft chat
      * @param message the message String to broadcast to the channels
-     * @return success state
      */
-    public static boolean broadcastMessage(Player messageAuthor, String message) {
-        // get all channels, where the message should be send to
-        List<Channel> channels = getMessageChannels();
-
-        // if the list is empty, return a failure and log an error
-        if (channels.isEmpty()) {
-            Settings.minecraftServer.getLogger().warning("Could not broadcast message: No Channels were selected");
-            return false;
-        }
-
-        // create an embed for the message
-        //TODO Add: show head of player as author picture
-        EmbedBuilder embed = new EmbedBuilder()
-             // .setAuthor(messageAuthor.getDisplayName())
-                .setAuthor(messageAuthor.getDisplayName(), "", new Skin(messageAuthor, false).getHead(), ".png")
-                .setColor(Color.YELLOW)
-                .setFooter("On " + Settings.serverName)
-                .addInlineField("Message:", message);
-
-        // send the embed to all channels in the list
-        for (Channel channel : channels) {
-            // only send the embed, if the channel is present, to avoid exceptions
-            if (channel.asServerTextChannel().isPresent()) {
-                channel.asServerTextChannel().get().sendMessage(embed);
-            }
-        }
-
-        // return a success
-        return true;
+    public static void broadcastMessage(Player messageAuthor, String message) {
+        Thread broadcastingThread = new DiscordMessageBroadcast(messageAuthor, message);
+        broadcastingThread.setName("DiscordMessageBroadcastingThread");
+        broadcastingThread.start();
     }
 }

@@ -66,7 +66,9 @@ public class Config implements CommandExecutor {
                 DiscordMain.shutdown();
                 // Reload sequence
                 init();
-                DiscordMain.init();
+                Thread discordInitThread = new DiscordMain();
+                discordInitThread.setName("Initializing the Discord instance.");
+                discordInitThread.start();
                 commandSender.sendMessage(prefix + ChatColor.GREEN + "Reload done!");
                 return true;
             }
