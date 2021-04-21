@@ -90,6 +90,11 @@ See [Building from Source](./building-from-source) for information, on how to do
 ---
 
 ## Documentation
-The documentation cna be found either on
+### Stable version
+The documentation can be found either on
+[my main project page](https://mafelp.github.io/documentation/MCDC/doc/v0.8.4-beta/index.html)
+or [on this project's page](./doc/v0.8.4-beta/index.html).
+### Development documentation
+The documentation can be found either on
 [my main project page](https://mafelp.github.io/documentation/MCDC/doc/development/index.html)
 or [on this project's page](./doc/development/index.html).

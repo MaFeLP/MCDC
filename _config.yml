@@ -1,6 +1,5 @@
 theme: jekyll-theme-cayman
 show_downloads: false
-markdown: kramdown
 include:
   - configuration.md
   - assets/
@@ -9,3 +8,4 @@ include:
   - get-channel-ID.md
   - invite-bot.md
   - create-admin-role.md
+markdown: kramdown
