@@ -15,11 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The thread, which loads the accounts into AccountManager.linkedAccounts.
+ */
 public class AccountLoader extends Thread{
     JsonParser jsonParser = new JsonParser();
 
+    /**
+     * The file in which all the accounts are stored.
+     */
     private static final File accountFile = new File(Settings.getConfigurationFileDirectory(), "accounts.json");
 
+    /**
+     * The method that runs the loading in another thread.
+     */
     @Override
     public void run() {
         Scanner scanner;

@@ -3,22 +3,29 @@ package com.github.mafelp.accounts;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.bukkit.entity.Player;
-import org.javacord.api.entity.user.User;
 
 import java.io.*;
 import java.util.*;
 
+/**
+ * Manager for creating, saving and loading linked discord and minecraft accounts.
+ */
 public class AccountManager {
+    /**
+     * The list of all linked accounts
+     */
     private static List<Account> linkedAccounts = new ArrayList<>();
 
+    /**
+     * The file in which the accounts are saved.
+     */
     private static final File accountFile = new File(Settings.getConfigurationFileDirectory(), "accounts.json");
 
-    private static final JsonParser jsonParser= new JsonParser();
-
+    /**
+     * The method to create an account file.
+     * @throws IOException the exception thrown, when the file could not be created, due to an error.
+     */
     public static void createAccountsFile() throws IOException {
         if (accountFile.exists()) {
             Logging.info("accounts file " + accountFile.getAbsolutePath() + " already exists. Not overwriting it.");
@@ -35,6 +42,10 @@ public class AccountManager {
         }
     }
 
+    /**
+     * The method that saves linkedAccounts to a JSON file.
+     * @throws FileNotFoundException the exception thrown, when the file does not exists, we try to write to.
+     */
     public static void saveAccounts() throws FileNotFoundException {
         JsonArray accounts = new JsonArray();
 
@@ -45,7 +56,7 @@ public class AccountManager {
             accountInfo.addProperty("username", account.getUsername());
             accountInfo.addProperty("discordMentionTag", account.getMentionTag());
 
-            accountInfo.addProperty("minecraftUUID", account.getPlayerUUDI().toString());
+            accountInfo.addProperty("minecraftUUID", account.getPlayerUUID().toString());
 
             accounts.add(accountInfo);
         }
@@ -55,6 +66,9 @@ public class AccountManager {
         printStream.close();
     }
 
+    /**
+     * The method that handles starting of the thread, which should load the accounts in.
+     */
     public static void loadAccounts() {
         if (!accountFile.exists())
             return;
@@ -64,11 +78,20 @@ public class AccountManager {
         accountLoaderThread.start();
     }
 
+    /**
+     * The getter for the list of Linked Accounts.
+     * @return The linked Accounts list, currently used.
+     */
     public static List<Account> getLinkedAccounts() {
         return linkedAccounts;
     }
 
-    public static List<Account> setLinkedAccounts(List<Account> set) {
+    /**
+     * The setter for the list of Linked Accounts. This should only be used by this package!
+     * @param set The List to set the linked accounts to.
+     * @return the list, this method has set, aka. the input list.
+     */
+    protected static List<Account> setLinkedAccounts(List<Account> set) {
         linkedAccounts = set;
         return linkedAccounts;
     }
