@@ -1,6 +1,13 @@
 # Changelog
+## Small bug fixes
+### v0.8.4-beta
+➕ Added Error message, when then bot does not have the required permissions, to create Channels or/and roles (See issue [29](https://github.com/MaFeLP/MCDC/issues/29)). <br>
+➕ Added threading to the bot, where the logging in and message sending are going to be handled off the main thread and should not lag the server. <br>
+
+---
+
 ## More Bug fixes
-### v0.8.2-beta and v0.8.3-beta (stable)
+### v0.8.2-beta and v0.8.3-beta
 ➕ Added permission checking to the commands `/token`, `/config`,`.setup`,`.createChannel` and `.createRole`. <br>
 ➕ Added differentiation of `'` and `"` in arguments. You can now use commands like this: `hello "mafelp's friend!"` with no problems! <br>
 ➕ Added escape sequences for quotation marks.
