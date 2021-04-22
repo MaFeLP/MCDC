@@ -90,6 +90,25 @@ See [Building from Source](./building-from-source) for information, on how to do
 ---
 
 ## Documentation
+
+<table>
+	<tr>
+		<th>Version</th>
+		<th>Link to documentation</th>
+		<th>Documentation Mirror</th>
+	</tr>
+	<tr>
+		<td>stable (v0.8.4-beta)</td>
+		<td><a href="https://mafelp.github.io/documentation/MCDC/doc/v0.8.4-beta/index.html">https://mafelp.github.io/documentation/MCDC/doc/v0.8.4-beta/index.html</a></td>
+		<td><a href="https://mafelp.github.io/MCDC/doc/v0.8.4-beta/index.html">https://mafelp.github.io/MCDC/doc/v0.8.4-beta/index.html</td>
+	</tr>
+	<tr>
+		<td>developlemt</td>
+		<td><a href="https://mafelp.github.io/documentation/MCDC/doc/development/index.html">https://mafelp.github.io/documentation/MCDC/doc/development/index.html</a></td>
+		<td><a href="https://mafelp.github.io/MCDC/doc/development/index.html">https://mafelp.github.io/MCDC/doc/development/index.html</td>
+	</tr>
+</table>
+<!--
 ### Stable version
 The documentation can be found either on
 [my main project page](https://mafelp.github.io/documentation/MCDC/doc/v0.8.4-beta/index.html)
@@ -97,4 +116,4 @@ or [on this project's page](./doc/v0.8.4-beta/index.html).
 ### Development documentation
 The documentation can be found either on
 [my main project page](https://mafelp.github.io/documentation/MCDC/doc/development/index.html)
-or [on this project's page](./doc/development/index.html).
+or [on this project's page](./doc/development/index.html).-->
