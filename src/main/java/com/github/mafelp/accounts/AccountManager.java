@@ -69,9 +69,9 @@ public class AccountManager {
     /**
      * The method that handles starting of the thread, which should load the accounts in.
      */
-    public static void loadAccounts() {
+    public static void loadAccounts() throws IOException{
         if (!accountFile.exists())
-            return;
+            createAccountsFile();
 
         Thread accountLoaderThread = new AccountLoader();
         accountLoaderThread.setName("AccountLoader");
@@ -93,6 +93,16 @@ public class AccountManager {
      */
     protected static List<Account> setLinkedAccounts(List<Account> set) {
         linkedAccounts = set;
+        return linkedAccounts;
+    }
+
+    /**
+     * Adds an Account to the list of linked accounts.
+     * @param account The account to add
+     * @return the list of all linked Accounts.
+     */
+    public static List<Account> addAccount (Account account) {
+        linkedAccounts.add(account);
         return linkedAccounts;
     }
 }

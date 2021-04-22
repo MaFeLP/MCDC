@@ -1,5 +1,6 @@
 package com.github.mafelp.minecraft;
 
+import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Permissions;
@@ -15,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import static com.github.mafelp.utils.Logging.debug;
 import static com.github.mafelp.utils.Settings.prefix;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -29,11 +32,11 @@ public final class Main extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        // Logs greeting and version to the console
-        Bukkit.getLogger().fine("Plugin MCDC version " + Settings.version + " is being loaded...");
-
         // Setting minecraftServer for use in other methods that are not in a plugin class.
         Settings.minecraftServer = this.getServer();
+
+        // Logs greeting and version to the console
+        Logging.info("Plugin MCDC version " + Settings.version + " is being loaded...");
 
         // Initializing settings and loading (default) configuration for further use.
         Settings.init();
@@ -48,6 +51,13 @@ public final class Main extends JavaPlugin {
         Thread discordInitThread = new DiscordMain();
         discordInitThread.setName("Initializing the Discord instance.");
         discordInitThread.start();
+
+        // Loads all the Accounts to memory
+        try {
+            AccountManager.loadAccounts();
+        } catch (IOException e) {
+            Logging.logIOException(e, "Could not load the Accounts in. The Account file is not present and it could not be created.");
+        }
     }
 
     /**
@@ -56,14 +66,22 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Print thank you message to the console
-        Bukkit.getLogger().fine(prefix + "Plugin MCDC version " + Settings.version + " is being unloaded...");
-        Bukkit.getLogger().fine(prefix + "Thanks for using it!");
+        Logging.info("Plugin MCDC version " + Settings.version + " is being unloaded...");
+        Logging.info("Thanks for using it!");
 
         // Safely shut down the Discord bot instance
         DiscordMain.shutdown();
 
         // Save the configuration
         Settings.saveConfiguration();
+
+        // Saves the current state of the accounts to the file.
+        try {
+            AccountManager.createAccountsFile();
+            AccountManager.saveAccounts();
+        } catch (IOException e) {
+            Logging.logIOException(e, "Error saving the Accounts file. ALL LINKS WILL BE LOST!");
+        }
     }
 
     /**

@@ -42,6 +42,8 @@ public class AccountLoader extends Thread{
             return;
         }
 
+        Logging.debug("Start: Reading Accounts file in.");
+
         StringBuilder fileInput = new StringBuilder();
 
         while (scanner.hasNextLine()) {
@@ -50,12 +52,16 @@ public class AccountLoader extends Thread{
 
         String input = fileInput.toString();
 
+        Logging.debug("Trying to parse the accounts file input...");
+
         JsonElement jsonInput = jsonParser.parse(input);
         JsonArray accounts = jsonInput.getAsJsonArray();
 
         List<Account> linkedAccounts = new ArrayList<>();
 
         for (JsonElement jsonElement : accounts) {
+            Logging.debug("In Accounts parsing loop.");
+
             JsonObject jsonObject = jsonElement.getAsJsonObject();
 
             final long discordID = jsonObject.get("discordID").getAsLong();
@@ -70,6 +76,8 @@ public class AccountLoader extends Thread{
 
             linkedAccounts.add(new Account(user, player).setUsername(username));
         }
+
+        Logging.debug("Done parsing accounts. Setting the list.");
 
         AccountManager.setLinkedAccounts(linkedAccounts);
     }
