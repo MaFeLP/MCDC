@@ -1,8 +1,7 @@
 package com.github.mafelp.minecraft.commands;
 
-import com.github.mafelp.accounts.Account;
-import com.github.mafelp.accounts.DiscordLinker;
 import com.github.mafelp.accounts.MinecraftLinker;
+import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +35,9 @@ public class Link implements CommandExecutor {
             Player player = ((Player) sender).getPlayer();
 
             if (args == null || args[0] == null) {
-                MinecraftLinker.getLinkToken(player);
+                int discordLinkToken = MinecraftLinker.getLinkToken(player);
+
+                sender.sendMessage(prefix + ChatColor.RESET + "You link token is: " + ChatColor.GRAY + discordLinkToken + ChatColor.RESET + ". Use the command \"" + ChatColor.GRAY + Settings.discordCommandPrefix +"link " + discordLinkToken + ChatColor.RESET + "\" to link this minecraft account ot your discord account.");
 
                 return true;
             }
