@@ -1,5 +1,6 @@
 package com.github.mafelp.accounts;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.user.User;
 
@@ -31,9 +32,9 @@ public class Account {
     private final String mentionTag;
 
     /**
-     * The minecraft {@link Player} to link the discord {@link User} to.
+     * The minecraft {@link OfflinePlayer} to link the discord {@link User} to.
      */
-    private final Player player;
+    private final OfflinePlayer player;
 
     /**
      * The UUID of the minecraft {@link Account#player}.
@@ -46,7 +47,7 @@ public class Account {
      * @param user The discord {@link User} to link this account to.
      * @param player The minecraft {@link Player} to link this account to.
      */
-    public Account(User user, Player player) {
+    public Account(User user, OfflinePlayer player) {
         this.user = user;
         this.userID = user.getId();
         this.username = user.getName();
@@ -102,7 +103,7 @@ public class Account {
      * The getter for the {@link Account#player}.
      * @return The {@link Account#player} field.
      */
-    public Player getPlayer() {
+    public OfflinePlayer getPlayer() {
         return player;
     }
 

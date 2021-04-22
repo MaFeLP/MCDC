@@ -103,7 +103,7 @@ public class LinkListener implements MessageCreateListener {
             }
 
             Logging.debug("LinkToken valid. sending success Embed.");
-            event.getMessageAuthor().asUser().get().sendMessage(successEmbed.addInlineField("Minecraft Account", linkedAccount.get().getPlayer().getDisplayName())
+            event.getMessageAuthor().asUser().get().sendMessage(successEmbed.addInlineField("Minecraft Account", linkedAccount.get().getPlayer().getName())
                         .addInlineField("Discord Account", linkedAccount.get().getUsername() + " :  " + linkedAccount.get().getMentionTag()));
         }
     }

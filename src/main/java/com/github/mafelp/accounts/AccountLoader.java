@@ -6,14 +6,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.user.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The thread, which loads the accounts into AccountManager.linkedAccounts.
@@ -52,6 +51,7 @@ public class AccountLoader extends Thread{
 
         String input = fileInput.toString();
 
+        Logging.debug("accounts.json File input: " + input);
         Logging.debug("Trying to parse the accounts file input...");
 
         JsonElement jsonInput = jsonParser.parse(input);
@@ -66,18 +66,25 @@ public class AccountLoader extends Thread{
 
             final long discordID = jsonObject.get("discordID").getAsLong();
             final String username = jsonObject.get("username").getAsString();
-            final String minecraftUUID = jsonObject.get("minecraftUUID").getAsString();
+            final UUID minecraftUUID = UUID.fromString(jsonObject.get("minecraftUUID").getAsString());
 
-            final Player player = Settings.minecraftServer.getPlayer(minecraftUUID);
+            Logging.debug("Getting player value for player with UUID: " + minecraftUUID);
+            final OfflinePlayer player = Settings.minecraftServer.getOfflinePlayer(minecraftUUID);
+
+            Logging.debug("Getting Discord User from ID: " + discordID);
             final User user = Settings.discordApi.getUserById(discordID).join();
 
-            if (player == null || user == null)
+            if (user == null) {
+                Logging.info("discord user not found. ignoring.");
                 continue;
+            }
+
+            Logging.debug("Adding user " + username + " to the list of accounts.");
 
             linkedAccounts.add(new Account(user, player).setUsername(username));
         }
 
-        Logging.debug("Done parsing accounts. Setting the list.");
+        Logging.debug("Done parsing accounts. Setting the list to: " + Arrays.toString(linkedAccounts.toArray()));
 
         AccountManager.setLinkedAccounts(linkedAccounts);
     }

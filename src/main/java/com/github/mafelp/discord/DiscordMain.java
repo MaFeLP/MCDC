@@ -1,5 +1,6 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.discord.commands.CreateRoleListener;
 import com.github.mafelp.discord.commands.LinkListener;
 import com.github.mafelp.discord.commands.SetupListener;
@@ -12,6 +13,7 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
 
+import java.io.IOException;
 import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Settings.discordApi;
@@ -21,6 +23,16 @@ import static com.github.mafelp.utils.Settings.prefix;
  * The class that handles initiation and destruction of the discord bot instance(s)
  */
 public class DiscordMain extends Thread {
+    private final boolean loadAccounts;
+
+    public DiscordMain(boolean loadAccounts) {
+        this.loadAccounts = loadAccounts;
+    }
+
+    public DiscordMain() {
+        this.loadAccounts = false;
+    }
+
     /**
      * Method used to create the bot instance and log it in
      */
@@ -69,15 +81,25 @@ public class DiscordMain extends Thread {
                     .addListener(LinkListener::new)
                     // log the bot in and join the servers
                     .login().join();
-                    // TODO Add: activity
+            // TODO Add: activity
 
             Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
             Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite(botPermissions));
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
-            Logging.logException(exception,  ChatColor.RED +
+            Logging.logException(exception, ChatColor.RED +
                     "An error occurred whilst trying to create the discord instance! Error: " + exception.getMessage());
+            return;
+        }
+
+        if (this.loadAccounts) {
+            // Loads all the Accounts to memory
+            try {
+                AccountManager.loadAccounts();
+            } catch (IOException e) {
+                Logging.logIOException(e, "Could not load the Accounts in. The Account file is not present and it could not be created.");
+            }
         }
     }
 

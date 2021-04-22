@@ -48,16 +48,10 @@ public final class Main extends JavaPlugin {
         commandRegistration();
 
         // Initialize and try starting up the discord bot.
-        Thread discordInitThread = new DiscordMain();
+        Thread discordInitThread = new DiscordMain(true);
         discordInitThread.setName("Initializing the Discord instance.");
         discordInitThread.start();
 
-        // Loads all the Accounts to memory
-        try {
-            AccountManager.loadAccounts();
-        } catch (IOException e) {
-            Logging.logIOException(e, "Could not load the Accounts in. The Account file is not present and it could not be created.");
-        }
     }
 
     /**
