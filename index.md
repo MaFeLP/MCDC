@@ -100,12 +100,12 @@ See [Building from Source](./building-from-source) for information, on how to do
 	<tr>
 		<td>stable (v0.8.4-beta)</td>
 		<td><a href="https://mafelp.github.io/documentation/MCDC/doc/v0.8.4-beta/index.html">https://mafelp.github.io/documentation/MCDC/doc/v0.8.4-beta/index.html</a></td>
-		<td><a href="https://mafelp.github.io/MCDC/doc/v0.8.4-beta/index.html">https://mafelp.github.io/MCDC/doc/v0.8.4-beta/index.html</td>
+		<td><a href="https://mafelp.github.io/MCDC/doc/v0.8.4-beta/index.html">https://mafelp.github.io/MCDC/doc/v0.8.4-beta/index.html</a></td>
 	</tr>
 	<tr>
 		<td>developlemt</td>
 		<td><a href="https://mafelp.github.io/documentation/MCDC/doc/development/index.html">https://mafelp.github.io/documentation/MCDC/doc/development/index.html</a></td>
-		<td><a href="https://mafelp.github.io/MCDC/doc/development/index.html">https://mafelp.github.io/MCDC/doc/development/index.html</td>
+		<td><a href="https://mafelp.github.io/MCDC/doc/development/index.html">https://mafelp.github.io/MCDC/doc/development/index.html</a></td>
 	</tr>
 </table>
 <!--
