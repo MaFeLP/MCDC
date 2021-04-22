@@ -68,6 +68,7 @@ public class AccountManager {
 
     /**
      * The method that handles starting of the thread, which should load the accounts in.
+     * @throws IOException The exception that is being thrown, if the accounts.json File does not exists or the {@link AccountLoader} encounters an {@link IOException}.
      */
     public static void loadAccounts() throws IOException{
         if (!accountFile.exists())

@@ -69,6 +69,10 @@ public class Link implements CommandExecutor {
         }
     }
 
+    /**
+     * The method that sends the link token in a nice message to the {@link Player} that executed this command.
+     * @param player The player to send its token to.
+     */
     private void sendLinkToken(Player player) {
         int discordLinkToken = MinecraftLinker.getLinkToken(player);
 

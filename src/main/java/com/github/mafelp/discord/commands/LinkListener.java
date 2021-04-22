@@ -19,7 +19,16 @@ import java.util.Optional;
 
 import static com.github.mafelp.utils.Settings.discordCommandPrefix;
 
+/**
+ * The class that handles discord messages and test, if they are the link command. If so, it starts the linking process.
+ */
 public class LinkListener implements MessageCreateListener {
+    /**
+     * The method that handles messages, that are sent, tests if they are the link command.
+     * If so, this method starts the linking process.
+     * @param event The event sent from the Discord API, containing important information about the message,
+     *              such as the channel it has been sent to and the {@link User} who has sent it.
+     */
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
         // If the message is sent by the bot, return
@@ -108,6 +117,11 @@ public class LinkListener implements MessageCreateListener {
         }
     }
 
+    /**
+     * This method sends the user a token, that it can use in {@link com.github.mafelp.minecraft.commands.Link} to
+     * links its accounts together.
+     * @param user The user to create the linking token from.
+     */
     private void sendLinkToken(final User user) {
         int minecraftLinkToken = DiscordLinker.getLinkToken(user);
 

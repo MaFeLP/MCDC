@@ -23,12 +23,22 @@ import static com.github.mafelp.utils.Settings.prefix;
  * The class that handles initiation and destruction of the discord bot instance(s)
  */
 public class DiscordMain extends Thread {
+    /**
+     * The switch that decides, if the Accounts should be loaded after the login of the Bot instance.
+     */
     private final boolean loadAccounts;
 
+    /**
+     * Constructor to set the {@link DiscordMain#loadAccounts} switch.
+     * @param loadAccounts if the accounts should be loaded after bot startup.
+     */
     public DiscordMain(boolean loadAccounts) {
         this.loadAccounts = loadAccounts;
     }
 
+    /**
+     * Constructor for normal discord instance startup. Does not load the Accounts in.
+     */
     public DiscordMain() {
         this.loadAccounts = false;
     }
