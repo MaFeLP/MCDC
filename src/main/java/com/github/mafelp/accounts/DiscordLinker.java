@@ -21,7 +21,7 @@ public class DiscordLinker {
         }
     }
 
-    public static Optional<Account> linkToDiscord(Player player, int linkID) {
+    public static Optional<Account> linkToMinecraft(Player player, int linkID) {
         for (User u: linkableAccounts.keySet()) {
             if (linkableAccounts.get(u) == linkID) {
                 Account account = new Account(u, player);

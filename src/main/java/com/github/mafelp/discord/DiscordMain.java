@@ -1,6 +1,7 @@
 package com.github.mafelp.discord;
 
 import com.github.mafelp.discord.commands.CreateRoleListener;
+import com.github.mafelp.discord.commands.LinkListener;
 import com.github.mafelp.discord.commands.SetupListener;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
@@ -65,6 +66,7 @@ public class DiscordMain extends Thread {
                     .addListener(CreateChannelListener::new)
                     .addListener(CreateRoleListener::new)
                     .addListener(SetupListener::new)
+                    .addListener(LinkListener::new)
                     // log the bot in and join the servers
                     .login().join();
                     // TODO Add: activity
