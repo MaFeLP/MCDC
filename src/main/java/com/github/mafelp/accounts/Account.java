@@ -51,10 +51,10 @@ public class Account {
     public Account(User user, OfflinePlayer player) {
         this.user = user;
         this.userID = user.getId();
-        this.username = user.getName();
         this.mentionTag = user.getMentionTag();
 
         this.player = player;
+        this.username = player.getName();
         this.playerUUID = player.getUniqueId();
     }
 
