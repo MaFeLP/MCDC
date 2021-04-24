@@ -1,7 +1,6 @@
 package com.github.mafelp.minecraft.commands;
 
 import com.github.mafelp.accounts.Account;
-import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.accounts.DiscordLinker;
 import com.github.mafelp.utils.Command;
 import com.github.mafelp.utils.CommandParser;
@@ -22,11 +21,23 @@ import java.util.Optional;
 
 import static com.github.mafelp.utils.Settings.prefix;
 
+/**
+ * The class that is being called on the execution of the command <code>/account</code>, executed as a minecraft player.
+ */
 public class AccountCommand implements CommandExecutor {
+    /**
+     * The method that handles the execution of the command.
+     * @param commandSender The Player (or console) who executed this command.
+     * @param command The command that the Player (or console) executed. In this case: <code>account</code>
+     * @param label The label of the command.
+     * @param args Additional arguments passed into the command.
+     * @return If the command was executed successfully and if not displays the usage message.
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
+        // Only allows players to execute this command.
         if (commandSender instanceof Player) {
-
+            // If a player executed this command, we can cast the commandSender to a player.
             Player player = (Player) commandSender;
 
             if (args == null)
@@ -44,24 +55,27 @@ public class AccountCommand implements CommandExecutor {
 
             switch (cmd.getCommand().toLowerCase()) {
                 case "link" -> {
+                    // Initiates the linking process.
                     Optional<Integer> optionalLinkID = cmd.getIntegerArgument(0);
 
+                    // If no link token was given, create one and send it to the player.
                     if (optionalLinkID.isEmpty()) {
                         Link.sendLinkToken(player);
                         return true;
                     }
 
+                    // If a link token was given, try to link the accounts with the token.
                     Optional<Account> linkedAccount = DiscordLinker.linkToMinecraft(player, optionalLinkID.get());
 
+                    // If the account is empty, the linkToken was invalid. Inform the user.
                     if (linkedAccount.isEmpty()) {
                         commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, your Link token is invalid. Please try again or use " + ChatColor.GRAY + "/link" + ChatColor.RESET + " to get a link token and instructions.");
                         return true;
                     }
 
+                    // If the account isPresent, the token was valid and an account was being created.
                     commandSender.sendMessage(prefix + ChatColor.GREEN + "Successfully linked this player account to the discord user " + linkedAccount.get().getUsername());
-
                     return true;
-
                 }
                 case "name", "username" -> {
                     Logging.debug("Minecraft user " + player.getName() + " used the command \"/account " + cmd.getCommand() + " " + Arrays.toString(cmd.getArguments()));
@@ -145,11 +159,14 @@ public class AccountCommand implements CommandExecutor {
                     }
                     return true;
                 }
+                // If no subcommand was specified.
                 default -> {
                     return false;
                 }
             }
+        // If the command was not executed by a player.
         } else {
+            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command can only be executed by a player.");
             return true;
         }
     }
