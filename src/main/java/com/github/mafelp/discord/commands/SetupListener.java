@@ -46,8 +46,8 @@ public class SetupListener implements MessageCreateListener {
         // Gets the content of the message as strings (prints it, if debug is enabled)
         String content = event.getReadableMessageContent();
 
+        // If the command could not be passed, exit. Error handling is done by the CreateChannelListener.
         Command command;
-
         try {
             command = CommandParser.parseFromString(content);
         } catch (CommandNotFinishedException | NoCommandGivenException e) {
@@ -75,12 +75,14 @@ public class SetupListener implements MessageCreateListener {
                 .setFooter("Error while trying to create a channel")
                 ;
 
+        // the embed sent on successful execution of the command.
         EmbedBuilder successEmbed = new EmbedBuilder()
                 .setAuthor(event.getMessageAuthor())
                 .setTitle("Success!")
                 .setColor(Color.GREEN)
                 ;
 
+        // The embed sent to the new channel.
         EmbedBuilder welcomeEmbed = new EmbedBuilder()
                 .setAuthor(discordApi.getYourself())
                 .setTitle("Welcome!")
@@ -105,6 +107,7 @@ public class SetupListener implements MessageCreateListener {
         if (command.getCommand() == null)
             return;
 
+        // If the command is not equal to setup, do nothing and return.
         if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "setup"))
             return;
 
@@ -115,24 +118,28 @@ public class SetupListener implements MessageCreateListener {
             return;
         }
 
+        // If the command has a wrong number of arguments, send the help embed and exit.
         if (command.getStringArgument(0).isEmpty() || command.getStringArgument(1).isPresent()) {
             info("Person " + ChatColor.GRAY + event.getMessageAuthor().getDisplayName() + ChatColor.RESET + " used the command setup wrong. Sending help embed.");
             event.getChannel().sendMessage(helpMessage);
             return;
         }
 
+        // If the first argument is empty, send the help message and exit.
         if (command.getStringArgument(0).get().equalsIgnoreCase("")) {
             info("Person " + ChatColor.GRAY + event.getMessageAuthor().getDisplayName() + ChatColor.RESET + " used the command setup wrong. Sending help embed.");
             event.getChannel().sendMessage(helpMessage);
             return;
         }
 
+        // If no server could be found, send an error message and exit.
         if (event.getServer().isEmpty()) {
             event.getChannel().sendMessage(serverNotPresentError);
             Logging.info("Could not setup the server: Server is not present. Sending Error Reply.");
             return;
         }
 
+        // If the channel you sent your message to is not a TextChannel, send as error message and exit.
         if (event.getChannel().asServerTextChannel().isEmpty()) {
             minecraftServer.getLogger().warning(prefix + "Could not get the ServerTextChannel. Sending error embed.");
             event.getChannel().sendMessage(
@@ -148,6 +155,7 @@ public class SetupListener implements MessageCreateListener {
 
         String name = command.getStringArgument(0).get();
 
+        // try to create the role.
         try {
             Role role = RoleAdmin.createNewRole(event.getServer().get(), name, null, event.getChannel().asServerTextChannel().get());
 
@@ -164,12 +172,10 @@ public class SetupListener implements MessageCreateListener {
 
             ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
 
-            if (serverTextChannel == null) {
-                minecraftServer.getLogger().warning("Could not create the server Text channel. Unknown error!");
-                return;
-            }
-
             Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
+
+        // If this exception is thrown, the bot either does not have the correct permissions to create channels and Roles,
+        // send the user an embed explaining the issue.
         } catch (CompletionException exception) {
             event.getChannel().sendMessage(noPermissionEmbed);
             Logging.info(ChatColor.RED + "Could not execute Setup command. Do not have the required permissions.");

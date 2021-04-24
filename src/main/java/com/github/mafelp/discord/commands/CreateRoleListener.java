@@ -42,8 +42,8 @@ public class CreateRoleListener implements MessageCreateListener {
         // Gets the content of the message as strings (prints it, if debug is enabled)
         String content = event.getReadableMessageContent();
 
+        // Tries parsing the command. If it fails, exit. The error handling is being done by the CreateChannelListener.
         Command command;
-
         try {
             command = CommandParser.parseFromString(content);
         } catch (CommandNotFinishedException | NoCommandGivenException e) {
@@ -102,20 +102,24 @@ public class CreateRoleListener implements MessageCreateListener {
             return;
         }
 
+        // If the user passed a wrong number of arguments, send the help message and exit.
         if (command.getStringArgument(0).isEmpty() || command.getStringArgument(1).isPresent()) {
             info("Person " + ChatColor.GRAY + event.getMessageAuthor().getDisplayName() + ChatColor.RESET + " used the command createRole wrong. Sending help embed.");
             event.getChannel().sendMessage(helpMessage);
             return;
         }
 
+        // If the server could not be found, send an error message and exit.
         if (event.getServer().isEmpty()) {
             event.getChannel().sendMessage(serverNotPresentError);
             Logging.info("Could not create the new Server Role: Server is not present. Sending Error Reply.");
             return;
         }
 
-        // TODO add linking and automatic linking of roles.
+        // add linking and automatic linking of roles.
+        // Comment of the author: The current version of the Discord API cannot handle adding roles to a channel.
 
+        // Try creating the new Role
         try {
             if (event.getChannel().asServerTextChannel().isPresent()) {
                 Role role = RoleAdmin.createNewRole(event.getServer().get(), command.getStringArgument(0).get(), successEmbed, event.getChannel().asServerTextChannel().get());
@@ -133,6 +137,9 @@ public class CreateRoleListener implements MessageCreateListener {
                                 .addField("ServerTextChannelNotPresentError", "Could not get this Channel as a server text channel. Maybe you sent this message in private message?")
                 );
             }
+
+        // If this exception is thrown, the bot either does not have the permission to create a new channel or
+        // the connection to the discord servers has been lost.
         } catch (CompletionException exception) {
             event.getChannel().sendMessage(noPermissionEmbed);
             Logging.info(ChatColor.RED + "Could not execute createRole command. Do not have the required permissions.");

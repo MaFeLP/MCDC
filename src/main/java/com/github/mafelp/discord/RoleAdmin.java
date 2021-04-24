@@ -27,6 +27,7 @@ public class RoleAdmin {
      */
     public static Role createNewRole(Server server, String name,
                                      EmbedBuilder successEmbed, ServerTextChannel successChannel) throws CompletionException {
+        // Set the permissions the new role should have.
         Permissions permissions = new PermissionsBuilder()
                 .setAllowed(PermissionType.ADD_REACTIONS)
                 .setDenied(PermissionType.ADMINISTRATOR)
@@ -61,6 +62,7 @@ public class RoleAdmin {
                 .build()
                 ;
 
+        // Build the Role. This throws the CompletionException
         Role role = new RoleBuilder(server)
                 .setColor(new Color(194, 98, 94))
                 .setAuditLogReason("MCDC: Minecraft Server Role creation")
@@ -72,6 +74,7 @@ public class RoleAdmin {
 
         info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + server.getName() + "!");
 
+        // Send the success embed, if one exists.
         if (successEmbed != null)
             successChannel.sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
                     .addField("Usage:", "Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));

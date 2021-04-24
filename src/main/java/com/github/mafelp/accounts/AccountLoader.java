@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.javacord.api.entity.user.User;
 
 import java.io.File;
@@ -33,6 +32,7 @@ public class AccountLoader extends Thread{
      */
     @Override
     public void run() {
+        // Loads the accounts.json file in.
         Scanner scanner;
         try {
             scanner = new Scanner(accountFile);
@@ -41,6 +41,7 @@ public class AccountLoader extends Thread{
             return;
         }
 
+        // Reads the contents of the accounts.json file
         Logging.debug("Start: Reading Accounts file in.");
 
         StringBuilder fileInput = new StringBuilder();
@@ -54,11 +55,14 @@ public class AccountLoader extends Thread{
         Logging.debug("accounts.json File input: " + input);
         Logging.debug("Trying to parse the accounts file input...");
 
+        // Parses the file into a JSON Object
         JsonElement jsonInput = jsonParser.parse(input);
         JsonArray accounts = jsonInput.getAsJsonArray();
 
         List<Account> linkedAccounts = new ArrayList<>();
 
+        // Parses all the JSON objects in the accounts array, stored in the accounts.json file
+        // and then adds them to the list of linked accounts.
         for (JsonElement jsonElement : accounts) {
             Logging.debug("In Accounts parsing loop.");
 
@@ -86,6 +90,7 @@ public class AccountLoader extends Thread{
 
         Logging.debug("Done parsing accounts. Setting the list to: " + Arrays.toString(linkedAccounts.toArray()));
 
+        // Sets the global list of linked accounts to the array list 'linkedAccounts' so other processes can access them.
         AccountManager.setLinkedAccounts(linkedAccounts);
     }
 }

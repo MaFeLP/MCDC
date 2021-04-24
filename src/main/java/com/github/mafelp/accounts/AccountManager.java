@@ -28,8 +28,10 @@ public class AccountManager {
      */
     public static void createAccountsFile() throws IOException {
         if (accountFile.exists()) {
+            // If the file already exists, don't do anything.
             Logging.info("accounts file " + accountFile.getAbsolutePath() + " already exists. Not overwriting it.");
         } else {
+            // If the file does not exist, try to create the file and set its contents to '[]'
             boolean fileCreationSuccess = accountFile.createNewFile();
             Logging.info("Accounts file creation... Success: " + fileCreationSuccess);
 
@@ -49,6 +51,7 @@ public class AccountManager {
     public static void saveAccounts() throws FileNotFoundException {
         JsonArray accounts = new JsonArray();
 
+        // Creates a JSON Array with all the accounts from the global linkedAccounts list.
         for (Account account: linkedAccounts) {
             JsonObject accountInfo = new JsonObject();
 
@@ -61,6 +64,7 @@ public class AccountManager {
             accounts.add(accountInfo);
         }
 
+        // Prints the accounts array to the accounts file.
         PrintStream printStream = new PrintStream(new FileOutputStream(accountFile));
         printStream.print(accounts);
         printStream.close();

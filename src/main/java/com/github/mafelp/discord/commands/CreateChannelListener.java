@@ -45,12 +45,12 @@ public class CreateChannelListener implements MessageCreateListener {
             info("Readable Message content is: " + content);
 
 
+        // Tris to parse the command.
         Command command;
-
         try {
             command = CommandParser.parseFromString(content);
         } catch (CommandNotFinishedException | NoCommandGivenException e) {
-            Logging.logException(e, "");
+            Logging.logException(e, "Error parsing the command from the string...");
             return;
         }
 
@@ -111,6 +111,7 @@ public class CreateChannelListener implements MessageCreateListener {
             return;
         }
 
+        // get the first channel argument and checks, if it 'empty', but it exists.
         if (command.getStringArgument(0).isPresent()) {
             if (command.getStringArgument(0).get().equalsIgnoreCase("")) {
                 Logging.info("User \"" + event.getMessageAuthor().getDisplayName() + "\" tried to execute command \"createChannel\"!");
@@ -119,16 +120,14 @@ public class CreateChannelListener implements MessageCreateListener {
             }
         }
 
+        // If the command has a wrong number of arguments, send the help message and exit.
         if (command.getArguments().length != 1) {
             event.getChannel().sendMessage(helpMessage);
             return;
         }
 
-        // Saves the states of the channel creation
-        boolean success = false;
-
+        // Try getting the first argument. If it does not exist, send the help message and exit.
         String name;
-
         if (command.getStringArgument(0).isPresent())
             name = command.getStringArgument(0).get();
         else {

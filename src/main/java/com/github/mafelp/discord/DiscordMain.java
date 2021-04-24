@@ -74,7 +74,6 @@ public class DiscordMain extends Thread {
                 .setAllowed(PermissionType.ADD_REACTIONS)
                 .build();
 
-        // TODO Change: make this function a thread / use bukkit scheduler
         // Log that the instance is being started
         Logging.info(ChatColor.DARK_GRAY + "Starting Discord Instance...");
         // try to log the instance in and set it in the settings

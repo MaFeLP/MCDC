@@ -44,8 +44,8 @@ public class LinkListener implements MessageCreateListener {
         // Gets the content of the message as strings (prints it, if debug is enabled)
         String content = event.getReadableMessageContent();
 
+        // Tries parsing the command. The error handling is being done by the CreateChannelListener.
         Command command;
-
         try {
             command = CommandParser.parseFromString(content);
         } catch (CommandNotFinishedException | NoCommandGivenException e) {
@@ -53,6 +53,7 @@ public class LinkListener implements MessageCreateListener {
             return;
         }
 
+        // If the command does not equal link, exit.
         if (!command.getCommand().equalsIgnoreCase(Settings.discordCommandPrefix + "link")) {
             // Logging.debug("Not the link command: \"" + command.getCommand() + "\" != \"" + discordCommandPrefix + "link" + "\"");
             return;
@@ -98,9 +99,11 @@ public class LinkListener implements MessageCreateListener {
             return;
         }
 
+        // Checks if a number is given as the first argument. If not, send the user a new Link token.
         if (command.getIntegerArgument(0).isEmpty()) {
             Logging.debug("No Integer Argument given in link command. Sending LinkTokenEmbed...");
             sendLinkToken(event.getMessageAuthor().asUser().get());
+        // If a number is being found at the first argument, try to link it to a minecraft account.
         } else {
             Logging.debug("LinkToken found. Checking it...");
             Optional<Account> linkedAccount = MinecraftLinker.linkToDiscord(event.getMessageAuthor().asUser().get(), command.getIntegerArgument(0).get());

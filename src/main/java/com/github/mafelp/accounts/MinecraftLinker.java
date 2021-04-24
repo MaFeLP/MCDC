@@ -36,7 +36,8 @@ public class MinecraftLinker {
     }
 
     /**
-     * The method used to create a new Linking token, aka a {@link Random}, 6-Digit number.
+     * The method used to create a new Linking token, aka a {@link Random}, 6-Digit number, that is not already
+     * in the linkableAccounts list. This prevents two users from having the same linking token.
      * @return a random linking token.
      */
     private static int randomLinkToken() {
@@ -57,7 +58,10 @@ public class MinecraftLinker {
      *      If the ID is invalid, it returns an empty account.
      */
     public static Optional<Account> linkToDiscord(User user, int linkID) {
+        // Iterates over all the discord accounts
         for (Player p: linkableAccounts.keySet()) {
+            // if the linkID passed in matches the id generated in the DiscordLinker#getLinkToken function,
+            // it would create a new Account with the player and the User and adds this account.
             if (linkableAccounts.get(p) == linkID) {
                 Account account = new Account(user, p);
 

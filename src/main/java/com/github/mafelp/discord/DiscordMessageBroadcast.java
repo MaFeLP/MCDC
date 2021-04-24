@@ -48,7 +48,6 @@ public class DiscordMessageBroadcast extends Thread {
         }
 
         // create an embed for the message
-        //TODO Add: show head of player as author picture
         EmbedBuilder embed = new EmbedBuilder()
                 // .setAuthor(messageAuthor.getDisplayName())
                 .setAuthor(messageAuthor.getDisplayName(), "", new Skin(messageAuthor, false).getHead(), ".png")

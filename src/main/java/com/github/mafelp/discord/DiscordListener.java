@@ -44,10 +44,6 @@ public class DiscordListener implements MessageCreateListener {
 
         // Send the readable content of the message into the minecraft chat
         // for everyone to read.
-        // TODO broadcast version of message WITHOUT line break to the console and messages with line breaks to the players if Settings.shortMsg == true
-        // Settings.minecraftServer.broadcastMessage(
-                // msgPrefix(event) + event.getReadableMessageContent()
-        //);
 
         for (Player p : Settings.minecraftServer.getOnlinePlayers()) {
             p.sendMessage(msgPrefix(event) + event.getReadableMessageContent());

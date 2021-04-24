@@ -32,19 +32,22 @@ public class Link implements CommandExecutor {
      */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        // Check if the command Sender is a player.
         if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+            // If the CommandSender is a player, we can safely cast it to a player.
+            Player player = (Player) sender;
 
+            // If no arguments are given, return and send the user a token.
             if (args == null) {
                 sendLinkToken(player);
                 return true;
             }
-
             if (args.length < 1) {
                 sendLinkToken(player);
                 return true;
             }
 
+            // Try to link the ID, which was given as the argument, to a ID made with the discord link command.
             try {
                 final int linkID = Integer.parseUnsignedInt(args[0]);
 
@@ -58,11 +61,13 @@ public class Link implements CommandExecutor {
                 sender.sendMessage(prefix + ChatColor.GREEN + "Successfully linked this player account to the discord user " + linkedAccount.get().getUsername());
 
                 return true;
+            // This exception is thrown, when the first argument is not an integer.
             } catch (NumberFormatException exception) {
                 sender.sendMessage(prefix + ChatColor.RED + "Error parsing your link Token! Please try again.");
                 return false;
             }
 
+        // If the command is not executed by a player (e.g. a console), send an error message and exit.
         } else {
             sender.sendMessage(prefix + ChatColor.RED + "This command can only be executed as a Player!");
             return true;

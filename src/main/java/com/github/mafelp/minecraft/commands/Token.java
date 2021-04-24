@@ -5,7 +5,6 @@ import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
-import jdk.jshell.spi.SPIResolutionException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
