@@ -6,15 +6,18 @@ import com.github.mafelp.accounts.DiscordLinker;
 import com.github.mafelp.utils.Command;
 import com.github.mafelp.utils.CommandParser;
 import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.mafelp.utils.Settings.prefix;
@@ -102,6 +105,44 @@ public class AccountCommand implements CommandExecutor {
                     Account account = Account.getByPlayer(player).get();
                     account.setUsername(nameToSet);
                     commandSender.sendMessage(prefix + "Your username has been set to " + Account.getByPlayer(player).get().getUsername());
+                    return true;
+                }
+                case "get" -> {
+                    // If no additional arguments were passed, give the player his/her account name.
+                    if (cmd.getStringArgument(0).isEmpty()) {
+                        if (Account.getByPlayer(player).isEmpty()) {
+                            Logging.debug("Player " + ChatColor.GRAY + player.getName() + ChatColor.RESET + " has requested his account name: He/She doesn't have one. Sending help message.");
+                            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you do not have an account. Use " + ChatColor.GRAY + "/link" +ChatColor.RED + " to get one.");
+                            return true;
+                        }
+                        Logging.debug("Player " + ChatColor.GRAY + player.getName() + ChatColor.RESET + " has requested his account name.");
+                        commandSender.sendMessage(prefix + ChatColor.GREEN + "Your account name is: " + ChatColor.GRAY + Account.getByPlayer(player).get().getUsername());
+                    // If additional Arguments are passed, get the name of the accounts.
+                    } else {
+                        Logging.debug("Offline Players:");
+                        // Checks all players that were online at least once and if they have an account.
+                        for (OfflinePlayer p : Settings.minecraftServer.getOfflinePlayers()) {
+                            Logging.debug("`--> " + p.getName());
+                            // Check if the name of the player equals the requested name.
+                            if (Objects.equals(p.getName(), cmd.getStringArgument(0).get())) {
+                                // Get the account for the requested Player.
+                                Optional<Account> requestedAccount = Account.getByPlayer(p);
+
+                                // If the player does not have an account, send an error message.
+                                if (requestedAccount.isEmpty()) {
+                                    commandSender.sendMessage(prefix + ChatColor.RED + "Player " + p.getName() + " doesn't have an account.");
+                                    Logging.debug("Player " + player.getName() + " tried to get the account name for " + cmd.getStringArgument(0).get() + ", but he/she does not have an account!");
+                                } else {
+                                    Logging.debug("Player " + player.getName() + " got the account name for player " + cmd.getStringArgument(0).get() + ". It is: " + requestedAccount.get().getUsername());
+                                    commandSender.sendMessage(prefix + ChatColor.GREEN + "The account name for player " + ChatColor.GRAY + p.getName() + ChatColor.GREEN + " is: " + ChatColor.GRAY + requestedAccount.get().getUsername());
+                                }
+                                return true;
+                            }
+                        }
+
+                        // If no player could be found, send the player an error message and exit.
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Player with the name " + ChatColor.GRAY + cmd.getStringArgument(0).get() + ChatColor.GRAY + " does not exist!");
+                    }
                     return true;
                 }
                 default -> {
