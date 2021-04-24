@@ -34,7 +34,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.8.4-beta";
+    public static final String version = "v0.9.0-beta";
 
     /**
      * enables more information being displayed while executing events

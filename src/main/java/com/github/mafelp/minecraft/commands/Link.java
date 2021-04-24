@@ -78,7 +78,7 @@ public class Link implements CommandExecutor {
      * The method that sends the link token in a nice message to the {@link Player} that executed this command.
      * @param player The player to send its token to.
      */
-    private void sendLinkToken(Player player) {
+    protected static void sendLinkToken(Player player) {
         int discordLinkToken = MinecraftLinker.getLinkToken(player);
 
         player.sendMessage(prefix + ChatColor.RESET + "You link token is: " + ChatColor.GRAY + discordLinkToken + ChatColor.RESET + ". Use the command \"" + ChatColor.GRAY + Settings.discordCommandPrefix + "link " + discordLinkToken + ChatColor.RESET + "\" to link this minecraft account ot your discord account.");

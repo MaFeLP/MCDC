@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.user.User;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -113,5 +114,25 @@ public class Account {
      */
     public UUID getPlayerUUID() {
         return playerUUID;
+    }
+
+    public static Optional<Account> getByPlayer(OfflinePlayer player) {
+        for (Account account : AccountManager.getLinkedAccounts()) {
+            if (account.player.equals(player)) {
+                return Optional.of(account);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public static Optional<Account> getByDiscordUser(User user) {
+        for (Account account : AccountManager.getLinkedAccounts()) {
+            if (account.user.equals(user)) {
+                return Optional.of(account);
+            }
+        }
+
+        return Optional.empty();
     }
 }

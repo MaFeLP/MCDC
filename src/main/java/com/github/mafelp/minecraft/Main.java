@@ -1,6 +1,7 @@
 package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
+import com.github.mafelp.minecraft.commands.AccountCommand;
 import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Permissions;
@@ -103,5 +104,7 @@ public final class Main extends JavaPlugin {
         Logging.info("Command \"token\" has been enabled.");
         Objects.requireNonNull(getCommand("config")).setExecutor(new Config());
         Logging.info("Command \"config\" has been enabled.");
+        Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
+        Logging.info("Command \"account\" has been enabled.");
     }
 }

@@ -18,3 +18,6 @@ commands:
     description: Configuration Admin tools
     usage: /config <reload|save|set|get|add|remove>
     permission-message: Only administrators can run this command. Sorry
+  account:
+    description: The command to manage your linked account.
+    usage: /account <name|username|link> [<linkID|nameToSet>]
