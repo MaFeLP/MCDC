@@ -54,7 +54,7 @@ public class Account {
         this.mentionTag = user.getMentionTag();
 
         this.player = player;
-        this.username = player.getName();
+        this.username = "@" + player.getName();
         this.playerUUID = player.getUniqueId();
     }
 
