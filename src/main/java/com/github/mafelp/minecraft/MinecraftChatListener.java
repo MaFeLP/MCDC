@@ -32,7 +32,7 @@ public class MinecraftChatListener implements Listener {
             if (a.isPresent())
                 message += a.get().getMentionTag() + " ";
             else
-                message = s + " ";
+                message += s + " ";
         }
 
         // Hand the sending of the message to the dedicated method.
