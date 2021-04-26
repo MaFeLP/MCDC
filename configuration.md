@@ -93,10 +93,46 @@ Where to put the file: <code>your server directory/plugins/MCDC/config.yml</code
         <td>The String used before discord commands, to identify messages as commands and treat them as such.</td>
     </tr>
     <tr>
+        <td>deleteDiscordCommandMessages</td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>Specifies, if messages that are a <a href="./index#commands">discord command</a> should be deleted<br>after they have been processed.</td>
+    </tr>
+    <tr>
         <td>channelIDs</td>
         <td>long list</td>
         <td>none</td>
         <td>The IDs of the channels to broadcast messages to.</td>
+    </tr>
+    <tr>
+        <td>enableLinking</td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>Specifies, if users should be able to link their discord and minecraft accounts.</td>
+    </tr>
+    <tr>
+        <td>allowListAllAccounts</td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>Specifies, if users should be able to see all the other accounts that are linked in discord and minecraft.</td>
+    </tr>
+    <tr>
+        <td>showFooterInMessages</td>
+        <td>Boolean</td>
+        <td><code>true</code></td>
+        <td>Specifies, if a footer with the 'serverName' (specified in this configuration) should be displayed in every message.</td>
+    </tr>
+    <tr>
+        <td>permission<br>&nbsp;&nbsp;.accountEdit<br>&nbsp;&nbsp;&nbsp;&nbsp;.level</td>
+        <td>Integer</td>
+        <td><code>3</code></td>
+        <td>The OP level defined in <code>ops.json</code> that the player must have to remove accounts. <br> Setting it to 0 or lower enables the command for everyone. <br> Setting it to 5 or higher disables it for every player.</td>
+    </tr>
+    <tr>
+        <td>permission<br>&nbsp;&nbsp;.accountEdit<br>&nbsp;&nbsp;&nbsp;&nbsp;.allowedUserUUIDs</td>
+        <td>String list</td>
+        <td>none</td>
+        <td>The UUIDs of players who can remove accounts, no matter their OP Level. This is also known as a wildcard.</td>
     </tr>
     <tr>
         <td>permission<br>&nbsp;&nbsp;.configEdit<br>&nbsp;&nbsp;&nbsp;&nbsp;.level</td>
@@ -161,33 +197,56 @@ apiToken: 'Your API Token goes here!'
 # Allowed values: any String
 discordCommandPrefix: '.'
 
+# Selects if messages that are commands should be deleted after execution.
+# Allowed values: <true|false>
+deleteDiscordCommandMessages: false
+
 # Discord Channel IDs to broadcast messages to.
 channelIDs:
-   - 1234
+  - 1234
+
+# Enables accounts and linking.
+# Allowed values <true|false>
+enableLinking: true
+
+# Allow players to list all the accounts.
+# Allowed values <true|false>
+allowListAllAccounts: true
+
+# Decides, if the config value 'serverName' should be displayed in the footer of discord messages.
+# Allowed values <true|false>
+showFooterInMessages: true
 
 # Permission section for setting permission levels
 permission:
+  # The permissions on linking and editing accounts.
+  accountEdit:
+    # The OP level needed to remove accounts of players.
+    level: 3
+    # A list of UUIDs of Players who have a wildcard to use this command.
+    allowedUserUUIDs:
+      - a unique ID
 
-   # Permission for minecraft command /config
-   configEdit:
-      # Required OP level
-      level: 3
-      # A list of UUIDs of Players who have a wildcard to use this command.
-      allowedUserUUIDs:
-         - a unique ID
+  # Permission for minecraft command /config
+  configEdit:
+    # Required OP level
+    level: 3
+    # A list of UUIDs of Players who have a wildcard to use this command.
+    allowedUserUUIDs:
+      - a unique ID
 
 
-   # Discord Server Admins are allowed to create Channels and Roles
-   discordServerAdmin:
-      # A list of discord IDs of users who have a wildcard to use this command
-      allowedUserIDs:
-         - 1234
+  # Discord Server Admins are allowed to create Channels and Roles
+  discordServerAdmin:
+    # A list of discord IDs of users who have a wildcard to use this command
+    allowedUserIDs:
+      - 1234
 
-   # Discord Bot admins, use cases may follow.
-   discordBotAdmin:
-      # A list of authorised bot users.
-      allowedUserIDs:
-         - 1234
+  # Discord Bot admins, use cases may follow.
+  discordBotAdmin:
+    # A list of authorised bot users.
+    allowedUserIDs:
+      - 1234
 
 # If the command parser should treat \ as a normal character
 # Allowed values: <true|false>
