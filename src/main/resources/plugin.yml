@@ -20,4 +20,7 @@ commands:
     permission-message: Only administrators can run this command. Sorry
   account:
     description: The command to manage your linked account.
-    usage: /account <name|username|link> [<linkID|nameToSet>]
+    usage: /account <name|username|link|unlink|get|list> [<linkID|nameToSet>]
+  unlink:
+    description: The command used to remove your account.
+    usage: /unlink

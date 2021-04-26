@@ -20,6 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.mafelp.utils.Settings.prefix;
+import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.GREEN;
 
 /**
  * The class that is being called on the execution of the command <code>/account</code>, executed as a minecraft player.
@@ -77,6 +79,7 @@ public class AccountCommand implements CommandExecutor {
                     commandSender.sendMessage(prefix + ChatColor.GREEN + "Successfully linked this player account to the discord user " + linkedAccount.get().getUsername());
                     return true;
                 }
+                // Sets you username
                 case "name", "username" -> {
                     Logging.debug("Minecraft user " + player.getName() + " used the command \"/account " + cmd.getCommand() + " " + Arrays.toString(cmd.getArguments()));
                     if (Account.getByPlayer(player).isEmpty()) {
@@ -121,6 +124,7 @@ public class AccountCommand implements CommandExecutor {
                     commandSender.sendMessage(prefix + "Your username has been set to " + Account.getByPlayer(player).get().getUsername());
                     return true;
                 }
+                // The subcommand used to get your/another players account name.
                 case "get" -> {
                     // If no additional arguments were passed, give the player his/her account name.
                     if (cmd.getStringArgument(0).isEmpty()) {
@@ -273,6 +277,27 @@ public class AccountCommand implements CommandExecutor {
                     }
 
                     return true;
+                }
+                // The subcommand that unlinks your account.
+                case "unlink" -> {
+                    Optional<Account> accountOptional = Account.getByPlayer(player);
+
+                    if (accountOptional.isEmpty()) {
+                        commandSender.sendMessage(prefix + RED + "You don't have an account ot unlink! Use " + GRAY + "/link" + RED + " to create one.");
+                        return true;
+                    }
+
+                    Account account = accountOptional.get();
+
+                    if (cmd.getStringArgument(0).isEmpty()) {
+                        Logging.info("Removing account " + account.getUsername());
+                        commandSender.sendMessage(prefix + YELLOW + "Removing the account" + GRAY + account.getUsername() + YELLOW + "...");
+                        AccountManager.removeAccount(account);
+                        commandSender.sendMessage(prefix + GREEN + "Successfully removed your account!");
+                        return true;
+                    }
+
+                    return false;
                 }
                 // If no subcommand was specified.
                 default -> {

@@ -1,15 +1,12 @@
 package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
-import com.github.mafelp.minecraft.commands.AccountCommand;
+import com.github.mafelp.minecraft.commands.*;
 import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
-import com.github.mafelp.minecraft.commands.Config;
-import com.github.mafelp.minecraft.commands.Link;
-import com.github.mafelp.minecraft.commands.Token;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -107,6 +104,8 @@ public final class Main extends JavaPlugin {
             Logging.info("Command \"link\" has been enabled.");
             Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
             Logging.info("Command \"account\" has been enabled.");
+            Objects.requireNonNull(getCommand("account")).setExecutor(new Unlink());
+            Logging.info("Command \"unlink\" has been enabled.");
         }
     }
 }
