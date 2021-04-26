@@ -116,6 +116,11 @@ public class Account {
         return playerUUID;
     }
 
+    /**
+     * The method to get an {@link Account} by the {@link OfflinePlayer} it belongs to.
+     * @param player the {@link OfflinePlayer} to get the {@link Account} of.
+     * @return the Optional of an {@link Account}: If this account does not exists, it is empty.
+     */
     public static Optional<Account> getByPlayer(OfflinePlayer player) {
         for (Account account : AccountManager.getLinkedAccounts()) {
             if (account.player.equals(player)) {
@@ -126,6 +131,11 @@ public class Account {
         return Optional.empty();
     }
 
+    /**
+     * The method to get an {@link Account} by the {@link User} it belongs to.
+     * @param user the {@link User} to get the {@link Account} of.
+     * @return the Optional of an {@link Account}: If this account does not exists, it is empty.
+     */
     public static Optional<Account> getByDiscordUser(User user) {
         for (Account account : AccountManager.getLinkedAccounts()) {
             if (account.user.equals(user)) {
@@ -136,6 +146,11 @@ public class Account {
         return Optional.empty();
     }
 
+    /**
+     * The method to get an {@link Account} by the {@link Account#username} it belongs to.
+     * @param username the {@link Account#username} to get the {@link Account} of.
+     * @return the Optional of an {@link Account}: If this account does not exists, it is empty.
+     */
     public static Optional<Account> getByUsername(String username) {
         for (Account account : AccountManager.getLinkedAccounts()) {
             if (account.getUsername().equals(username)) {

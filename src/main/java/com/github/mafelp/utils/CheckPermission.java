@@ -208,26 +208,33 @@ public class CheckPermission {
         }
     }
 
+    /**
+     * Checks the configuration if a command executor has a specific permission or has a specific level.
+     * @param permission The permission to check the level of.
+     * @param messageAuthor the discord {@link org.javacord.api.entity.user.User} of a command to check the permission of.
+     * @return if the command sender has the permission.
+     */
     public static boolean checkPermission(final Permissions permission, final MessageAuthor messageAuthor) {
         if (messageAuthor.isBotOwner()) {
-
+            Logging.debug("Granting permission " + permission + " to " + messageAuthor.getDisplayName() + ": is the bot Owner.");
             return true;
         }
 
         if (messageAuthor.isServerAdmin()) {
-
+            Logging.debug("Granting permission " + permission + " to " + messageAuthor.getDisplayName() + ": is a Server Administrator");
             return true;
         }
 
+        Logging.debug("Checking permission " + permission + " for player " + messageAuthor.getDisplayName() + "...");
         String permissionToCheck = permission.toString();
 
         for (final long id : Settings.getConfiguration().getLongList("permission." + permissionToCheck + ".allowedUserIDs")) {
             if (id == messageAuthor.getId()) {
-
+                Logging.debug("Granting permission " + permission + " for player " + messageAuthor.getDisplayName() + "...");
                 return true;
             }
         }
-
+        Logging.debug("Denying permission " + permission + " for player " + messageAuthor.getDisplayName() + "...");
         return false;
     }
 }
