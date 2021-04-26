@@ -8,4 +8,5 @@ include:
   - get-channel-ID.md
   - invite-bot.md
   - create-admin-role.md
+  - commands/
 markdown: kramdown
