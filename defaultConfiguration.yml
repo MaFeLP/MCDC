@@ -29,9 +29,19 @@ discordCommandPrefix: '.'
 channelIDs:
   - 1234
 
+# Enables accounts and linking.
+# Allowed values <true|false>
+enableLinking: true
 
 # Permission section for setting permission levels
 permission:
+  # The permissions on linking and editing accounts.
+  accountEdit:
+    # The OP level needed to remove accounts of players.
+    level: 3
+    # A list of UUIDs of Players who have a wildcard to use this command.
+    allowedUserUUIDs:
+      - a unique ID
 
   # Permission for minecraft command /config
   configEdit:

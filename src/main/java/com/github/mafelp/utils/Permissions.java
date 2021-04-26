@@ -10,6 +10,11 @@ public enum Permissions {
     configEdit,
 
     /**
+     * The permission to edit and remove accounts from the command line.
+     */
+    accountEdit,
+
+    /**
      * The permission to perform commands on teh discord servers.
      */
     discordServerAdmin,

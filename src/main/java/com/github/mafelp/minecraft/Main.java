@@ -98,13 +98,15 @@ public final class Main extends JavaPlugin {
     private void commandRegistration() {
         // All commands
         // for more information read the Javadoc in the specific classes
-        Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
-        Logging.info("Command \"link\" has been enabled.");
         Objects.requireNonNull(getCommand("token")).setExecutor(new Token());
         Logging.info("Command \"token\" has been enabled.");
         Objects.requireNonNull(getCommand("config")).setExecutor(new Config());
         Logging.info("Command \"config\" has been enabled.");
-        Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
-        Logging.info("Command \"account\" has been enabled.");
+        if (Settings.getConfiguration().getBoolean("enableLinking")) {
+            Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
+            Logging.info("Command \"link\" has been enabled.");
+            Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
+            Logging.info("Command \"account\" has been enabled.");
+        }
     }
 }

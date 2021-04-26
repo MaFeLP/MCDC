@@ -207,4 +207,27 @@ public class CheckPermission {
             return false;
         }
     }
+
+    public static boolean checkPermission(final Permissions permission, final MessageAuthor messageAuthor) {
+        if (messageAuthor.isBotOwner()) {
+
+            return true;
+        }
+
+        if (messageAuthor.isServerAdmin()) {
+
+            return true;
+        }
+
+        String permissionToCheck = permission.toString();
+
+        for (final long id : Settings.getConfiguration().getLongList("permission." + permissionToCheck + ".allowedUserIDs")) {
+            if (id == messageAuthor.getId()) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

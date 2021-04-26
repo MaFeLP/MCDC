@@ -106,8 +106,18 @@ public class AccountManager {
      * @param account The account to add
      * @return the list of all linked Accounts.
      */
-    public static List<Account> addAccount (Account account) {
+    public static List<Account> addAccount(Account account) {
         linkedAccounts.add(account);
+        return linkedAccounts;
+    }
+
+    /**
+     * Removes an account from the linked accounts.
+     * @param account The account link to be removed
+     * @return The now list of accounts.
+     */
+    public static List<Account> removeAccount(Account account) {
+        linkedAccounts.removeAll(Collections.singleton(account));
         return linkedAccounts;
     }
 }

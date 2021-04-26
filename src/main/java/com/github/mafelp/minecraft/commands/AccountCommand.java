@@ -1,11 +1,9 @@
 package com.github.mafelp.minecraft.commands;
 
 import com.github.mafelp.accounts.Account;
+import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.accounts.DiscordLinker;
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
-import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Settings;
+import com.github.mafelp.utils.*;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
@@ -126,12 +124,12 @@ public class AccountCommand implements CommandExecutor {
                     if (cmd.getStringArgument(0).isEmpty()) {
                         if (Account.getByPlayer(player).isEmpty()) {
                             Logging.debug("Player " + ChatColor.GRAY + player.getName() + ChatColor.RESET + " has requested his account name: He/She doesn't have one. Sending help message.");
-                            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you do not have an account. Use " + ChatColor.GRAY + "/link" +ChatColor.RED + " to get one.");
+                            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you do not have an account. Use " + ChatColor.GRAY + "/link" + ChatColor.RED + " to get one.");
                             return true;
                         }
                         Logging.debug("Player " + ChatColor.GRAY + player.getName() + ChatColor.RESET + " has requested his account name.");
                         commandSender.sendMessage(prefix + ChatColor.GREEN + "Your account name is: " + ChatColor.GRAY + Account.getByPlayer(player).get().getUsername());
-                    // If additional Arguments are passed, get the name of the accounts.
+                        // If additional Arguments are passed, get the name of the accounts.
                     } else {
                         Logging.debug("Offline Players:");
                         // Checks all players that were online at least once and if they have an account.
@@ -159,12 +157,51 @@ public class AccountCommand implements CommandExecutor {
                     }
                     return true;
                 }
+                // Removes an account, if the player has the required permissions.
+                case "remove" -> {
+                    // If the user does not have te required permissions, exit.
+                    if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
+                                prefix + "This incident will be reported!");
+                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
+                        return true;
+                    }
+
+                    // Checks if enough arguments were passed.
+                    if (cmd.getStringArgument(0).isEmpty()) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Not enough arguments given!");
+                        Logging.debug("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! The command did not have enough/too much arguments!");
+                        return false;
+                    }
+
+                    // Iterates over all players to find the one that matches the name given as the first argument to
+                    // the subcommand. If the names match, it removes the account. If no account could be found it
+                    // returns an error.
+                    OfflinePlayer[] players = Settings.minecraftServer.getOfflinePlayers();
+                    for (OfflinePlayer p : players) {
+                        if (Objects.equals(p.getName(), cmd.getStringArgument(0).get())) {
+                            if (Account.getByPlayer(p).isPresent()) {
+                                String username = Account.getByPlayer(p).get().getUsername();
+                                AccountManager.removeAccount(Account.getByPlayer(p).get());
+                                commandSender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed account with username: " + username);
+                                Logging.info("Player " + commandSender.getName() + "remove the account with the name " + ChatColor.GRAY + username + ChatColor.RESET + ".");
+                            } else {
+                                commandSender.sendMessage(prefix + ChatColor.RED + "Account with the Minecraft name: " + ChatColor.GRAY + cmd.getStringArgument(0).get() + ChatColor.RED + " does not exist!");
+                            }
+                            return true;
+                        }
+                    }
+
+                    // If the player whose name was passed, does not exist, return an error.
+                    commandSender.sendMessage(prefix + ChatColor.RED + "Player with the name " + ChatColor.GRAY + cmd.getStringArgument(0).get() + ChatColor.RED + " was never on this server!");
+                    return true;
+                }
                 // If no subcommand was specified.
                 default -> {
                     return false;
                 }
             }
-        // If the command was not executed by a player.
+            // If the command was not executed by a player.
         } else {
             commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command can only be executed by a player.");
             return true;
