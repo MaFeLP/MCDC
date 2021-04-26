@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -173,6 +174,11 @@ public class AccountCommand implements CommandExecutor {
                         Logging.debug("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! The command did not have enough/too much arguments!");
                         return false;
                     }
+                    if (cmd.getStringArgument(0).get().equals("")) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Not enough arguments given!");
+                        Logging.debug("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! The command did not have enough/too much arguments!");
+                        return false;
+                    }
 
                     // Iterates over all players to find the one that matches the name given as the first argument to
                     // the subcommand. If the names match, it removes the account. If no account could be found it
@@ -194,6 +200,28 @@ public class AccountCommand implements CommandExecutor {
 
                     // If the player whose name was passed, does not exist, return an error.
                     commandSender.sendMessage(prefix + ChatColor.RED + "Player with the name " + ChatColor.GRAY + cmd.getStringArgument(0).get() + ChatColor.RED + " was never on this server!");
+                    return true;
+                }
+                // The subcommand used to save the accounts file.
+                case "save" -> {
+                    // If the user does not have te required permissions, exit.
+                    if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
+                                prefix + "This incident will be reported!");
+                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
+                        return true;
+                    }
+
+                    try {
+                        commandSender.sendMessage(prefix + ChatColor.YELLOW + "Saving accounts file...");
+                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " is saving the configuration file.");
+                        AccountManager.saveAccounts();
+                        Logging.info(ChatColor.GREEN + "Successfully saved the accounts file!");
+                        commandSender.sendMessage(prefix + ChatColor.GREEN + "Successfully saved the accounts file!");
+                    } catch (FileNotFoundException e) {
+                        Logging.logIOException(e, "Error saving the account file! (Author of this save: " + commandSender.getName());
+                        commandSender.sendMessage(prefix + ChatColor.RED + "A FileNotFoundException occurred! Please see the console for more details!");
+                    }
                     return true;
                 }
                 // If no subcommand was specified.
