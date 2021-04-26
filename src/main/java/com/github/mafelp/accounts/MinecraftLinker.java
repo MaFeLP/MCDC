@@ -67,6 +67,9 @@ public class MinecraftLinker {
 
                 AccountManager.addAccount(account);
 
+                //removes the current linkID from the map, so the link id would be freed again.
+                linkableAccounts.remove(p);
+
                 return Optional.of(account);
             }
         }
