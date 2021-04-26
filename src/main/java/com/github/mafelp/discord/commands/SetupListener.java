@@ -2,10 +2,7 @@ package com.github.mafelp.discord.commands;
 
 import com.github.mafelp.discord.ChannelAdmin;
 import com.github.mafelp.discord.RoleAdmin;
-import com.github.mafelp.utils.CheckPermission;
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
-import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.*;
 import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
 import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
@@ -110,6 +107,14 @@ public class SetupListener implements MessageCreateListener {
         // If the command is not equal to setup, do nothing and return.
         if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "setup"))
             return;
+
+        // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
+        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages")) {
+            Logging.debug("Deleting original command message with ID: " + event.getMessage().getIdAsString());
+            event.getMessage().delete("Specified in MCDC configuration: Was a command message.").thenAcceptAsync(
+                    void_ -> Logging.debug("Deleted the original command message.")
+            );
+        }
 
         // Checks the permission of the message author.
         if (!CheckPermission.hasAdminPermission(event.getMessageAuthor())) {

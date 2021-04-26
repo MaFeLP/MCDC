@@ -59,6 +59,14 @@ public class LinkListener implements MessageCreateListener {
             return;
         }
 
+        // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
+        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages")) {
+            Logging.debug("Deleting original command message with ID: " + event.getMessage().getIdAsString());
+            event.getMessage().delete("Specified in MCDC configuration: Was a command message.").thenAcceptAsync(
+                    void_ -> Logging.debug("Deleted the original command message.")
+            );
+        }
+
         // Tries to parse the message author into a user. If this fails, don't execute this command.
         if (event.getMessageAuthor().asUser().isEmpty()) {
             Logging.debug("Could not parse user, while trying to execute link command. Aborting...");

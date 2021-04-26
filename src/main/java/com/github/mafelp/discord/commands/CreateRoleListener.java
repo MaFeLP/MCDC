@@ -95,6 +95,14 @@ public class CreateRoleListener implements MessageCreateListener {
         if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "createRole"))
             return;
 
+        // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
+        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages")) {
+            Logging.debug("Deleting original command message with ID: " + event.getMessage().getIdAsString());
+            event.getMessage().delete("Specified in MCDC configuration: Was a command message.").thenAcceptAsync(
+                    void_ -> Logging.debug("Deleted the original command message.")
+            );
+        }
+
         // Checks the permission of the message author.
         if (!CheckPermission.hasAdminPermission(event.getMessageAuthor())) {
             Logging.info("User \"" + event.getMessageAuthor().getDisplayName() + "\" tried to execute command \"createChannel\"!");

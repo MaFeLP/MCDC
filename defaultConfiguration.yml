@@ -25,6 +25,10 @@ apiToken: 'Your API Token goes here!'
 # Allowed values: any String
 discordCommandPrefix: '.'
 
+# Selects if messages that are commands should be deleted after execution.
+# Allowed values: <true|false>
+deleteDiscordCommandMessages: false
+
 # Discord Channel IDs to broadcast messages to.
 channelIDs:
   - 1234

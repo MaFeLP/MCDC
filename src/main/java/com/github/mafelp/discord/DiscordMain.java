@@ -72,6 +72,7 @@ public class DiscordMain extends Thread {
                 .setAllowed(PermissionType.MENTION_EVERYONE)
                 .setAllowed(PermissionType.USE_EXTERNAL_EMOJIS)
                 .setAllowed(PermissionType.ADD_REACTIONS)
+                .setAllowed(PermissionType.MANAGE_MESSAGES)
                 .build();
 
         // Log that the instance is being started

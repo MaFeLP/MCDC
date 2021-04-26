@@ -249,6 +249,7 @@ public class Settings {
         defaultConfiguration.set("serverName", "A Minecraft Server");
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
+        defaultConfiguration.set("deleteDiscordCommandMessages", false);
         defaultConfiguration.set("allowListAllAccounts", true);
         defaultConfiguration.set("showFooterInMessages", true);
         defaultConfiguration.set("permission.accountEdit.level", 3);
