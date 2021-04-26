@@ -250,6 +250,7 @@ public class Settings {
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
         defaultConfiguration.set("allowListAllAccounts", true);
+        defaultConfiguration.set("showFooterInMessages", true);
         defaultConfiguration.set("permission.accountEdit.level", 3);
         defaultConfiguration.set("permission.accountEdit.allowedUserUUIDs", new ArrayList<UUID>());
         defaultConfiguration.set("permission.configEdit.level", 3);

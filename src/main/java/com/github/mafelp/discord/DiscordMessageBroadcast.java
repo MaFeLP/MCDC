@@ -52,9 +52,10 @@ public class DiscordMessageBroadcast extends Thread {
                 // .setAuthor(messageAuthor.getDisplayName())
                 .setAuthor(messageAuthor.getDisplayName(), "", new Skin(messageAuthor, false).getHead(), ".png")
                 .setColor(Color.YELLOW)
-                .setFooter("On " + Settings.serverName)
-                .addInlineField("Message:", message);
+                .setDescription(message);
 
+        if (Settings.getConfiguration().getBoolean("showFooterInMessages", true))
+                embed.setFooter("On " + Settings.serverName);
         // send the embed to all channels in the list
         for (Channel channel : channels) {
             // only send the embed, if the channel is present, to avoid exceptions

@@ -37,6 +37,10 @@ enableLinking: true
 # Allowed values <true|false>
 allowListAllAccounts: true
 
+# Decides, if the config value 'serverName' should be displayed in the footer of discord messages.
+# Allowed values <true|false>
+showFooterInMessages: true
+
 # Permission section for setting permission levels
 permission:
   # The permissions on linking and editing accounts.
