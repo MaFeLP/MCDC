@@ -7,6 +7,8 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Logging.logIOException;
@@ -247,10 +249,13 @@ public class Settings {
         defaultConfiguration.set("serverName", "A Minecraft Server");
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
+        defaultConfiguration.set("allowListAllAccounts", true);
+        defaultConfiguration.set("permission.accountEdit.level", 3);
+        defaultConfiguration.set("permission.accountEdit.allowedUserUUIDs", new ArrayList<UUID>());
         defaultConfiguration.set("permission.configEdit.level", 3);
-        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", null);
-        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", null);
-        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", null);
+        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", new ArrayList<UUID>());
+        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", new ArrayList<Long>());
+        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", new ArrayList<Long>());
         defaultConfiguration.set("saveEscapeCharacterInConfig", true);
 
         return defaultConfiguration;

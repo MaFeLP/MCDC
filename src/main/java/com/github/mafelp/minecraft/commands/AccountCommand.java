@@ -247,7 +247,33 @@ public class AccountCommand implements CommandExecutor {
 
                     return true;
                 }
+                // The subcommand that lists all currently linked accounts
+                case "list" -> {
+                    boolean allowed = Settings.getConfiguration().getBoolean("allowListAllAccounts");
 
+                    if (CheckPermission.checkPermission(Permissions.accountEdit, commandSender))
+                        allowed = true;
+
+                    if (allowed) {
+                        String sb = "";
+
+                        sb += prefix + ChatColor.GREEN + "---Linked Accounts---\n" + ChatColor.RESET;
+                        sb += ChatColor.DARK_GRAY +      "+===========================+\n" + ChatColor.RESET;
+                        sb += ChatColor.YELLOW +         "Minecraft Name; Discord Username; Discord Ping Tag\n" + ChatColor.RESET;
+                        sb += ChatColor.DARK_GRAY +      "+===========================+\n" + ChatColor.RESET;
+
+                        for (Account a : AccountManager.getLinkedAccounts())
+                            sb += ChatColor.AQUA + a.getPlayer().getName() + "; " + a.getUser().getName() + "; " + a.getUsername() + "\n";
+
+                        sb += ChatColor.DARK_GRAY +      "+===========================+" + ChatColor.RESET;
+
+                        commandSender.sendMessage(sb);
+                    } else {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, the Server administrator has disabled the listing of accounts!");
+                    }
+
+                    return true;
+                }
                 // If no subcommand was specified.
                 default -> {
                     return false;

@@ -33,6 +33,10 @@ channelIDs:
 # Allowed values <true|false>
 enableLinking: true
 
+# Allow players to list all the accounts.
+# Allowed values <true|false>
+allowListAllAccounts: true
+
 # Permission section for setting permission levels
 permission:
   # The permissions on linking and editing accounts.
