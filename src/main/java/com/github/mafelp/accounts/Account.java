@@ -135,4 +135,14 @@ public class Account {
 
         return Optional.empty();
     }
+
+    public static Optional<Account> getByUsername(String username) {
+        for (Account account : AccountManager.getLinkedAccounts()) {
+            if (account.getUsername().equals(username)) {
+                return Optional.of(account);
+            }
+        }
+
+        return Optional.empty();
+    }
 }
