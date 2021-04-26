@@ -1,12 +1,9 @@
 package com.github.mafelp.discord;
 
 import com.github.mafelp.accounts.AccountManager;
-import com.github.mafelp.discord.commands.CreateRoleListener;
-import com.github.mafelp.discord.commands.LinkListener;
-import com.github.mafelp.discord.commands.SetupListener;
+import com.github.mafelp.discord.commands.*;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
-import com.github.mafelp.discord.commands.CreateChannelListener;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.permission.PermissionType;
@@ -89,6 +86,7 @@ public class DiscordMain extends Thread {
                     .addListener(CreateRoleListener::new)
                     .addListener(SetupListener::new)
                     .addListener(LinkListener::new)
+                    .addListener(UnlinkListener::new)
                     // log the bot in and join the servers
                     .login().join();
             // TODO Add: activity
