@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -224,6 +225,29 @@ public class AccountCommand implements CommandExecutor {
                     }
                     return true;
                 }
+                // The subcommand used to reload the accounts file into memory.
+                case "reload" -> {
+                    // If the user does not have te required permissions, exit.
+                    if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
+                                prefix + "This incident will be reported!");
+                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
+                        return true;
+                    }
+
+                    // Try to reload the accounts
+                    try {
+                        commandSender.sendMessage(prefix + ChatColor.YELLOW + "Reloading the accounts file... Warning! Only edit the file, if you know what you are doing!");
+                        AccountManager.loadAccounts();
+                        commandSender.sendMessage(prefix + ChatColor.GREEN + "Successfully reloaded the accounts file!");
+                    } catch (IOException e) {
+                        Logging.logIOException(e, "Error reloading the accounts file (Author of this command: " + commandSender.getName() + ").");
+                        commandSender.sendMessage(prefix + ChatColor.RED + "adf");
+                    }
+
+                    return true;
+                }
+
                 // If no subcommand was specified.
                 default -> {
                     return false;
