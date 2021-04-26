@@ -34,40 +34,63 @@ See [Installation](./installation) for detailed installation instructions with p
 ### Discord commands
 <table>
 	<tr>
-		<th>Command</th>
-		<th>Instructions Link</th>
+		<th style="text-align: center">Command</th>
+		<th style="text-align: center">Instructions Link</th>
+        <th style="text-align: center">Permissions</th>
+	</tr>
+	<tr>
+		<td>link</td>
+		<td><a href="./commands/link">link</a></td>
+        <td>No special permissions required.</td>
 	</tr>
 	<tr>
 		<td>setup</td>
 		<td><a href="./commands/setup">setup</a></td>
+        <td><code>DiscordServerAdmin</code>, <code>DiscordBotAdmin</code><br>(Either in the config file of the server or as<br>permissions on the discord server)</td>
 	</tr>
 	<tr>
 		<td>createChannel</td>
 		<td><a href="./commands/create-channel">create-channel</a></td>
+        <td><code>DiscordServerAdmin</code>, <code>DiscordBotAdmin</code><br>(Either in the config file of the server or as<br>permissions on the discord server)</td>
 	</tr>
 	<tr>
 		<td>createRole</td>
 		<td><a href="./commands/create-role">create-role</a></td>
+        <td><code>DiscordServerAdmin</code>, <code>DiscordBotAdmin</code><br>(Either in the config file of the server or as<br>permissions on the discord server)</td>
 	</tr>
 </table>
 
 ## Minecraft commands
 <table>
 	<tr>
-		<th>Command</th>
-		<th>Instructions Link</th>
+		<th style="text-align: center">Command</th>
+		<th style="text-align: center">Instructions Link</th>
+        <th style="text-align: center">Permissions (<a href="configuration">config.yml</a>)</th>
+        <th style="text-align: center">Default OP Level</th>
 	</tr>
 	<tr>
-		<td>token</td>
-		<td><a href="./commands/token">token</a></td>
+		<td style="text-align: center">link</td>
+		<td style="text-align: center"><a href="./commands/link">link</a></td>
+        <td style="text-align: center">No special permissions required<br>(Optional: <code>accountEdit</code>)</td>
+        <td style="text-align: center">0</td>
 	</tr>
 	<tr>
-		<td>config</td>
-		<td><a href="./commands/config">config</a></td>
+		<td style="text-align: center">account</td>
+		<td style="text-align: center"><a href="./commands/account">account</a></td>
+        <td style="text-align: center"><code>accountEdit</code></td>
+        <td style="text-align: center">3</td>
 	</tr>
 	<tr>
-		<td>link</td>
-		<td><a href="./commands/link">link</a></td>
+		<td style="text-align: center">token</td>
+		<td style="text-align: center"><a href="./commands/token">token</a></td>
+        <td style="text-align: center"><code>configEdit</code></td>
+        <td style="text-align: center">3</td>
+	</tr>
+	<tr>
+		<td style="text-align: center">config</td>
+		<td style="text-align: center"><a href="./commands/config">config</a></td>
+        <td style="text-align: center"><code>configEdit</code></td>
+        <td style="text-align: center">3</td>
 	</tr>
 </table>
 
