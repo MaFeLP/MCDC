@@ -91,11 +91,10 @@ public class UnlinkListener implements MessageCreateListener {
         }
 
         // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
-        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages")) {
+        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages") && messageCreateEvent.isServerMessage()) {
             Logging.debug("Deleting original command message with ID: " + messageCreateEvent.getMessage().getIdAsString());
-            messageCreateEvent.getMessage().delete("Specified in MCDC configuration: Was a command message.").thenAcceptAsync(
-                    void_ -> Logging.debug("Deleted the original command message.")
-            );
+            messageCreateEvent.getMessage().delete("Specified in MCDC configuration: Was a command message.").join();
+            Logging.debug("Deleted the original command message.");
         }
 
         // Only execute if te message Author is a user and not a webhook.
@@ -120,6 +119,8 @@ public class UnlinkListener implements MessageCreateListener {
             AccountManager.removeAccount(account);
 
             successEmbed.addField("Successful Unlinking","Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);
+
+            messageCreateEvent.getChannel().sendMessage(successEmbed);
         } else {
             messageCreateEvent.getChannel().sendMessage(
                     new EmbedBuilder()

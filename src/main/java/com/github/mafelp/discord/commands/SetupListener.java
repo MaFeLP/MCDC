@@ -109,11 +109,10 @@ public class SetupListener implements MessageCreateListener {
             return;
 
         // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
-        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages")) {
+        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages") && event.isServerMessage()) {
             Logging.debug("Deleting original command message with ID: " + event.getMessage().getIdAsString());
-            event.getMessage().delete("Specified in MCDC configuration: Was a command message.").thenAcceptAsync(
-                    void_ -> Logging.debug("Deleted the original command message.")
-            );
+            event.getMessage().delete("Specified in MCDC configuration: Was a command message.").join();
+            Logging.debug("Deleted the original command message.");
         }
 
         // Checks the permission of the message author.
