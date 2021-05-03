@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,20 +43,23 @@ public class AccountCommand implements CommandExecutor {
             // If a player executed this command, we can cast the commandSender to a player.
             Player player = (Player) commandSender;
 
-            if (args == null)
+            if (args == null) {
+                commandSender.sendMessage(prefix + ChatColor.RED + "No arguments given into the command! Please use the following syntax.");
                 return false;
+            }
 
             Command cmd;
             try {
                 cmd = CommandParser.parseFromArray(args);
             } catch (NoCommandGivenException exception) {
+                commandSender.sendMessage(prefix + ChatColor.RED + "No Command given! Please use the following syntax!");
                 return false;
             } catch (CommandNotFinishedException exception) {
                 commandSender.sendMessage(prefix + ChatColor.RED + "Could not parse your command. There is an uneven number of quotation marks. Maybe try escaping them with \\");
                 return true;
             }
 
-            switch (cmd.getCommand().toLowerCase()) {
+            switch (cmd.getCommand().toLowerCase(Locale.ROOT)) {
                 case "link" -> {
                     // Initiates the linking process.
                     Optional<Integer> optionalLinkID = cmd.getIntegerArgument(0);

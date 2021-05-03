@@ -18,7 +18,14 @@ import java.util.Optional;
 
 import static com.github.mafelp.utils.Settings.*;
 
+/**
+ * The class used to listen in discord and unlinks your account.
+ */
 public class UnlinkListener implements MessageCreateListener {
+    /**
+     * The method that initializes the unlinking.
+     * @param messageCreateEvent The
+     */
     @Override
     public void onMessageCreate(MessageCreateEvent messageCreateEvent) {
         // If the message is sent by the bot, return
@@ -91,21 +98,25 @@ public class UnlinkListener implements MessageCreateListener {
             );
         }
 
+        // Only execute if te message Author is a user and not a webhook.
         if (messageCreateEvent.getMessageAuthor().asUser().isPresent()) {
             User user = messageCreateEvent.getMessageAuthor().asUser().get();
 
             Optional<Account> optionalAccount = Account.getByDiscordUser(user);
 
+            // If the user does not have an account.
             if (optionalAccount.isEmpty()) {
                 messageCreateEvent.getChannel().sendMessage(noAccountEmbed);
                 return;
             }
 
+            // Get the account and some information about it.
             Account account = optionalAccount.get();
 
             String minecraftName = account.getPlayer().getName();
             String mentionTag = account.getMentionTag();
 
+            // Then remove the account.
             AccountManager.removeAccount(account);
 
             successEmbed.addField("Successful Unlinking","Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);

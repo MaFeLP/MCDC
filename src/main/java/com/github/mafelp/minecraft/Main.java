@@ -104,7 +104,7 @@ public final class Main extends JavaPlugin {
             Logging.info("Command \"link\" has been enabled.");
             Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
             Logging.info("Command \"account\" has been enabled.");
-            Objects.requireNonNull(getCommand("account")).setExecutor(new Unlink());
+            Objects.requireNonNull(getCommand("unlink")).setExecutor(new Unlink());
             Logging.info("Command \"unlink\" has been enabled.");
         }
     }
