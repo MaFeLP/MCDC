@@ -99,29 +99,36 @@ public class UnlinkListener implements MessageCreateListener {
 
         // Only execute if te message Author is a user and not a webhook.
         if (messageCreateEvent.getMessageAuthor().asUser().isPresent()) {
+            Logging.debug("User \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" executed command \"unlink\". Parsing User...");
             User user = messageCreateEvent.getMessageAuthor().asUser().get();
 
             Optional<Account> optionalAccount = Account.getByDiscordUser(user);
 
             // If the user does not have an account.
             if (optionalAccount.isEmpty()) {
+                Logging.debug("User \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" does not have an account to unlink... Sending noAccountEmbed...");
                 messageCreateEvent.getChannel().sendMessage(noAccountEmbed);
                 return;
             }
 
+            Logging.debug("Getting the account for user \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\"...");
             // Get the account and some information about it.
             Account account = optionalAccount.get();
 
             String minecraftName = account.getPlayer().getName();
             String mentionTag = account.getMentionTag();
+            String username = account.getUsername();
 
+            Logging.info("Removing account \"" + username + "\"...");
             // Then remove the account.
             AccountManager.removeAccount(account);
 
             successEmbed.addField("Successful Unlinking","Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);
 
+            Logging.info("Removed account \"" + username + "\"... Sending success embed...");
             messageCreateEvent.getChannel().sendMessage(successEmbed);
         } else {
+            Logging.debug("MessageAuthor \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" is not a User! Sending Error embed...");
             messageCreateEvent.getChannel().sendMessage(
                     new EmbedBuilder()
                     .setAuthor(discordApi.getYourself())

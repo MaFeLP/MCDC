@@ -48,6 +48,7 @@ public class AccountCommand implements CommandExecutor {
                 return false;
             }
 
+            Logging.info("Player " + player.getDisplayName() + " has executed command \"/account\"... Parsing subcommands...");
             Command cmd;
             try {
                 cmd = CommandParser.parseFromArray(args);
@@ -61,26 +62,31 @@ public class AccountCommand implements CommandExecutor {
 
             switch (cmd.getCommand().toLowerCase(Locale.ROOT)) {
                 case "link" -> {
+                    Logging.debug("Subcommand is link.");
                     // Initiates the linking process.
                     Optional<Integer> optionalLinkID = cmd.getIntegerArgument(0);
 
                     // If no link token was given, create one and send it to the player.
                     if (optionalLinkID.isEmpty()) {
+                        Logging.debug("Link ID is empty... Sending link token.");
                         Link.sendLinkToken(player);
                         return true;
                     }
 
+                    Logging.debug("Linking accounts...");
                     // If a link token was given, try to link the accounts with the token.
                     Optional<Account> linkedAccount = DiscordLinker.linkToMinecraft(player, optionalLinkID.get());
 
                     // If the account is empty, the linkToken was invalid. Inform the user.
                     if (linkedAccount.isEmpty()) {
                         commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, your Link token is invalid. Please try again or use " + ChatColor.GRAY + "/link" + ChatColor.RESET + " to get a link token and instructions.");
+                        Logging.info("Linking failed: Link token is invalid!");
                         return true;
                     }
 
                     // If the account isPresent, the token was valid and an account was being created.
                     commandSender.sendMessage(prefix + ChatColor.GREEN + "Successfully linked this player account to the discord user " + linkedAccount.get().getUsername());
+                    Logging.info("Linked Minecraft account " + linkedAccount.get().getPlayer().getName() + " to Discord user " + linkedAccount.get().getUser().getName() + "\"");
                     return true;
                 }
                 // Sets you username
@@ -97,6 +103,7 @@ public class AccountCommand implements CommandExecutor {
                         return true;
                     }
 
+                    Logging.debug("Player " + player.getName() + " requested a name change.");
                     // Validate the inputted string
                     String inputName = cmd.getStringArgument(0).get();
 
@@ -124,12 +131,14 @@ public class AccountCommand implements CommandExecutor {
 
                     // Gets the account and sets its username.
                     Account account = Account.getByPlayer(player).get();
+                    Logging.info("Player " + player.getName() + " changed its username from " + account.getUsername() + " to " + nameToSet + ".");
                     account.setUsername(nameToSet);
                     commandSender.sendMessage(prefix + "Your username has been set to " + Account.getByPlayer(player).get().getUsername());
                     return true;
                 }
                 // The subcommand used to get your/another players account name.
                 case "get" -> {
+                    Logging.debug("Player " + commandSender.getName() + " executed subcommand \"get\".");
                     // If no additional arguments were passed, give the player his/her account name.
                     if (cmd.getStringArgument(0).isEmpty()) {
                         if (Account.getByPlayer(player).isEmpty()) {
