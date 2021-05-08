@@ -24,3 +24,8 @@ commands:
   unlink:
     description: The command used to remove your account.
     usage: /unlink
+  whisper:
+    description: The command to whisper to a discord user.
+    usage: /whisper @AccountTag "<Message>"
+    aliases:
+      - dcmsg

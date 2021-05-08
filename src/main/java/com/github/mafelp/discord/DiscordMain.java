@@ -90,6 +90,7 @@ public class DiscordMain extends Thread {
                     .addListener(SetupListener::new)
                     .addListener(LinkListener::new)
                     .addListener(UnlinkListener::new)
+                    .addListener(WhisperListener::new)
                     // log the bot in and join the servers
                     .login().join();
 

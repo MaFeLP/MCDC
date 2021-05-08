@@ -106,6 +106,8 @@ public final class Main extends JavaPlugin {
             Logging.info("Command \"account\" has been enabled.");
             Objects.requireNonNull(getCommand("unlink")).setExecutor(new Unlink());
             Logging.info("Command \"unlink\" has been enabled.");
+            Objects.requireNonNull(getCommand("whisper")).setExecutor(new Whisper());
+            Logging.info("Command \"whisper\" has been enabled.");
         }
     }
 }
