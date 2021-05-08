@@ -54,7 +54,7 @@ public class WhisperListener implements MessageCreateListener {
                 .setAuthor(messageCreateEvent.getMessageAuthor())
                 .setTitle("Error")
                 .addField("Usage", discordCommandPrefix + "whisper")
-                .addField("Functionality", "Unlinks your discord account from your minecraft account.")
+                .addField("Functionality", "Whispers your message to the .")
                 .setColor(new Color(0xFFB500))
                 .setFooter("Help message for command \"unlink\"")
                 ;
@@ -71,20 +71,20 @@ public class WhisperListener implements MessageCreateListener {
             return;
 
         // If the command is not equal to setup, do nothing and return.
-        if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "whisper") || !command.getCommand().equalsIgnoreCase(discordCommandPrefix + "mcmsg"))
+        if (!(command.getCommand().equalsIgnoreCase(discordCommandPrefix + "whisper") || command.getCommand().equalsIgnoreCase(discordCommandPrefix + "mcmsg")))
             return;
-
-        // On wrong usage, aka. when you pass arguments.
-        if (command.getStringArgument(0).isEmpty()) {
-            messageCreateEvent.getChannel().sendMessage(helpMessage);
-            return;
-        }
 
         // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
         if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages") && messageCreateEvent.isServerMessage()) {
             Logging.debug("Deleting original command message with ID: " + messageCreateEvent.getMessage().getIdAsString());
             messageCreateEvent.getMessage().delete("Specified in MCDC configuration: Was a command message.").join();
             Logging.debug("Deleted the original command message.");
+        }
+
+        // On wrong usage, aka. when you pass arguments.
+        if (command.getStringArgument(0).isEmpty()) {
+            messageCreateEvent.getChannel().sendMessage(helpMessage);
+            return;
         }
 
         // Only execute if te message Author is a user and not a webhook.

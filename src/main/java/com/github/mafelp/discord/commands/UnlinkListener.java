@@ -84,17 +84,18 @@ public class UnlinkListener implements MessageCreateListener {
         if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "unlink"))
             return;
 
-        // On wrong usage, aka. when you pass arguments.
-        if (command.getStringArgument(0).isPresent()) {
-            messageCreateEvent.getChannel().sendMessage(helpMessage);
-            return;
-        }
 
         // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
         if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages") && messageCreateEvent.isServerMessage()) {
             Logging.debug("Deleting original command message with ID: " + messageCreateEvent.getMessage().getIdAsString());
             messageCreateEvent.getMessage().delete("Specified in MCDC configuration: Was a command message.").join();
             Logging.debug("Deleted the original command message.");
+        }
+
+        // On wrong usage, aka. when you pass arguments.
+        if (command.getStringArgument(0).isPresent()) {
+            messageCreateEvent.getChannel().sendMessage(helpMessage);
+            return;
         }
 
         // Only execute if te message Author is a user and not a webhook.
