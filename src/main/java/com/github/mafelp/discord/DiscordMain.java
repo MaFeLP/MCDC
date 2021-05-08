@@ -6,11 +6,14 @@ import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Settings.discordApi;
@@ -89,7 +92,6 @@ public class DiscordMain extends Thread {
                     .addListener(UnlinkListener::new)
                     // log the bot in and join the servers
                     .login().join();
-            // TODO Add: activity
 
             Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
             Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite(botPermissions));
@@ -99,6 +101,15 @@ public class DiscordMain extends Thread {
             Logging.logException(exception, ChatColor.RED +
                     "An error occurred whilst trying to create the discord instance! Error: " + exception.getMessage());
             return;
+        }
+
+        // Checks the configuration and sets the according activity.
+        if (Settings.getConfiguration().getBoolean("activity.enabled", true)) {
+            String activityMessage = Objects.requireNonNull(Settings.getConfiguration().getString("activity.message", "to your messages 👀"));
+            String activityType = Objects.requireNonNull(Settings.getConfiguration().getString("activity.type", "listening")).toUpperCase(Locale.ROOT);
+
+            discordApi.updateActivity(ActivityType.valueOf(activityType), activityMessage);
+            Logging.info("Set the activity to type " + ChatColor.GRAY + activityType + ChatColor.RESET + " and the text to " + ChatColor.GRAY + activityMessage + ChatColor.RESET + ".");
         }
 
         if (this.loadAccounts) {

@@ -45,6 +45,16 @@ allowListAllAccounts: true
 # Allowed values <true|false>
 showFooterInMessages: true
 
+# The value that should be displayed below the name
+activity:
+  # If the bot should have an activity.
+  enabled: true
+  # The type of the message, aka. the first word:
+  # can be set to custom, competing, listening, watching, streaming or playing
+  type: listening
+  # The text that should be displayed.
+  message: "your messages 👀"
+
 # Permission section for setting permission levels
 permission:
   # The permissions on linking and editing accounts.

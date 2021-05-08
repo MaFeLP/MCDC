@@ -252,6 +252,9 @@ public class Settings {
         defaultConfiguration.set("deleteDiscordCommandMessages", false);
         defaultConfiguration.set("allowListAllAccounts", true);
         defaultConfiguration.set("showFooterInMessages", true);
+        defaultConfiguration.set("activity.enabled", true);
+        defaultConfiguration.set("activity.type", "listening");
+        defaultConfiguration.set("activity.message", "to your messages 👀");
         defaultConfiguration.set("permission.accountEdit.level", 3);
         defaultConfiguration.set("permission.accountEdit.allowedUserUUIDs", new ArrayList<UUID>());
         defaultConfiguration.set("permission.configEdit.level", 3);
