@@ -90,8 +90,6 @@ public class AccountCommand implements CommandExecutor {
                     return true;
                 }
                 // Sets you username
-                // TODO add checking of username to not be used by anybody else.
-                // TODO add checking of username to not be a minecraft username.
                 case "name", "username" -> {
                     Logging.debug("Minecraft user " + player.getName() + " used the command \"/account " + cmd.getCommand() + " " + Arrays.toString(cmd.getArguments()));
                     if (Account.getByPlayer(player).isEmpty()) {
@@ -144,6 +142,28 @@ public class AccountCommand implements CommandExecutor {
                         commandSender.sendMessage(prefix + ChatColor.RED + "Your name is too long! The limit is 32 characters!");
                         return true;
                     }
+
+                    // Checks if the name is taken by anybody else
+                    Logging.debug("Checking if the name is a duplicate of another name.");
+                    for (Account a : AccountManager.getLinkedAccounts()) {
+                        if (a.getUsername().equalsIgnoreCase(nameToSet)) {
+                            Logging.debug("Name failed the duplicate name check!");
+                            commandSender.sendMessage(prefix + ChatColor.RED + "Could not set name: Name is already taken!");
+                            return true;
+                        }
+                    }
+                    Logging.debug("Name has passed the duplicate name check!");
+
+                    // Checks if the name is a minecraft name, of a player, who already was online.
+                    Logging.debug("Checking if the name is a minecraft user.");
+                    for (OfflinePlayer offlinePlayer : Settings.minecraftServer.getOfflinePlayers()) {
+                        if (nameToSet.equalsIgnoreCase("@" + offlinePlayer.getName())) {
+                            Logging.debug("Name failed the minecraft name check!");
+                            commandSender.sendMessage(prefix + ChatColor.RED + "Could not set name: Name is a minecraft name!");
+                            return true;
+                        }
+                    }
+                    Logging.debug("Name passed the minecraft username check!");
 
                     // Gets the account and sets its username.
                     Account account = Account.getByPlayer(player).get();
