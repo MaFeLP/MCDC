@@ -15,7 +15,19 @@ import java.util.Optional;
 import static com.github.mafelp.utils.Settings.prefix;
 import static org.bukkit.ChatColor.*;
 
+/**
+ * The class that handles execution of the command <code>/unlink</code>
+ */
 public class Unlink implements CommandExecutor {
+    /**
+     * The Method called when command <code>/unlink</code> is executed.
+     *
+     * @param commandSender  The sender of the command
+     * @param command the command he/she used
+     * @param label the label of the command
+     * @param args additional arguments passed: Discord ID and unique identifier.
+     * @return command success
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         // Only players can have accounts.
