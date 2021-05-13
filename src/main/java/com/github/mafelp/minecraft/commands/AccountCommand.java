@@ -90,6 +90,8 @@ public class AccountCommand implements CommandExecutor {
                     return true;
                 }
                 // Sets you username
+                // TODO add checking of username to not be used by anybody else.
+                // TODO add checking of username to not be a minecraft username.
                 case "name", "username" -> {
                     Logging.debug("Minecraft user " + player.getName() + " used the command \"/account " + cmd.getCommand() + " " + Arrays.toString(cmd.getArguments()));
                     if (Account.getByPlayer(player).isEmpty()) {
@@ -107,7 +109,9 @@ public class AccountCommand implements CommandExecutor {
                     // Validate the inputted string
                     String inputName = cmd.getStringArgument(0).get();
 
+                    Logging.debug("Checking for wrong characters in requested name.");
                     char[] chars = inputName.toCharArray();
+                    char[] forbiddenCharacters = {'\\', ' ', '"', '\'', '<', '>', '#', '!', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', ']', '{', '}', ';', ':', '?', '/'};
 
                     int i = 0;
                     for (char c : chars) {
@@ -115,12 +119,16 @@ public class AccountCommand implements CommandExecutor {
                             commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you are not allowed to have \"@\" in your name!");
                             return true;
                         }
-                        if (c == ' ') {
-                            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you are not allowed to have spaces in your name!");
-                            return true;
+
+                        for (char forbidden : forbiddenCharacters) {
+                            if (forbidden == c) {
+                                commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you are not allowed to have these characters in your name: \\ \"'<>#!@$%^&*()_/+=[]{}|");
+                            }
                         }
+
                         i++;
                     }
+                    Logging.debug("The requested name for " + player.getName() + " has passed the character check!");
 
                     // If the first character is an @, do not add one to the start of the name.
                     String nameToSet;
@@ -128,6 +136,14 @@ public class AccountCommand implements CommandExecutor {
                         nameToSet = inputName;
                     else
                         nameToSet = '@' + inputName;
+
+                    // Checks if the input name meets the specific requirements.
+                    Logging.debug("Checking for name length...");
+                    if (nameToSet.length() >= 33) {
+                        Logging.debug("Name did not pass the length check!");
+                        commandSender.sendMessage(prefix + ChatColor.RED + "Your name is too long! The limit is 32 characters!");
+                        return true;
+                    }
 
                     // Gets the account and sets its username.
                     Account account = Account.getByPlayer(player).get();
@@ -179,12 +195,7 @@ public class AccountCommand implements CommandExecutor {
                 // Removes an account, if the player has the required permissions.
                 case "remove" -> {
                     // If the user does not have te required permissions, exit.
-                    if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
-                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
-                                prefix + "This incident will be reported!");
-                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
-                        return true;
-                    }
+                    if (incidentReport(commandSender, cmd)) return true;
 
                     // Checks if enough arguments were passed.
                     if (cmd.getStringArgument(0).isEmpty()) {
@@ -223,12 +234,7 @@ public class AccountCommand implements CommandExecutor {
                 // The subcommand used to save the accounts file.
                 case "save" -> {
                     // If the user does not have te required permissions, exit.
-                    if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
-                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
-                                prefix + "This incident will be reported!");
-                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
-                        return true;
-                    }
+                    if (incidentReport(commandSender, cmd)) return true;
 
                     try {
                         commandSender.sendMessage(prefix + ChatColor.YELLOW + "Saving accounts file...");
@@ -245,12 +251,7 @@ public class AccountCommand implements CommandExecutor {
                 // The subcommand used to reload the accounts file into memory.
                 case "reload" -> {
                     // If the user does not have te required permissions, exit.
-                    if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
-                        commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
-                                prefix + "This incident will be reported!");
-                        Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
-                        return true;
-                    }
+                    if (incidentReport(commandSender, cmd)) return true;
 
                     // Try to reload the accounts
                     try {
@@ -274,15 +275,15 @@ public class AccountCommand implements CommandExecutor {
                     if (allowed) {
                         String sb = "";
 
-                        sb += prefix + ChatColor.GREEN + "---Linked Accounts---\n" + ChatColor.RESET;
-                        sb += ChatColor.DARK_GRAY +      "+===========================+\n" + ChatColor.RESET;
+                        sb += prefix + ChatColor.GREEN + "--------Linked Accounts--------\n" + ChatColor.RESET;
+                        sb += ChatColor.DARK_GRAY +      "+================================================+\n" + ChatColor.RESET;
                         sb += ChatColor.YELLOW +         "Minecraft Name; Discord Username; Discord Ping Tag\n" + ChatColor.RESET;
-                        sb += ChatColor.DARK_GRAY +      "+===========================+\n" + ChatColor.RESET;
+                        sb += ChatColor.DARK_GRAY +      "+================================================+\n" + ChatColor.RESET;
 
                         for (Account a : AccountManager.getLinkedAccounts())
                             sb += ChatColor.AQUA + a.getPlayer().getName() + "; " + a.getUser().getName() + "; " + a.getUsername() + "\n";
 
-                        sb += ChatColor.DARK_GRAY +      "+===========================+" + ChatColor.RESET;
+                        sb += ChatColor.DARK_GRAY +      "+================================================+" + ChatColor.RESET;
 
                         commandSender.sendMessage(sb);
                     } else {
@@ -322,5 +323,21 @@ public class AccountCommand implements CommandExecutor {
             commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, this command can only be executed by a player.");
             return true;
         }
+    }
+
+    /**
+     * The method used to check the {@link com.github.mafelp.utils.Permissions}: {@code accountEdit} of a command Sender.
+     * @param commandSender The command sender to check the permission of.
+     * @param cmd The command that will be shown into the console, if the permission is denied.
+     * @return If the permission was granted.
+     */
+    private static boolean incidentReport(@NotNull CommandSender commandSender, Command cmd) {
+        if (!CheckPermission.checkPermission(Permissions.accountEdit, commandSender)) {
+            commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you don't have the required permissions, to execute this command!\n" +
+                    prefix + "This incident will be reported!");
+            Logging.info("Player " + ChatColor.DARK_GRAY + commandSender.getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "account remove " + Arrays.toString(cmd.getArguments()) + ChatColor.RESET + "! This action was denied due to missing permission!");
+            return true;
+        }
+        return false;
     }
 }
