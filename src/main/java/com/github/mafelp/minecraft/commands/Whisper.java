@@ -115,6 +115,9 @@ public class Whisper implements CommandExecutor {
         Logging.debug("Sending whisper message to " + receiver.getUsername() + "...");
         Message messageSent = receiver.getUser().sendMessage(messageEmbed).join();
 
+        commandSender.sendMessage(prefix + ChatColor.GREEN + "You whispered to " + ChatColor.GRAY + receiver.getUsername() + ChatColor.GREEN + ":" +
+                ChatColor.GRAY + "\n\u255A\u25B6" + ChatColor.RESET + message);
+
         Logging.info(ChatColor.GRAY + player.getName() + ChatColor.RESET + " has whispered to account " + ChatColor.GRAY + receiver.getUsername() + ChatColor.RESET + ": " + ChatColor.GRAY + message);
         Logging.debug("This message has the id: " + messageSent.getId());
         return true;
