@@ -44,7 +44,7 @@ public class WhisperListener implements MessageCreateListener {
 
 
         // Gets the content of the message as strings (prints it, if debug is enabled)
-        String content = messageCreateEvent.getReadableMessageContent();
+        String content = messageCreateEvent.getMessageContent();
 
         // If the command could not be passed, exit. Error handling is done by the CreateChannelListener.
         Command command;
@@ -187,7 +187,7 @@ public class WhisperListener implements MessageCreateListener {
 
             Logging.debug("Building whisper message...");
             StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.append(whisperPrefix(messageCreateEvent));
+
             for (int i = 1; i < command.getArguments().length; ++i) {
                 if (i != 1)
                     messageBuilder.append(' ');
@@ -197,12 +197,12 @@ public class WhisperListener implements MessageCreateListener {
                 else
                     break;
             }
-
             String message = messageBuilder.toString();
 
             Logging.debug("Whisper message built! Sending it...");
-            Logging.info("User " + ChatColor.GRAY + messageCreateEvent.getMessageAuthor().getDisplayName() + ChatColor.RESET + "whispered the following to minecraft user " + ChatColor.GRAY + onlinePlayer.getDisplayName() + ChatColor.RESET + ": " + ChatColor.AQUA + message);
-            onlinePlayer.sendMessage(message);
+            //Logging.info("User " + ChatColor.GRAY + messageCreateEvent.getMessageAuthor().getDisplayName() + ChatColor.RESET + "whispered the following to minecraft user " + ChatColor.GRAY + onlinePlayer.getDisplayName() + ChatColor.RESET + ": " + ChatColor.AQUA + message);
+            Settings.minecraftServer.getConsoleSender().sendMessage(whisperPrefix(messageCreateEvent, false, receiver.getUsername()) + message);
+            onlinePlayer.sendMessage(whisperPrefix(messageCreateEvent, true, "") + message);
         } else {
             Logging.debug("MessageAuthor \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" is not a User! Sending Error embed...");
             messageCreateEvent.getChannel().sendMessage(
@@ -221,8 +221,8 @@ public class WhisperListener implements MessageCreateListener {
      * @param messageCreateEvent The event that stores all the information about the whisper message sender.
      * @return The prefix to add to the message.
      */
-    private static String whisperPrefix(MessageCreateEvent messageCreateEvent) {
-        String first;
+    private static String whisperPrefix(MessageCreateEvent messageCreateEvent, boolean playerIsReceiver, String receiver) {
+        String first = "";
         String last;
         if (Settings.shortMsg) {
             first = ChatColor.DARK_GRAY + "[" +
@@ -234,18 +234,23 @@ public class WhisperListener implements MessageCreateListener {
                     ChatColor.RESET;
 
         } else {
-            first = ChatColor.GRAY + "\u2554" +
-                    ChatColor.DARK_GRAY + "[" +
+            if (playerIsReceiver)
+                first = ChatColor.GRAY + "\u2554";
+            first += ChatColor.DARK_GRAY + "[" +
                     ChatColor.LIGHT_PURPLE + "DC" +
                     ChatColor.DARK_GRAY + "/" +
                     ChatColor.GOLD;
             last = ChatColor.DARK_GRAY + " as " +
                     ChatColor.DARK_AQUA +
-                    "Private Message" +
-                    ChatColor.DARK_GRAY + "]" +
-                    ChatColor.BLACK + ": " +
-                    ChatColor.GRAY + "\n\u255A\u25B6" +
-                    ChatColor.RESET;
+                    "Private Message";
+            if (!playerIsReceiver)
+                last += ChatColor.DARK_GRAY + " to "
+                        + ChatColor.DARK_AQUA + receiver;
+            last += ChatColor.DARK_GRAY + "]" +
+                    ChatColor.BLACK + ": ";
+            if (playerIsReceiver)
+                last += ChatColor.GRAY + "\n\u255A\u25B6";
+            last += ChatColor.RESET;
 
         }
         return first +
