@@ -39,9 +39,11 @@ public class JoinListener implements Listener {
                             // Greeting the player with his/her name
                             "Hello " + ChatColor.GREEN + playerJoinEvent.getPlayer().getDisplayName() + ChatColor.AQUA + "!\n" +
                             // Adding the warning
-                            ChatColor.RED +
+                            ChatColor.GOLD +
                             "    This server is using MCDC version " + Settings.version + "!\n" +
-                            "    Be aware that any chat messages that you send are going to be send to a discord channel!" +
+                            ChatColor.RED +
+                            "    Be aware that any chat messages that you send are going to be send to a discord channel!\n" +
+                            ChatColor.AQUA +
                             "    To create a link with your discord account, use " + ChatColor.GRAY + "/link" +
                             ChatColor.RESET
             );
