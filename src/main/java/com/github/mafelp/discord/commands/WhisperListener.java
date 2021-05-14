@@ -139,6 +139,7 @@ public class WhisperListener implements MessageCreateListener {
                     if (userReceiver == null) {
                         Logging.debug("Could not get user by ID " + userID);
                         noAccountEmbed.addField("NoSuchUser", "No Discord Account could be found for the user with ID " + userID);
+                        messageCreateEvent.getChannel().sendMessage(noAccountEmbed);
                         return;
                     }
 
@@ -148,6 +149,7 @@ public class WhisperListener implements MessageCreateListener {
                     if (optionalReceiverAccount.isEmpty()) {
                         Logging.debug("Discord User " + userReceiver.getName() + " does not have an account. Sending noAccountEmbed.");
                         noAccountEmbed.addField("No Account", "Discord user " + userReceiver.getName() + " does not have a linked minecraft account. They should use \"" + discordCommandPrefix + "link\" to get one!");
+                        messageCreateEvent.getChannel().sendMessage(noAccountEmbed);
                         return;
                     }
                     receiver = optionalReceiverAccount.get();
