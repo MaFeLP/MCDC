@@ -136,7 +136,7 @@ public class WhisperListener implements MessageCreateListener {
                 Logging.debug("Found Account with tag " + receiver.getUsername());
             } else {
                 try {
-                    User userReceiver = discordApi.getUserById(Long.getLong(userID.toString())).join();
+                    User userReceiver = discordApi.getUserById(Long.parseLong(userID.toString())).join();
 
                     if (userReceiver == null) {
                         Logging.debug("Could not get user by ID " + userID);
