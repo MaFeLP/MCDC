@@ -121,6 +121,7 @@ public class AccountCommand implements CommandExecutor {
                         for (char forbidden : forbiddenCharacters) {
                             if (forbidden == c) {
                                 commandSender.sendMessage(prefix + ChatColor.RED + "Sorry, you are not allowed to have these characters in your name: \\ \"'<>#!@$%^&*()_/+=[]{}|");
+                                return true;
                             }
                         }
 
