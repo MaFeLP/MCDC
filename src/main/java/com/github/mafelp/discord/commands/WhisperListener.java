@@ -27,6 +27,7 @@ import static com.github.mafelp.utils.Settings.discordCommandPrefix;
 public class WhisperListener implements MessageCreateListener {
     /**
      * The method that initializes the unlinking.
+     *
      * @param messageCreateEvent The
      */
     @Override
@@ -62,15 +63,13 @@ public class WhisperListener implements MessageCreateListener {
                 .addField("Alternative usage", discordCommandPrefix + "whister <@discord name> \"<message>\"")
                 .addField("Functionality", "Whispers your message to the minecraft account of the receiver.")
                 .setColor(new Color(0xFFB500))
-                .setFooter("Help message for command \"whisper\"")
-                ;
+                .setFooter("Help message for command \"whisper\"");
 
         // Embed to send, when the bot does not have the required Permissions.
         EmbedBuilder noAccountEmbed = new EmbedBuilder()
                 .setAuthor(messageCreateEvent.getMessageAuthor())
                 .setTitle("Error!")
-                .setColor(Color.RED)
-                ;
+                .setColor(Color.RED);
 
         // If the message is empty/if the arguments are none, return
         if (command.getCommand() == null)
@@ -93,8 +92,7 @@ public class WhisperListener implements MessageCreateListener {
                     .setAuthor(messageCreateEvent.getMessageAuthor())
                     .setTitle("Error!")
                     .setColor(Color.RED)
-                    .addField("Not a private message error", "This command can only be used via direct message or in group messages with this bot.")
-                    ;
+                    .addField("Not a private message error", "This command can only be used via direct message or in group messages with this bot.");
 
             messageCreateEvent.getChannel().sendMessage(notAPrivateMessage);
             return;
@@ -123,7 +121,7 @@ public class WhisperListener implements MessageCreateListener {
             }
 
             StringBuilder userID = new StringBuilder();
-            for (char c: command.getStringArgument(0).get().toCharArray()) {
+            for (char c : command.getStringArgument(0).get().toCharArray()) {
                 if (c != '<' && c != '>' && c != '!' && c != '@')
                     userID.append(c);
             }
@@ -131,7 +129,7 @@ public class WhisperListener implements MessageCreateListener {
             Account receiver;
             Optional<Account> optionalAccount = Account.getByUsername(command.getStringArgument(0).get());
 
-            if (optionalAccount.isPresent()){
+            if (optionalAccount.isPresent()) {
                 receiver = optionalAccount.get();
                 Logging.debug("Found Account with tag " + receiver.getUsername());
             } else {
@@ -189,6 +187,7 @@ public class WhisperListener implements MessageCreateListener {
 
             Logging.debug("Building whisper message...");
             StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.append(whisperPrefix(messageCreateEvent));
             for (int i = 1; i < command.getArguments().length; ++i) {
                 if (i != 1)
                     messageBuilder.append(' ');
@@ -211,8 +210,46 @@ public class WhisperListener implements MessageCreateListener {
                             .setAuthor(discordApi.getYourself())
                             .setTitle("Error!")
                             .setColor(Color.RED)
-                            .addField("UserParsingError","You are not a user, so you can't have an account!")
+                            .addField("UserParsingError", "You are not a user, so you can't have an account!")
             );
         }
+    }
+
+    /**
+     * The method that creates a prefix for whispered messages, according to the settings. <br>
+     * This prefix can either be a one-liner or a two-liner.
+     * @param messageCreateEvent The event that stores all the information about the whisper message sender.
+     * @return The prefix to add to the message.
+     */
+    private static String whisperPrefix(MessageCreateEvent messageCreateEvent) {
+        String first;
+        String last;
+        if (Settings.shortMsg) {
+            first = ChatColor.DARK_GRAY + "[" +
+                    ChatColor.LIGHT_PURPLE + "DC" +
+                    ChatColor.DARK_GRAY + "/" +
+                    ChatColor.GOLD;
+            last = ChatColor.DARK_GRAY + "]" +
+                    ChatColor.BLACK + ": " +
+                    ChatColor.RESET;
+
+        } else {
+            first = ChatColor.GRAY + "\u2554" +
+                    ChatColor.DARK_GRAY + "[" +
+                    ChatColor.LIGHT_PURPLE + "DC" +
+                    ChatColor.DARK_GRAY + "/" +
+                    ChatColor.GOLD;
+            last = ChatColor.DARK_GRAY + " as " +
+                    ChatColor.DARK_AQUA +
+                    "Private Message" +
+                    ChatColor.DARK_GRAY + "]" +
+                    ChatColor.BLACK + ": " +
+                    ChatColor.GRAY + "\n\u255A\u25B6" +
+                    ChatColor.RESET;
+
+        }
+        return first +
+                messageCreateEvent.getMessageAuthor().getDisplayName() +
+                last;
     }
 }
