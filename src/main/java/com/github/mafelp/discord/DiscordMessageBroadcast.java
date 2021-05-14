@@ -1,5 +1,6 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.accounts.Account;
 import com.github.mafelp.minecraft.skins.Skin;
 import com.github.mafelp.utils.Settings;
 import org.bukkit.entity.Player;
@@ -50,10 +51,13 @@ public class DiscordMessageBroadcast extends Thread {
         // create an embed for the message
         EmbedBuilder embed = new EmbedBuilder()
                 // .setAuthor(messageAuthor.getDisplayName())
-                .setAuthor(messageAuthor.getDisplayName(), "", new Skin(messageAuthor, false).getHead(), ".png")
                 .setColor(Color.YELLOW)
                 .setDescription(message);
 
+        if (Account.getByPlayer(messageAuthor).isPresent())
+            embed.setAuthor(Account.getByPlayer(messageAuthor).get().getUser());
+        else
+            embed.setAuthor(messageAuthor.getDisplayName(), "https://namemc.com/profile/" + messageAuthor.getName(), new Skin(messageAuthor, false).getHead(), ".png");
         if (Settings.getConfiguration().getBoolean("showFooterInMessages", true))
                 embed.setFooter("On " + Settings.serverName);
         // send the embed to all channels in the list
