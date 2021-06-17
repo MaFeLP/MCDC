@@ -87,6 +87,7 @@ public final class Main extends JavaPlugin {
         // for more information read the Javadoc in the specific classes
         pluginManager.registerEvents(new JoinListener(), this);
         pluginManager.registerEvents(new MinecraftChatListener(), this);
+        pluginManager.registerEvents(new CommandListener(), this);
     }
 
     /**

@@ -262,6 +262,8 @@ public class Settings {
         defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", new ArrayList<Long>());
         defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", new ArrayList<Long>());
         defaultConfiguration.set("saveEscapeCharacterInConfig", true);
+        defaultConfiguration.set("sendCommandToDiscord.player", false);
+        defaultConfiguration.set("sendCommandToDiscord.server", false);
 
         return defaultConfiguration;
     }
