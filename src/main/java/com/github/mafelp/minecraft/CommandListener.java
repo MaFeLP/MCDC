@@ -9,10 +9,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
+/**
+ * The class that handles the command sending events.
+ */
 public class CommandListener implements Listener {
+    /**
+     * The method that handles commands executed by a player.
+     * @param playerCommandPreprocessEvent The event passed in by the plugin framework with information about the event.
+     */
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
-        if (!Settings.getConfiguration().getBoolean("sendCommandToDiscord.player")) {
+        if (!Settings.getConfiguration().getBoolean("sendCommandToDiscord.player", false)) {
             Logging.debug("Sending user commands to the discord server is disabled. Not sending command.");
             return;
         }
@@ -24,9 +31,13 @@ public class CommandListener implements Listener {
         discordMessageBroadcast.start();
     }
 
+    /**
+     * The method that handles commands executed in the server's console.
+     * @param serverCommandEvent The event passed in by the plugin framework with information about the event.
+     */
     @EventHandler
     public void onServerCommand(ServerCommandEvent serverCommandEvent) {
-        if (!Settings.getConfiguration().getBoolean("sendCommandToDiscord.server")) {
+        if (!Settings.getConfiguration().getBoolean("sendCommandToDiscord.server", false)) {
             Logging.debug("Sending server commands to the discord server is disabled. Not sending command.");
             return;
         }

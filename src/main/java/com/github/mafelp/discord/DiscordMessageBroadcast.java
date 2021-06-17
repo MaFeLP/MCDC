@@ -31,6 +31,9 @@ public class DiscordMessageBroadcast extends Thread {
      */
     private final String message;
 
+    /**
+     * The type of the broadcast.
+     */
     private final BroadcastType broadcastType;
 
     /**
@@ -171,8 +174,20 @@ public class DiscordMessageBroadcast extends Thread {
     }
 }
 
+/**
+ * The type of the broadcast.
+ */
 enum BroadcastType {
+    /**
+     * A player executed a command.
+     */
     playerCommandBroadcast,
+    /**
+     * The server executed a command.
+     */
     serverCommandBroadcast,
+    /**
+     * A player sent a normal message.
+     */
     chatMessageBroadcast
 }

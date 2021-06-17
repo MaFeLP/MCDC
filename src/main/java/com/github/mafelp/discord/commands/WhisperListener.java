@@ -221,6 +221,9 @@ public class WhisperListener implements MessageCreateListener {
      * The method that creates a prefix for whispered messages, according to the settings. <br>
      * This prefix can either be a one-liner or a two-liner.
      * @param messageCreateEvent The event that stores all the information about the whisper message sender.
+     * @param playerIsReceiver Receiver is a player; if not, it will be the console so don't display line
+     *                         breaks and emoji if this is set to false.
+     * @param receiver The "name" of the receiver.
      * @return The prefix to add to the message.
      */
     private static String whisperPrefix(MessageCreateEvent messageCreateEvent, boolean playerIsReceiver, String receiver) {
