@@ -1,19 +1,17 @@
 # MCDC
 A [Minecraft](https://www.minecraft.net) plugin for [paper servers](https://papermc.io).
 
-## Functions
+## Features
 The bot can currently do all the checked items, unchecked will be implemented in the future.
  - [X] Display discord messages in the minecraft chat
     - [X] Discord messages can be sent to the bot via direct message
     - [X] Discord messages can be sent to any server channel the bot is present on
  - [X] Display minecraft messages in a discord chat
  - [X] managing a "#mincraft-server" channel on a specific discord server
-   - [ ] this includes that only members with a role can see this channel and write in it
- <br><br>
- - [ ] whisper between a discord user and a minecraft user
- - [ ] linking between a discord and a minecraft account
-<div class="alert alert-danger" role="alert">Remember that this plugin is currently in its beta phase!<br>
-All the functionalities will be added in the future!</div>
+   - [X] this includes that only members with a role can see this channel and write in it
+ - [X] whisper between a discord user and a minecraft user
+ - [X] linking between a discord and a minecraft account
+ - [X] Toggle-able: Sending minecraft commands to the discord chats.
 
 ## Installation
 1. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
