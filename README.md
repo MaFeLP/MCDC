@@ -58,12 +58,52 @@ apiToken: 'Your API Token goes here!'
 # Allowed values: any String
 discordCommandPrefix: '.'
 
+# Selects if messages that are commands should be deleted after execution.
+# Allowed values: <true|false>
+deleteDiscordCommandMessages: false
+
 # Discord Channel IDs to broadcast messages to.
 channelIDs:
    - 1234
 
+# Enables accounts and linking.
+# Allowed values <true|false>
+enableLinking: true
+
+# Allow players to list all the accounts.
+# Allowed values <true|false>
+allowListAllAccounts: true
+
+# Decides, if the config value 'serverName' should be displayed in the footer of discord messages.
+# Allowed values <true|false>
+showFooterInMessages: true
+
+# The value that should be displayed below the name
+activity:
+   # If the bot should have an activity.
+   enabled: true
+   # The type of the message, aka. the first word:
+   # can be set to custom, competing, listening, watching, streaming or playing
+   type: listening
+   # The text that should be displayed.
+   message: "your messages 👀"
+
+# If the bot should send a message to the listening channels, if a command was executed by ...
+sendCommandToDiscord:
+   # ... a player.
+   player: false
+   # ... the server.
+   server: false
+
 # Permission section for setting permission levels
 permission:
+   # The permissions on linking and editing accounts.
+   accountEdit:
+      # The OP level needed to remove accounts of players.
+      level: 3
+      # A list of UUIDs of Players who have a wildcard to use this command.
+      allowedUserUUIDs:
+         - a unique ID
 
    # Permission for minecraft command /config
    configEdit:

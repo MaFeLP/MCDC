@@ -55,6 +55,13 @@ activity:
   # The text that should be displayed.
   message: "your messages 👀"
 
+# If the bot should send a message to the listening channels, if a command was executed by ...
+sendCommandToDiscord:
+  # ... a player.
+  player: false
+  # ... the server.
+  server: false
+
 # Permission section for setting permission levels
 permission:
   # The permissions on linking and editing accounts.
