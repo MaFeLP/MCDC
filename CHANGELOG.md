@@ -1,4 +1,23 @@
 # Changelog
+## BIG Account update
+### v0.9.0
+➕ Added Accounts! <br>
+↳ Place an account Tag in your minecraft message, and it will be replaced with a discord ping (if the user has a linked account)! <br>
+↳ Added a new minecraft command `/link`: Link your minecraft and discord accounts! <br>
+↳ Added a new minecraft command `/unlink`: Unlink your minecraft and discord accounts! <br>
+↳ Added a new minecraft command `/account`: Manage your accounts! <br>
+↳ Added a new minecraft command `/whisper`: Whisper to a friend on discord! <br>
+↳ Added a new minecraft command `/dcmsg`: Whisper to a friend on discord! <br>
+↳ Added a new discord command `<prefix>link`: Link your discord to your minecraft! <br>
+↳ Added a new discord command `<prefix>whisper`: Whisper your message to a minecraft player! <br>
+↳ Added a new discord command `<prefix>mcmsg`: Whisper your message to a minecraft player! <br>
+➕ Added some more toggles: <br>
+↳ The bot **can** send message with server commands and player commands to all the channels. <br>
+↳ Toggle, if the footer should be displayed. <br>
+↳ Toggle, if discord command messages should be deleted b the bot. <br>
+
+---
+
 ## Small bug fixes
 ### v0.8.4-beta
 ➕ Added Error message, when then bot does not have the required permissions, to create Channels or/and roles (See issue [29](https://github.com/MaFeLP/MCDC/issues/29)). <br>
@@ -157,7 +176,7 @@
 ## v0.3.1-beta
 ### 🏁 Commenting update!
 ➕ Added building instructions with Java 8 <br>
-➕ Added full Javadoc documentation in [doc](./doc) <br>
+➕ Added full Javadoc documentation in [doc](https://mafelp.github.io/MCDC/doc/development/index.html) <br>
 ➕ Added full commentary to the full code base<br>
 ➕ Added [RoleAdmin.java](./src/main/java/com/github/mafelp/discord/RoleAdmin.java) to prepare for Role management in coming builds
 
