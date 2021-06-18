@@ -12,6 +12,10 @@ The bot can currently do all the checked items, unchecked will be implemented in
  - [X] whisper between a discord user and a minecraft user
  - [X] linking between a discord and a minecraft account
  - [X] Toggle-able: Sending minecraft commands to the discord chats.
+ <br><br>
+ - [ ] A message in a channel that displays all online Members.
+ - [ ] Tab completion in Minecraft
+ - [ ] Migrate to Slash Commands on discord, as soon as the API is ready.
 
 ## Installation
 1. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
