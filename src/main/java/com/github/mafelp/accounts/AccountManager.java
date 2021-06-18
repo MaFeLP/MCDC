@@ -107,7 +107,8 @@ public class AccountManager {
      * @return the list of all linked Accounts.
      */
     public static List<Account> addAccount(Account account) {
-        linkedAccounts.add(account);
+        if (!linkedAccounts.contains(account))
+            linkedAccounts.add(account);
         return linkedAccounts;
     }
 

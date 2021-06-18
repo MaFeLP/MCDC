@@ -26,6 +26,9 @@ public class MinecraftLinker {
      * @return The Token used to link the account in discord.
      */
     public static int getLinkToken(Player player) {
+        if (Account.getByPlayer(player).isPresent())
+            return -1;
+
         if (linkableAccounts.containsKey(player))
             return linkableAccounts.get(player);
         else {

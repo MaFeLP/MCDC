@@ -100,6 +100,24 @@ public class LinkListener implements MessageCreateListener {
                 .setFooter("More information on linking here: https://mafelp.github.io/MCDC/linking")
                 ;
 
+        EmbedBuilder alreadyRegistered = new EmbedBuilder()
+                .setAuthor(event.getMessageAuthor())
+                .setColor(new Color(0xFF3C00))
+                .setTitle("Account Already Registered!")
+                .setFooter("More information on linking here: https://mafelp.github.io/MCDC/linking")
+                ;
+
+        if (Account.getByDiscordUser(event.getMessageAuthor().asUser().get()).isPresent()) {
+            Account account = Account.getByDiscordUser(event.getMessageAuthor().asUser().get()).get();
+
+            alreadyRegistered.setDescription("Sorry, but your Discord Account is already linked to the minecraft user " + account.getPlayer().getName() + "!\n" +
+                    "Use \"/unlink\" in Minecraft or \"" + Settings.getConfiguration().get("discordCommandPrefix") + "unlink\" to unlink your accounts!");
+
+            event.getMessageAuthor().asUser().get().sendMessage(alreadyRegistered);
+
+            return;
+        }
+
         if (command.getStringArgument(1).isPresent()) {
             Logging.debug("User \"" + event.getMessageAuthor().getDisplayName() + "\" used the command 'link' wrong. Sending help embed...");
             event.getMessage().reply(helpMessage);

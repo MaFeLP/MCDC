@@ -33,9 +33,18 @@ public class Link implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         // Check if the command Sender is a player.
-        if (sender instanceof Player) {
-            // If the CommandSender is a player, we can safely cast it to a player.
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
+            if (Account.getByPlayer(player).isPresent()) {
+                // If the CommandSender is a player, we can safely cast it to a player.
+                Account account = Account.getByPlayer(player).get();
+
+                final String message = "Sorry, but your Minecraft Account is already linked to the discord user " + account.getUser().getName() + "!\n" +
+                        "Use \"/unlink\" in Minecraft or \"" + Settings.getConfiguration().get("discordCommandPrefix") + "unlink\" to unlink your accounts!";
+
+                player.sendMessage(prefix + ChatColor.RED + message);
+
+                return true;
+            }
 
             // If no arguments are given, return and send the user a token.
             if (args == null) {
