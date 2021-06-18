@@ -250,6 +250,8 @@ public class Settings {
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
         defaultConfiguration.set("deleteDiscordCommandMessages", false);
+        defaultConfiguration.set("channelIDs", new ArrayList<Long>().add(1234L));
+        defaultConfiguration.set("enableLinking", true);
         defaultConfiguration.set("allowListAllAccounts", true);
         defaultConfiguration.set("showFooterInMessages", true);
         defaultConfiguration.set("activity.enabled", true);
