@@ -23,7 +23,7 @@ If this command does not throw you an error, Maven is installed.
 - One core CPU with clock speed higher than 2 GHz
 
 ### Recommended
-- Java version 15 or higher
+- Java version 16 or higher
 - Maven version 3.6.3 or higher
 - 8 GM of RAM
 - 4 or more CPU cores with a clock speed higher than 3 GHz
