@@ -92,7 +92,6 @@ public class DiscordMain extends Thread {
                     .addListener(CreateChannelListener::new)
                     .addListener(CreateRoleListener::new)
                     .addListener(SetupListener::new)
-                    .addListener(UnlinkListener::new)
                     .addListener(WhisperListener::new)
                     .addListener(MainSlashCommandListener::new)
                     // log the bot in and join the servers
@@ -130,6 +129,7 @@ public class DiscordMain extends Thread {
     }
 
     private void registerSlashCommands() {
+        // Link command
         SlashCommand.with("link", "A command to link your discord and minecraft accounts",
                 Collections.singletonList(
                         SlashCommandOption.create(SlashCommandOptionType.INTEGER, "token", "The token used to link your accounts", false)
@@ -137,6 +137,12 @@ public class DiscordMain extends Thread {
         ).setDefaultPermission(true)
         .createGlobal(discordApi)
         .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+
+        // Unlink command
+        SlashCommand.with("unlink", "Unlink your discord account from your minecraft account")
+                .setDefaultPermission(true)
+                .createGlobal(discordApi)
+                .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
     }
 
     /**

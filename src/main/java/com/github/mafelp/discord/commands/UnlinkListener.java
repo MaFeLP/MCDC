@@ -2,141 +2,67 @@ package com.github.mafelp.discord.commands;
 
 import com.github.mafelp.accounts.Account;
 import com.github.mafelp.accounts.AccountManager;
-import com.github.mafelp.utils.Command;
-import com.github.mafelp.utils.CommandParser;
 import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Settings;
-import com.github.mafelp.utils.exceptions.CommandNotFinishedException;
-import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
-import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
+import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 
 import java.awt.*;
 import java.util.Optional;
 
-import static com.github.mafelp.utils.Settings.*;
+import static com.github.mafelp.utils.Settings.discordCommandPrefix;
 
 /**
  * The class used to listen in discord and unlinks your account.
  */
-public class UnlinkListener implements MessageCreateListener {
+public class UnlinkListener{
     /**
      * The method that initializes the unlinking.
-     * @param messageCreateEvent The
+     * @param event The event that hold information about this specific command.
      */
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent) {
-        // If the message is sent by the bot, return
-        if (messageCreateEvent.getMessageAuthor().isYourself()) {
-            return;
-        }
-
-        // If message does not start with the command prefix, return
-        // if (event.getReadableMessageContent().startsWith(discordCommandPrefix) ||
-        //        event.getReadableMessageContent() == null)
-        //    return;
-
-
-        // Gets the content of the message as strings (prints it, if debug is enabled)
-        String content = messageCreateEvent.getReadableMessageContent();
-
-        // If the command could not be passed, exit. Error handling is done by the CreateChannelListener.
-        Command command;
-        try {
-            command = CommandParser.parseFromString(content);
-        } catch (CommandNotFinishedException | NoCommandGivenException e) {
-            // Logging.logException(e, "Error parsing hte command from the string...");
-            return;
-        }
-
-        // help message for wrong usage
-        EmbedBuilder helpMessage = new EmbedBuilder()
-                .setAuthor(messageCreateEvent.getMessageAuthor())
-                .setTitle("Error")
-                .addField("Usage", discordCommandPrefix + "unlink")
-                .addField("Functionality", "Unlinks your discord account from your minecraft account.")
-                .setColor(new Color(0xFFB500))
-                .setFooter("Help message for command \"unlink\"")
-                ;
-
+    public static void onSlashCommand(SlashCommandCreateEvent event) {
+        User author = event.getSlashCommandInteraction().getUser();
         // the embed sent on successful execution of the command.
         EmbedBuilder successEmbed = new EmbedBuilder()
-                .setAuthor(messageCreateEvent.getMessageAuthor())
+                .setAuthor(author)
                 .setTitle("Success!")
                 .setColor(Color.GREEN)
                 ;
 
         // Embed to send, when the bot does not have the required Permissions.
         EmbedBuilder noAccountEmbed = new EmbedBuilder()
-                .setAuthor(messageCreateEvent.getMessageAuthor())
+                .setAuthor(author)
                 .setTitle("Error!")
                 .addField("NoAccountError","Sorry, you don't have an account to unlink! Use \"" + discordCommandPrefix + "link\" to create one!")
                 .setColor(Color.RED)
                 ;
 
-        // If the message is empty/if the arguments are none, return
-        if (command.getCommand() == null)
-            return;
+        Logging.debug("User \"" + author.getName() + "\" executed command \"unlink\". Parsing User...");
 
-        // If the command is not equal to setup, do nothing and return.
-        if (!command.getCommand().equalsIgnoreCase(discordCommandPrefix + "unlink"))
-            return;
+        Optional<Account> optionalAccount = Account.getByDiscordUser(author);
 
-
-        // Deletes the original message, if specified in the configuration under deleteDiscordCommandMessages
-        if (Settings.getConfiguration().getBoolean("deleteDiscordCommandMessages") && messageCreateEvent.isServerMessage()) {
-            Logging.debug("Deleting original command message with ID: " + messageCreateEvent.getMessage().getIdAsString());
-            messageCreateEvent.getMessage().delete("Specified in MCDC configuration: Was a command message.").join();
-            Logging.debug("Deleted the original command message.");
-        }
-
-        // On wrong usage, aka. when you pass arguments.
-        if (command.getStringArgument(0).isPresent()) {
-            messageCreateEvent.getChannel().sendMessage(helpMessage);
+        // If the user does not have an account.
+        if (optionalAccount.isEmpty()) {
+            Logging.debug("User \"" + author.getName() + "\" does not have an account to unlink... Sending noAccountEmbed...");
+            event.getSlashCommandInteraction().createImmediateResponder().addEmbed(noAccountEmbed).respond();
             return;
         }
 
-        // Only execute if te message Author is a user and not a webhook.
-        if (messageCreateEvent.getMessageAuthor().asUser().isPresent()) {
-            Logging.debug("User \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" executed command \"unlink\". Parsing User...");
-            User user = messageCreateEvent.getMessageAuthor().asUser().get();
+        Logging.debug("Getting the account for user \"" + author.getName() + "\"...");
+        // Get the account and some information about it.
+        Account account = optionalAccount.get();
 
-            Optional<Account> optionalAccount = Account.getByDiscordUser(user);
+        String minecraftName = account.getPlayer().getName();
+        String mentionTag = account.getMentionTag();
+        String username = account.getUsername();
 
-            // If the user does not have an account.
-            if (optionalAccount.isEmpty()) {
-                Logging.debug("User \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" does not have an account to unlink... Sending noAccountEmbed...");
-                messageCreateEvent.getChannel().sendMessage(noAccountEmbed);
-                return;
-            }
+        Logging.info("Removing account \"" + username + "\"...");
+        // Then remove the account.
+        AccountManager.removeAccount(account);
 
-            Logging.debug("Getting the account for user \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\"...");
-            // Get the account and some information about it.
-            Account account = optionalAccount.get();
+        successEmbed.addField("Successful Unlinking","Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);
 
-            String minecraftName = account.getPlayer().getName();
-            String mentionTag = account.getMentionTag();
-            String username = account.getUsername();
-
-            Logging.info("Removing account \"" + username + "\"...");
-            // Then remove the account.
-            AccountManager.removeAccount(account);
-
-            successEmbed.addField("Successful Unlinking","Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);
-
-            Logging.info("Removed account \"" + username + "\"... Sending success embed...");
-            messageCreateEvent.getChannel().sendMessage(successEmbed);
-        } else {
-            Logging.debug("MessageAuthor \"" + messageCreateEvent.getMessageAuthor().getDisplayName() + "\" is not a User! Sending Error embed...");
-            messageCreateEvent.getChannel().sendMessage(
-                    new EmbedBuilder()
-                    .setAuthor(discordApi.getYourself())
-                    .setTitle("Error!")
-                    .setColor(Color.RED)
-                    .addField("UserParsingError","You are not a user, so you can't have an account!")
-            );
-        }
+        Logging.info("Removed account \"" + username + "\"... Sending success embed...");
+        event.getSlashCommandInteraction().createImmediateResponder().addEmbed(successEmbed).respond();
     }
 }

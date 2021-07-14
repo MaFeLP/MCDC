@@ -9,6 +9,7 @@ public class MainSlashCommandListener implements SlashCommandCreateListener {
         switch (slashCommandCreateEvent.getSlashCommandInteraction().getCommandName()) {
             case "setup" -> {}
             case "link" -> LinkListener.onSlashCommand(slashCommandCreateEvent);
+            case "unlink" -> UnlinkListener.onSlashCommand(slashCommandCreateEvent);
             default -> {}
         }
     }
