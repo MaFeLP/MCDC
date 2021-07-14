@@ -42,6 +42,14 @@ public class DiscordListener implements MessageCreateListener {
         if (event.getReadableMessageContent().startsWith(Settings.discordCommandPrefix))
             return;
 
+        /*
+         * If the message is empty and only houses an embed.
+         *
+         * This embed can not be displayed in the in-game chat and would therefore be an empty message.
+         */
+        if (event.getReadableMessageContent().equalsIgnoreCase(""))
+            return;
+
         // Send the readable content of the message into the minecraft chat
         // for everyone to read.
 
