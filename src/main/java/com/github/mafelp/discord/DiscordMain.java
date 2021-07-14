@@ -15,6 +15,7 @@ import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
@@ -89,10 +90,9 @@ public class DiscordMain extends Thread {
                     .setToken(Settings.getApiToken())
                     // register listeners
                     .addListener(DiscordListener::new)
-                    .addListener(CreateChannelListener::new)
-                    .addListener(CreateRoleListener::new)
-                    .addListener(SetupListener::new)
-                    .addListener(WhisperListener::new)
+                    //.addListener(CreateChannelListener::new)
+                    //.addListener(CreateRoleListener::new)
+                    //.addListener(SetupListener::new)
                     .addListener(MainSlashCommandListener::new)
                     // log the bot in and join the servers
                     .login().join();
@@ -140,6 +140,24 @@ public class DiscordMain extends Thread {
 
         // Unlink command
         SlashCommand.with("unlink", "Unlink your discord account from your minecraft account")
+                .setDefaultPermission(true)
+                .createGlobal(discordApi)
+                .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+
+        // Whisper and mcmsg commands
+        SlashCommand.with("whisper", "Whisper to your friends on the minecraft server!",
+                Arrays.asList(
+                        SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to whisper your message to", true),
+                        SlashCommandOption.create(SlashCommandOptionType.STRING, "message", "What you want to whisper", true)
+                ))
+                .setDefaultPermission(true)
+                .createGlobal(discordApi)
+                .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+        SlashCommand.with("mcmsg", "Whisper to your friends on the minecraft server!",
+                Arrays.asList(
+                        SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to whisper your message to", true),
+                        SlashCommandOption.create(SlashCommandOptionType.STRING, "message", "What you want to whisper", true)
+                ))
                 .setDefaultPermission(true)
                 .createGlobal(discordApi)
                 .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
