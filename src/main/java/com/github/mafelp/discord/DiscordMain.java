@@ -10,8 +10,12 @@ import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
+import org.javacord.api.interaction.SlashCommand;
+import org.javacord.api.interaction.SlashCommandOption;
+import org.javacord.api.interaction.SlashCommandOptionType;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CompletionException;
@@ -88,11 +92,13 @@ public class DiscordMain extends Thread {
                     .addListener(CreateChannelListener::new)
                     .addListener(CreateRoleListener::new)
                     .addListener(SetupListener::new)
-                    .addListener(LinkListener::new)
                     .addListener(UnlinkListener::new)
                     .addListener(WhisperListener::new)
+                    .addListener(MainSlashCommandListener::new)
                     // log the bot in and join the servers
                     .login().join();
+
+            registerSlashCommands();
 
             Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
             Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite(botPermissions));
@@ -123,6 +129,16 @@ public class DiscordMain extends Thread {
         }
     }
 
+    private void registerSlashCommands() {
+        SlashCommand.with("link", "A command to link your discord and minecraft accounts",
+                Collections.singletonList(
+                        SlashCommandOption.create(SlashCommandOptionType.INTEGER, "token", "The token used to link your accounts", false)
+                )
+        ).setDefaultPermission(true)
+        .createGlobal(discordApi)
+        .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+    }
+
     /**
      * Shutdown method to disconnect the bot instance
      */
@@ -137,7 +153,9 @@ public class DiscordMain extends Thread {
         Logging.info(ChatColor.DARK_GRAY +
                 "Shutting down Discord Instance...");
         // Disconnect the bot / shut the bot down
-        Settings.discordApi.disconnect();
+        try {
+            Settings.discordApi.disconnect();
+        } catch (IllegalStateException ignored) {}
         Settings.discordApi = null;
     }
 }
