@@ -64,7 +64,6 @@ public class CreateChannelListener {
                 .setFooter("Made by MaFeLP: https://github.com/mafelp")
                 ;
 
-        // TODO add permission to the command
         // get the first channel argument and checks, if it 'empty', but it exists.
         if (event.getSlashCommandInteraction().getSecondOptionStringValue().isEmpty()) {
             Logging.info("User \"" + author.getName() + "\" tried to execute command \"createChannel\"!");

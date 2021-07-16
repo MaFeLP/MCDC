@@ -154,6 +154,7 @@ public class DiscordMain extends Thread {
                 )
         ));
 
+        // Create role and create channel commands
         slashCommands.add(SlashCommand.with("create", "Create a channel/role for syncing minecraft and discord messages",
                 Arrays.asList(
                         SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "channel", "Create a channel to sync minecraft messages to",
@@ -165,6 +166,7 @@ public class DiscordMain extends Thread {
                                         SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name the channel should have", true)
                                 ))
                 ))
+        // TODO make command only executable with certain permissions
         //.setDefaultPermission(false)
         );
 
