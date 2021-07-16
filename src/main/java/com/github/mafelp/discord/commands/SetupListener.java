@@ -174,9 +174,16 @@ public class SetupListener implements MessageCreateListener {
                 return;
             }
 
-            ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
-
-            Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
+            // TODO migrate to slash commands
+            // ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getServerTextChannel().get(), welcomeEmbed);
+            //Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getServer().get().getName() + "\"!");
+            Logging.info(ChatColor.RED + "Creating a text channel with setup is currently not supported. Please try again later.");
+            event.getServerTextChannel().get().sendMessage(new EmbedBuilder()
+                    .setAuthor(event.getApi().getYourself())
+                    .setColor(Color.RED)
+                    .setTitle("Feature unavailable")
+                    .setDescription("Due to the current migration process to slash commands, it is currently not supported to create text channels with the setup command. You can still do this manually, by using the \"/create channel\" command.")
+            ).join();
 
         // If this exception is thrown, the bot either does not have the correct permissions to create channels and Roles,
         // send the user an embed explaining the issue.
