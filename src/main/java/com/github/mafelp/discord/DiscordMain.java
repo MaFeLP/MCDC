@@ -154,6 +154,20 @@ public class DiscordMain extends Thread {
                 )
         ));
 
+        slashCommands.add(SlashCommand.with("create", "Create a channel/role for syncing minecraft and discord messages",
+                Arrays.asList(
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "channel", "Create a channel to sync minecraft messages to",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name the channel should have", true)
+                                )),
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "role", "Create a role which you can give the permission to read/write to channels",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name the channel should have", true)
+                                ))
+                ))
+        //.setDefaultPermission(false)
+        );
+
         // Do the actual registering of the slash commands.
         slashCommands.forEach(slashCommandBuilder ->
                 slashCommandBuilder.createGlobal(discordApi).thenAccept(slashCommand ->
