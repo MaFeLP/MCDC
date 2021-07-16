@@ -11,14 +11,12 @@ import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
 import org.javacord.api.interaction.SlashCommand;
+import org.javacord.api.interaction.SlashCommandBuilder;
 import org.javacord.api.interaction.SlashCommandOption;
 import org.javacord.api.interaction.SlashCommandOptionType;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletionException;
 
 import static com.github.mafelp.utils.Settings.discordApi;
@@ -101,6 +99,7 @@ public class DiscordMain extends Thread {
 
             Logging.info(ChatColor.GREEN + "Successfully started the discord instance!");
             Logging.info(ChatColor.RESET + "The bot invitation token is: " + discordApi.createBotInvite(botPermissions));
+            Logging.info(ChatColor.YELLOW + "If you do not see any slash commands in your server, click this link and authorise this bot for your server: https://discord.com/api/oauth2/authorize?client_id=" + discordApi.getClientId() + "&scope=applications.commands");
         } catch (IllegalStateException | CompletionException exception) {
             // If the API creation fails,
             // log an error to the console.
@@ -129,38 +128,37 @@ public class DiscordMain extends Thread {
     }
 
     private void registerSlashCommands() {
+        List<SlashCommandBuilder> slashCommands = new ArrayList<>();
+
         // Link command
-        SlashCommand.with("link", "A command to link your discord and minecraft accounts",
+        slashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
                 Collections.singletonList(
                         SlashCommandOption.create(SlashCommandOptionType.INTEGER, "token", "The token used to link your accounts", false)
                 )
-        ).setDefaultPermission(true)
-        .createGlobal(discordApi)
-        .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+        ));
 
         // Unlink command
-        SlashCommand.with("unlink", "Unlink your discord account from your minecraft account")
-                .setDefaultPermission(true)
-                .createGlobal(discordApi)
-                .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+        slashCommands.add(SlashCommand.with("unlink", "Unlink your discord account from your minecraft account"));
 
         // Whisper and mcmsg commands
-        SlashCommand.with("whisper", "Whisper to your friends on the minecraft server!",
+        slashCommands.add(SlashCommand.with("whisper", "Whisper to your friends on the minecraft server!",
                 Arrays.asList(
                         SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to whisper your message to", true),
                         SlashCommandOption.create(SlashCommandOptionType.STRING, "message", "What you want to whisper", true)
                 ))
-                .setDefaultPermission(true)
-                .createGlobal(discordApi)
-                .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
-        SlashCommand.with("mcmsg", "Whisper to your friends on the minecraft server!",
+        );
+        slashCommands.add(SlashCommand.with("mcmsg", "Whisper to your friends on the minecraft server!",
                 Arrays.asList(
                         SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to whisper your message to", true),
                         SlashCommandOption.create(SlashCommandOptionType.STRING, "message", "What you want to whisper", true)
-                ))
-                .setDefaultPermission(true)
-                .createGlobal(discordApi)
-                .thenAccept(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+                )
+        ));
+
+        // Do the actual registering of the slash commands.
+        slashCommands.forEach(slashCommandBuilder ->
+                slashCommandBuilder.createGlobal(discordApi).thenAccept(slashCommand ->
+                    Logging.info("Added global slash command \"" + slashCommand.getName() + "\"")
+        ));
     }
 
     /**
