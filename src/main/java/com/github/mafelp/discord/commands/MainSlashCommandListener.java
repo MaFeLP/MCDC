@@ -10,7 +10,7 @@ public class MainSlashCommandListener implements SlashCommandCreateListener {
     public void onSlashCommandCreate(SlashCommandCreateEvent slashCommandCreateEvent) {
         Logging.debug("Slash command interaction caught: " + slashCommandCreateEvent.getSlashCommandInteraction().getCommandName());
         switch (slashCommandCreateEvent.getSlashCommandInteraction().getCommandName()) {
-            case "setup" -> {}
+            case "setup" -> SetupListener.onSlashCommand(slashCommandCreateEvent);
             case "link" -> LinkListener.onSlashCommand(slashCommandCreateEvent);
             case "unlink" -> UnlinkListener.onSlashCommand(slashCommandCreateEvent);
             case "whisper", "mcmsg" -> WhisperListener.onSlashCommand(slashCommandCreateEvent);
