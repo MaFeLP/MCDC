@@ -111,7 +111,6 @@ public class SetupListener {
 
             ServerTextChannel serverTextChannel = ChannelAdmin.createChannel(name, event.getSlashCommandInteraction().getServer().get(), "Minecraft Cross platform communication.", successEmbed, event.getSlashCommandInteraction().createImmediateResponder(), welcomeEmbed);
             Logging.info("Added channel \"" + serverTextChannel.getName() + "\" and role \"" + role.getName() + "\" to server \"" + event.getSlashCommandInteraction().getServer().get() + "\"!");
-            Logging.info(ChatColor.RED + "Creating a text channel with setup is currently not supported. Please try again later.");
 
         // If this exception is thrown, the bot either does not have the correct permissions to create channels and Roles,
         // send the user an embed explaining the issue.

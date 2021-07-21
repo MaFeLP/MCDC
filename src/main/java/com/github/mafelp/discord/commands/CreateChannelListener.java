@@ -64,14 +64,24 @@ public class CreateChannelListener {
                 .setFooter("Made by MaFeLP: https://github.com/mafelp")
                 ;
 
-        // get the first channel argument and checks, if it 'empty', but it exists.
-        if (event.getSlashCommandInteraction().getSecondOptionStringValue().isEmpty()) {
+        // Checks if the first argument after the first argument exists.
+        if (event.getSlashCommandInteraction().getFirstOption().isEmpty() ||
+                event.getSlashCommandInteraction().getFirstOption().get().getFirstOption().isEmpty()) {
             Logging.info("User \"" + author.getName() + "\" tried to execute command \"createChannel\"!");
             event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();
             return;
         }
 
-        String name = event.getSlashCommandInteraction().getSecondOptionStringValue().get();
+        // Gets the first argument after the first argument and then gets the it as a string
+        var secondOption = event.getSlashCommandInteraction().getFirstOption().get().getFirstOption().get();
+        String name = secondOption.getStringValue().get();
+
+        if (secondOption.getStringValue().isEmpty()) {
+            Logging.info("User \"" + author.getName() + "\" tried to execute command \"createChannel\"!");
+            event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();
+            return;
+        }
+
         if (name.equalsIgnoreCase("")) {
             Logging.info("User \"" + author.getName() + "\" tried to execute command \"createChannel\"!");
             event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();

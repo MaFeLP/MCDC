@@ -79,9 +79,20 @@ public class CreateRoleListener {
             return;
         }
 
-        // If the user passed a wrong number of arguments, send the help message and exit.
-        if (event.getSlashCommandInteraction().getSecondOptionStringValue().isEmpty()) {
-            info("Person " + ChatColor.GRAY + author.getName() + ChatColor.RESET + " used the command createRole wrong. Sending help embed.");
+        // Checks if the first argument after the first argument exists.
+        if (event.getSlashCommandInteraction().getFirstOption().isEmpty() ||
+                event.getSlashCommandInteraction().getFirstOption().get().getFirstOption().isEmpty()) {
+            Logging.info("User \"" + author.getName() + "\" tried to execute command \"create role\"!");
+            event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();
+            return;
+        }
+
+        // Gets the first argument after the first argument and then gets the it as a string
+        var secondOption = event.getSlashCommandInteraction().getFirstOption().get().getFirstOption().get();
+        String name = secondOption.getStringValue().get();
+
+        if (secondOption.getStringValue().isEmpty()) {
+            Logging.info("User \"" + author.getName() + "\" tried to execute command \"create role\"!");
             event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();
             return;
         }
@@ -92,7 +103,7 @@ public class CreateRoleListener {
         // Try creating the new Role
         try {
             if (event.getSlashCommandInteraction().getChannel().isPresent() && event.getSlashCommandInteraction().getChannel().get().asServerTextChannel().isPresent()) {
-                Role role = RoleAdmin.createNewRole(event.getSlashCommandInteraction().getServer().get(), event.getSlashCommandInteraction().getSecondOptionStringValue().get(), successEmbed, event.getSlashCommandInteraction().createImmediateResponder());
+                Role role = RoleAdmin.createNewRole(event.getSlashCommandInteraction().getServer().get(), name, successEmbed, event.getSlashCommandInteraction().createImmediateResponder());
                 author.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
                 info("Added role \"" + role.getName() + "\" to player \"" + author.getName() + "\".");
             } else {
