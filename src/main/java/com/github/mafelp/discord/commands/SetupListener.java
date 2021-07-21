@@ -118,7 +118,7 @@ public class SetupListener implements MessageCreateListener {
         // Checks the permission of the message author.
         if (!CheckPermission.hasAdminPermission(event.getMessageAuthor())) {
             Logging.info("User \"" + event.getMessageAuthor().getDisplayName() + "\" tried to execute command \"setup\"!");
-            event.getChannel().sendMessage(CheckPermission.getPermissionDeniedEmbed(event.getMessageAuthor(), "setup the server"));
+            //event.getChannel().sendMessage(CheckPermission.getPermissionDeniedEmbed(event.getMessageAuthor(), "setup the server"));
             return;
         }
 
@@ -161,7 +161,7 @@ public class SetupListener implements MessageCreateListener {
 
         // try to create the role.
         try {
-            Role role = RoleAdmin.createNewRole(event.getServer().get(), name, null, event.getChannel().asServerTextChannel().get());
+            Role role = RoleAdmin.createNewRole(event.getServer().get(), name, null, null);
 
             event.getMessageAuthor().asUser().ifPresent(user -> {
                 user.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");

@@ -92,7 +92,7 @@ public class CreateRoleListener {
         // Try creating the new Role
         try {
             if (event.getSlashCommandInteraction().getChannel().isPresent() && event.getSlashCommandInteraction().getChannel().get().asServerTextChannel().isPresent()) {
-                Role role = RoleAdmin.createNewRole(event.getSlashCommandInteraction().getServer().get(), event.getSlashCommandInteraction().getSecondOptionStringValue().get(), successEmbed, event.getSlashCommandInteraction().getChannel().get().asServerTextChannel().get());
+                Role role = RoleAdmin.createNewRole(event.getSlashCommandInteraction().getServer().get(), event.getSlashCommandInteraction().getSecondOptionStringValue().get(), successEmbed, event.getSlashCommandInteraction().createImmediateResponder());
                 author.addRole(role, "MCDC role creation: Person who created the role should get the role assigned, as well.");
                 info("Added role \"" + role.getName() + "\" to player \"" + author.getName() + "\".");
             } else {
