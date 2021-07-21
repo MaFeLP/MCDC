@@ -18,7 +18,7 @@ public class MainSlashCommandListener implements SlashCommandCreateListener {
                 if (slashCommandCreateEvent.getSlashCommandInteraction().getFirstOption().isPresent()) {
                     switch (slashCommandCreateEvent.getSlashCommandInteraction().getFirstOption().get().getName()) {
                         case "channel" -> CreateChannelListener.onSlashCommand(slashCommandCreateEvent);
-                        case "role" -> {}
+                        case "role" -> CreateRoleListener.onSlashCommand(slashCommandCreateEvent);
                         default -> Logging.info(ChatColor.RED + "Error in SlashCommand \"create\": First option is: " + slashCommandCreateEvent.getSlashCommandInteraction().getFirstOption().get().getName());
                     }
                 } else {
