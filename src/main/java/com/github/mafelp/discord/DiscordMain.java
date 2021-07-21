@@ -88,9 +88,6 @@ public class DiscordMain extends Thread {
                     .setToken(Settings.getApiToken())
                     // register listeners
                     .addListener(DiscordListener::new)
-                    //.addListener(CreateChannelListener::new)
-                    //.addListener(CreateRoleListener::new)
-                    //.addListener(SetupListener::new)
                     .addListener(MainSlashCommandListener::new)
                     // log the bot in and join the servers
                     .login().join();
@@ -165,6 +162,15 @@ public class DiscordMain extends Thread {
                                 Collections.singletonList(
                                         SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name the channel should have", true)
                                 ))
+                ))
+        // TODO make command only executable with certain permissions
+        //.setDefaultPermission(false)
+        );
+
+        // Setup command
+        slashCommands.add(SlashCommand.with("setup","Creates and channel and a role for syncing minecraft and discord messages",
+                Collections.singletonList(
+                        SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name of the role and the channel")
                 ))
         // TODO make command only executable with certain permissions
         //.setDefaultPermission(false)
