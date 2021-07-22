@@ -10,10 +10,8 @@ import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.permission.PermissionsBuilder;
-import org.javacord.api.interaction.SlashCommand;
-import org.javacord.api.interaction.SlashCommandBuilder;
-import org.javacord.api.interaction.SlashCommandOption;
-import org.javacord.api.interaction.SlashCommandOptionType;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.interaction.*;
 
 import java.io.*;
 import java.util.*;
@@ -84,6 +82,7 @@ public class DiscordMain extends Thread {
         try {
             // Create the API
             Settings.discordApi = new DiscordApiBuilder()
+                    .setWaitForServersOnStartup(true)
                     // set the token, specified in the config.yml or with command "/token <TOKEN>"
                     .setToken(Settings.getApiToken())
                     // register listeners
@@ -125,34 +124,34 @@ public class DiscordMain extends Thread {
     }
 
     private void registerSlashCommands() {
-        List<SlashCommandBuilder> slashCommands = new ArrayList<>();
+        List<SlashCommandBuilder> accountSlashCommands = new ArrayList<>();
+        List<SlashCommandBuilder> adminSlashCommands = new ArrayList<>();
 
         // Link command
-        slashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
+        accountSlashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
                 Collections.singletonList(
                         SlashCommandOption.create(SlashCommandOptionType.INTEGER, "token", "The token used to link your accounts", false)
                 )
         ));
 
         // Unlink command
-        slashCommands.add(SlashCommand.with("unlink", "Unlink your discord account from your minecraft account"));
+        accountSlashCommands.add(SlashCommand.with("unlink", "Unlink your discord account from your minecraft account"));
 
         // Whisper and mcmsg commands
-        slashCommands.add(SlashCommand.with("whisper", "Whisper to your friends on the minecraft server!",
+        accountSlashCommands.add(SlashCommand.with("whisper", "Whisper to your friends on the minecraft server!",
                 Arrays.asList(
                         SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to whisper your message to", true),
                         SlashCommandOption.create(SlashCommandOptionType.STRING, "message", "What you want to whisper", true)
                 ))
         );
-        slashCommands.add(SlashCommand.with("mcmsg", "Whisper to your friends on the minecraft server!",
+        accountSlashCommands.add(SlashCommand.with("mcmsg", "Whisper to your friends on the minecraft server!",
                 Arrays.asList(
                         SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to whisper your message to", true),
                         SlashCommandOption.create(SlashCommandOptionType.STRING, "message", "What you want to whisper", true)
-                )
-        ));
+                )));
 
         // Create role and create channel commands
-        slashCommands.add(SlashCommand.with("create", "Create a channel/role for syncing minecraft and discord messages",
+        adminSlashCommands.add(SlashCommand.with("create", "Create a channel/role for syncing minecraft and discord messages",
                 Arrays.asList(
                         SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "channel", "Create a channel to sync minecraft messages to",
                                 Collections.singletonList(
@@ -163,23 +162,87 @@ public class DiscordMain extends Thread {
                                         SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name the channel should have", true)
                                 ))
                 ))
-        // TODO make command only executable with certain permissions
-        //.setDefaultPermission(false)
+        .setDefaultPermission(false)
         );
 
         // Setup command
-        slashCommands.add(SlashCommand.with("setup","Creates and channel and a role for syncing minecraft and discord messages",
+        adminSlashCommands.add(SlashCommand.with("setup","Creates and channel and a role for syncing minecraft and discord messages",
                 Collections.singletonList(
                         SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name of the role and the channel", true)
                 ))
-        // TODO make command only executable with certain permissions
-        //.setDefaultPermission(false)
+        .setDefaultPermission(false)
         );
 
-        // Do the actual registering of the slash commands.
-        discordApi.bulkOverwriteGlobalSlashCommands(slashCommands).thenAccept(createdSlashCommands ->
-            createdSlashCommands.forEach(slashCommand -> Logging.info("Added global slash command \"" + slashCommand.getName() + "\""))
-        );
+        // If linking is NOT enabled, set the default permission for all the slash commands to false. No one can use them then
+        if (!Settings.getConfiguration().getBoolean("enableLinking", true)) {
+            Logging.info("Linking is not enabled. Setting permission for all slash commands to false.");
+            accountSlashCommands.forEach(slashCommandBuilder -> slashCommandBuilder.setDefaultPermission(false));
+        }
+        discordApi.bulkOverwriteGlobalSlashCommands(accountSlashCommands).thenAccept(slashCommands -> {
+            slashCommands.forEach(slashCommand -> Logging.info("Added global slash command " + slashCommand.getName()));
+            /*
+            Logging.debug("Updating global account slash commands...");
+            List<ServerSlashCommandPermissionsBuilder> updatedSlashCommands = new ArrayList<>();
+            var roleIDs = Settings.getConfiguration().getLongList("roleIDs");
+            Logging.debug("Role IDs are: " + roleIDs);
+            if (roleIDs.get(0) != 1234L) {
+                Logging.debug("Role IDs are not on default. Continuing...");
+                for (Server server : discordApi.getServers()) {
+                    List<SlashCommandPermissions> permissions = new ArrayList<>();
+                    StringBuilder sb = new StringBuilder("`-> No Permissions: ");
+                    server.getRoles().forEach(role -> {
+                        if (!roleIDs.contains(role.getId())) {
+                            permissions.add(SlashCommandPermissions.create(role.getId(), SlashCommandPermissionType.ROLE, false));
+                            sb.append(role.getName()).append("; ");
+                        }
+                    });
+                    sb.append("\n`-> Affected Slash commands: ");
+                    slashCommands.forEach(slashCommand -> {
+                        updatedSlashCommands.add(new ServerSlashCommandPermissionsBuilder(slashCommand.getId(), permissions));
+                        sb.append(slashCommand.getName()).append("; ");
+                    });
+                    updatedSlashCommands.forEach(serverSlashCommandPermissionsBuilder -> sb.append(serverSlashCommandPermissionsBuilder.getCommandId()).append("; "));
+                    Logging.debug("Updating slash commands for server " + server.getName() + "\n" + sb.toString());
+                    discordApi.batchUpdateSlashCommandPermissions(server, updatedSlashCommands).join();
+                    Logging.info("Updated slash command permissions for server " + server.getName());
+                }
+            } */
+        });
+        for (Server server : discordApi.getServers()) {
+            discordApi.bulkOverwriteServerSlashCommands(server, adminSlashCommands).thenAccept(slashCommands -> {
+                // Setup a list with all allowed Users, configured in the config file and the bot owner
+                var allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordServerAdmin.allowedUserIDs");
+                allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordBotAdmin.allowedUserIDs");
+                allowedUserIDs.remove(1234L);
+                if (!allowedUserIDs.contains(discordApi.getOwnerId()))
+                    allowedUserIDs.add(discordApi.getOwnerId());
+
+                // Register the slash commands for each server
+                List<ServerSlashCommandPermissionsBuilder> updatedSlashCommands = new ArrayList<>();
+                List<SlashCommandPermissions> permissions = new ArrayList<>();
+                Logging.debug("Updating admin slash command permission for server " + server.getName());
+                // Check if the server owner of this server is in the allowed lists.
+                // If not, add them only for this server and remove them afterwards.
+                boolean serverOwnerIsAllowed = allowedUserIDs.contains(server.getOwnerId());
+                if (!serverOwnerIsAllowed)
+                    allowedUserIDs.add(server.getOwnerId());
+
+                // Create permission to use this slash command for each allowed user
+                allowedUserIDs.forEach(userID -> permissions.add(SlashCommandPermissions.create(userID, SlashCommandPermissionType.USER, true)));
+                // Prepare the commands to have the new permissions: Allow all allowed users to use this slash command.
+                slashCommands.forEach(slashCommand -> updatedSlashCommands.add(new ServerSlashCommandPermissionsBuilder(slashCommand.getId(), permissions)));
+
+                // Do the actual updates
+                discordApi.batchUpdateSlashCommandPermissions(server, updatedSlashCommands).thenAccept(serverSlashCommandPermissions ->
+                        Logging.info("Updated admin slash command permissions for server " + server.getName()));
+
+                if (!serverOwnerIsAllowed)
+                    allowedUserIDs.remove(server.getOwnerId());
+
+                permissions.clear();
+                updatedSlashCommands.clear();
+            });
+        }
     }
 
     /**
