@@ -170,7 +170,7 @@ public class DiscordMain extends Thread {
         // Setup command
         slashCommands.add(SlashCommand.with("setup","Creates and channel and a role for syncing minecraft and discord messages",
                 Collections.singletonList(
-                        SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name of the role and the channel")
+                        SlashCommandOption.create(SlashCommandOptionType.STRING, "name", "The name of the role and the channel", true)
                 ))
         // TODO make command only executable with certain permissions
         //.setDefaultPermission(false)
