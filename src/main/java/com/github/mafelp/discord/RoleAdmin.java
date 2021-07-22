@@ -1,5 +1,6 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.*;
@@ -84,6 +85,14 @@ public class RoleAdmin {
 
         discordApi.getYourself().addRole(role, "MCDC needs to see the channel as well!");
         info("Added role \"" + role.getName() + "\" to the discord API.");
+
+        var roleIDs = Settings.getConfiguration().getLongList("roleIDs");
+        if (roleIDs.get(0) == 1234L) {
+            roleIDs.set(0, role.getId());
+        } else {
+            roleIDs.add(role.getId());
+        }
+        Settings.getConfiguration().set("roleIDs", roleIDs);
 
         return role;
     }

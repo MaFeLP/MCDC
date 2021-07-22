@@ -8,6 +8,7 @@ import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.github.mafelp.utils.Logging.info;
@@ -250,7 +251,12 @@ public class Settings {
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
         defaultConfiguration.set("deleteDiscordCommandMessages", false);
-        defaultConfiguration.set("channelIDs", new ArrayList<Long>().add(1234L));
+        List<Long> channelIDs = new ArrayList<>();
+        channelIDs.add(1234L);
+        defaultConfiguration.set("channelIDs", channelIDs);
+        List<Long> roleIDs = new ArrayList<>();
+        roleIDs.add(1234L);
+        defaultConfiguration.set("roleIDs", roleIDs);
         defaultConfiguration.set("enableLinking", true);
         defaultConfiguration.set("allowListAllAccounts", true);
         defaultConfiguration.set("showFooterInMessages", true);

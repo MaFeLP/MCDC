@@ -33,6 +33,10 @@ deleteDiscordCommandMessages: false
 channelIDs:
   - 1234
 
+# Discord Role IDs that hav permission to use slash commands
+roleIDs:
+  - 1234
+
 # Enables accounts and linking.
 # Allowed values <true|false>
 enableLinking: true
