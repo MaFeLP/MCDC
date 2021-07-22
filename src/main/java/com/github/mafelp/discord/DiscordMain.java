@@ -177,10 +177,9 @@ public class DiscordMain extends Thread {
         );
 
         // Do the actual registering of the slash commands.
-        slashCommands.forEach(slashCommandBuilder ->
-                slashCommandBuilder.createGlobal(discordApi).thenAccept(slashCommand ->
-                    Logging.info("Added global slash command \"" + slashCommand.getName() + "\"")
-        ));
+        discordApi.bulkOverwriteGlobalSlashCommands(slashCommands).thenAccept(createdSlashCommands ->
+            createdSlashCommands.forEach(slashCommand -> Logging.info("Added global slash command \"" + slashCommand.getName() + "\""))
+        );
     }
 
     /**
