@@ -93,6 +93,7 @@ public class RoleAdmin {
             roleIDs.add(role.getId());
         }
         Settings.getConfiguration().set("roleIDs", roleIDs);
+        Settings.saveConfiguration();
 
         return role;
     }
