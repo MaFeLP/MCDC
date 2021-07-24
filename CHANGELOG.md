@@ -1,4 +1,19 @@
 # Changelog
+## Slash Commands Update
+### v0.10.0
+➕ Added Slash Commands!<br>
+↳ Now use discord commands by using a slash (/) instead of the old discordCommandPrefix Entry in the config file <br><br>
+
+**⚠️ Information about slash commands⚠️**<br>
+ - It can take **up to** an hour until the slash commands are registered
+   - This is a caching limitation put in place by discord.
+ - If you do not see any slash commands after this hour, please see your console log for a link!
+ - You **CAN NOT** use normal message commands like `.setup` anymore. Use `/setup` instead, if you are the discord server **owner** and/or the bot owner.
+<br>
+🚫 Removed the old discord commands, that could be used in messages.
+
+---
+
 ## BIG Account update
 ### v0.9.0
 ➕ Added Accounts! <br>
