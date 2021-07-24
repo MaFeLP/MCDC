@@ -222,6 +222,10 @@ public class DiscordMain extends Thread {
                 updatedSlashCommands.clear();
             });
         }
+        Logging.info(ChatColor.GREEN + "Registered slash Commands.");
+        Logging.info(ChatColor.YELLOW + "Information: Due to caching, it can take " + ChatColor.BOLD + "UP TO" + ChatColor.RESET + ChatColor.YELLOW + " an hour");
+        Logging.info(ChatColor.YELLOW + "Information: until the slash commands can be used (until they appear or the message");
+        Logging.info(ChatColor.YELLOW + "Information: \"InvalidInteractionID\" disappears when trying to use a slash command)");
     }
 
     /**
