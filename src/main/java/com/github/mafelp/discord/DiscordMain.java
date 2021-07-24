@@ -123,6 +123,9 @@ public class DiscordMain extends Thread {
         }
     }
 
+    /**
+     * Method to register all slash commands (in bulk).
+     */
     private void registerSlashCommands() {
         List<SlashCommandBuilder> accountSlashCommands = new ArrayList<>();
         List<SlashCommandBuilder> adminSlashCommands = new ArrayList<>();
