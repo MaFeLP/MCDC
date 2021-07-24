@@ -81,6 +81,7 @@ public class LinkListener {
      * This method sends the user a token, that it can use in {@link com.github.mafelp.minecraft.commands.Link} to
      * links its accounts together.
      * @param user The user to create the linking token from.
+     * @param event The event to respond to.
      */
     private static void sendLinkToken(final User user, final SlashCommandCreateEvent event) {
         int minecraftLinkToken = DiscordLinker.getLinkToken(user);
