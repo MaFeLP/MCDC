@@ -5,7 +5,15 @@ import org.bukkit.ChatColor;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
 import org.javacord.api.listener.interaction.SlashCommandCreateListener;
 
+/**
+ * The class to handle all slash command reactions.
+ */
 public class MainSlashCommandListener implements SlashCommandCreateListener {
+    /**
+     * The method to handle the actual handling of the slash command events, by handing them over to their own files.
+     * @param slashCommandCreateEvent The event passed over by the discord api that contains the slash command
+     *                                interaction.
+     */
     @Override
     public void onSlashCommandCreate(SlashCommandCreateEvent slashCommandCreateEvent) {
         Logging.debug("Slash command interaction caught: " + slashCommandCreateEvent.getSlashCommandInteraction().getCommandName());
