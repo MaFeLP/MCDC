@@ -4,6 +4,7 @@ import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.bukkit.OfflinePlayer;
 
 import java.io.*;
 import java.util.*;
@@ -120,5 +121,18 @@ public class AccountManager {
     public static List<Account> removeAccount(Account account) {
         linkedAccounts.removeAll(Collections.singleton(account));
         return linkedAccounts;
+    }
+
+    /**
+     * Gets all names of minecraft Players who have an account and all the usernames.
+     * @return The list of names and usernames.
+     */
+    public static List<String> getAllMinecraftAccountNames() {
+        List<String> out = new ArrayList<>();
+
+        for (OfflinePlayer player : Settings.minecraftServer.getOfflinePlayers())
+            Account.getByPlayer(player).ifPresent(account -> out.addAll(Arrays.asList(account.getUsername(), account.getPlayer().getName())));
+
+        return out;
     }
 }
