@@ -1,4 +1,10 @@
 # Changelog
+## Tab Completions
+### v0.11.0-beta
+➕ Added Tab Completion to all Minecraft commands
+
+---
+
 ## Slash Commands Update
 ### v0.10.0
 ➕ Added Slash Commands!<br>
