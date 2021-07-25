@@ -2,10 +2,7 @@ package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.minecraft.commands.*;
-import com.github.mafelp.minecraft.tabCompleters.AccountTabCompleter;
-import com.github.mafelp.minecraft.tabCompleters.ConfigTabCompleter;
-import com.github.mafelp.minecraft.tabCompleters.LinkTabCompleter;
-import com.github.mafelp.minecraft.tabCompleters.WhisperTabCompleter;
+import com.github.mafelp.minecraft.tabCompleters.*;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
@@ -95,6 +92,7 @@ public final class Main extends JavaPlugin {
         // All commands
         // for more information read the Javadoc in the specific classes
         Objects.requireNonNull(getCommand("token")).setExecutor(new Token());
+        Objects.requireNonNull(getCommand("token")).setTabCompleter(new TokenTabCompleter());
         Logging.info("Command \"token\" has been enabled.");
         Objects.requireNonNull(getCommand("config")).setExecutor(new Config());
         Objects.requireNonNull(getCommand("config")).setTabCompleter(new ConfigTabCompleter());
