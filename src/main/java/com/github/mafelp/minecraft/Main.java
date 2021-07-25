@@ -3,6 +3,7 @@ package com.github.mafelp.minecraft;
 import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.minecraft.commands.*;
 import com.github.mafelp.minecraft.tabCompleters.AccountTabCompleter;
+import com.github.mafelp.minecraft.tabCompleters.ConfigTabCompleter;
 import com.github.mafelp.minecraft.tabCompleters.WhisperTabCompleter;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
@@ -95,6 +96,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("token")).setExecutor(new Token());
         Logging.info("Command \"token\" has been enabled.");
         Objects.requireNonNull(getCommand("config")).setExecutor(new Config());
+        Objects.requireNonNull(getCommand("config")).setTabCompleter(new ConfigTabCompleter());
         Logging.info("Command \"config\" has been enabled.");
         if (Settings.getConfiguration().getBoolean("enableLinking")) {
             Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
