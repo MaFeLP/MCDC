@@ -31,9 +31,7 @@ public class Unlink implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         // Only players can have accounts.
-        if (commandSender instanceof Player) {
-            Player player = (Player) commandSender;
-
+        if (commandSender instanceof Player player) {
             Optional<Account> accountOptional = Account.getByPlayer(player);
 
             if (accountOptional.isEmpty()) {

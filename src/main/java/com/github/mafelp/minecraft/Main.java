@@ -105,6 +105,7 @@ public final class Main extends JavaPlugin {
             Objects.requireNonNull(this.getCommand("account")).setTabCompleter(new AccountTabCompleter());
             Logging.info("Command \"account\" has been enabled.");
             Objects.requireNonNull(getCommand("unlink")).setExecutor(new Unlink());
+            Objects.requireNonNull(getCommand("unlink")).setTabCompleter(new UnlinkTabCompleter());
             Logging.info("Command \"unlink\" has been enabled.");
             Objects.requireNonNull(getCommand("whisper")).setExecutor(new Whisper());
             Objects.requireNonNull(this.getCommand("whisper")).setTabCompleter(new WhisperTabCompleter());
