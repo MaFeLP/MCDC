@@ -6,12 +6,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static com.github.mafelp.minecraft.tabCompleters.ResultSorter.sortedResults;
 
 public class WhisperTabCompleter implements TabCompleter {
     @Override
@@ -31,15 +31,5 @@ public class WhisperTabCompleter implements TabCompleter {
 
         // return results;
         return sortedResults(args[0], results);
-    }
-
-    // Sorts possible results to provide true tab auto complete based off of what is already typed.
-    public static List<String> sortedResults(String arg, List<String> results) {
-        final List<String> completions = new ArrayList<>();
-        StringUtil.copyPartialMatches(arg, results, completions);
-        Collections.sort(completions);
-        results.clear();
-        results.addAll(completions);
-        return results;
     }
 }
