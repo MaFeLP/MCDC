@@ -2,19 +2,14 @@ package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.minecraft.commands.*;
-import com.github.mafelp.utils.CheckPermission;
+import com.github.mafelp.minecraft.tabCompleters.WhisperTabCompleter;
 import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
 import com.github.mafelp.discord.DiscordMain;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static com.github.mafelp.utils.Logging.debug;
-import static com.github.mafelp.utils.Settings.prefix;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 

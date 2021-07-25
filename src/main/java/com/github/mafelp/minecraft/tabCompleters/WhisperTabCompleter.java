@@ -1,4 +1,4 @@
-package com.github.mafelp.minecraft.commands;
+package com.github.mafelp.minecraft.tabCompleters;
 
 import com.github.mafelp.accounts.Account;
 import com.github.mafelp.utils.Settings;
