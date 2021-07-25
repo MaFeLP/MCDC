@@ -2,6 +2,7 @@ package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.minecraft.commands.*;
+import com.github.mafelp.minecraft.tabCompleters.AccountTabCompleter;
 import com.github.mafelp.minecraft.tabCompleters.WhisperTabCompleter;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
@@ -99,6 +100,7 @@ public final class Main extends JavaPlugin {
             Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
             Logging.info("Command \"link\" has been enabled.");
             Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
+            Objects.requireNonNull(this.getCommand("account")).setTabCompleter(new AccountTabCompleter());
             Logging.info("Command \"account\" has been enabled.");
             Objects.requireNonNull(getCommand("unlink")).setExecutor(new Unlink());
             Logging.info("Command \"unlink\" has been enabled.");
