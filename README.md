@@ -19,6 +19,7 @@ The bot can currently do all the checked items, unchecked will be implemented in
  - [ ] Migrate more slash commands to discord
    - [ ] `/account`
    - [ ] `/config`
+ - [ ] Add a new command: `/help`
 
 ## Installation
 1. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
