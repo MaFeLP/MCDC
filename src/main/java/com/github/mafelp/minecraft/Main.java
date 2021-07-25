@@ -4,6 +4,7 @@ import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.minecraft.commands.*;
 import com.github.mafelp.minecraft.tabCompleters.AccountTabCompleter;
 import com.github.mafelp.minecraft.tabCompleters.ConfigTabCompleter;
+import com.github.mafelp.minecraft.tabCompleters.LinkTabCompleter;
 import com.github.mafelp.minecraft.tabCompleters.WhisperTabCompleter;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
@@ -100,6 +101,7 @@ public final class Main extends JavaPlugin {
         Logging.info("Command \"config\" has been enabled.");
         if (Settings.getConfiguration().getBoolean("enableLinking")) {
             Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
+            Objects.requireNonNull(getCommand("link")).setTabCompleter(new LinkTabCompleter());
             Logging.info("Command \"link\" has been enabled.");
             Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
             Objects.requireNonNull(this.getCommand("account")).setTabCompleter(new AccountTabCompleter());
