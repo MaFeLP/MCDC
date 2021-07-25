@@ -13,9 +13,9 @@ The bot can currently do all the checked items, unchecked will be implemented in
  - [X] linking between a discord and a minecraft account
  - [X] Toggle-able: Sending minecraft commands to the discord chats.
  - [X] Slash Commands: use slash commands in the discord chat.
+ - [X] Tab completion in Minecraft
 <br><br>
  - [ ] A message in a channel that displays all online Members.
- - [ ] Tab completion in Minecraft
  - [ ] Migrate more slash commands to discord
    - [ ] `/account`
    - [ ] `/config`
