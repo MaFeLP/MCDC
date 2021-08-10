@@ -42,6 +42,15 @@ public class Help implements CommandExecutor {
                 case "help" -> out += ChatColor.RESET + " Displays information about all available commands.";
                 case "link" -> out += linkHelp();
                 case "token" -> {
+                    if (CheckPermission.checkPermission(Permissions.configEdit, sender))
+                        out += tokenHelp();
+                    else {
+                        sender.sendMessage(
+                                Settings.prefix + ChatColor.RED + "Sorry, you don't have the permission to edit the config,\n" +
+                                        Settings.prefix + "So the help would be of no use for you!"
+                        );
+                        return true;
+                    }
                 }
                 case "unlink" -> out += commandHelpPageStarter("The command used to delete your account/relationship with the discord bot.");
                 case "whisper", "dcmsg" -> {
@@ -196,5 +205,11 @@ public class Help implements CommandExecutor {
                  your discord account unofficially, so you can use functions
                  /dcmsg and pinging of users.""")
                 + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "token" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "OPTIONAL - The token given to you by the discord bot on discord.\n";
+    }
+
+    private static @NotNull String tokenHelp() {
+        return commandHelpPageStarter(" The token command is used to change the discord bot token and restart the bot instance. ")
+                + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "token" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The token used to identify the bot with discord.\n" +
+                "For more information, please see: https://mafelp.github.io/MCDC/installation#get-a-discord-bot-token\n";
     }
 }
