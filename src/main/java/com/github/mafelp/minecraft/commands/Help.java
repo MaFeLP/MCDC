@@ -2,11 +2,13 @@ package com.github.mafelp.minecraft.commands;
 
 import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Permissions;
+import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -27,6 +29,15 @@ public class Help implements CommandExecutor {
             switch (args[0].toLowerCase(Locale.ROOT)) {
                 case "account" -> out += accountHelp(sender instanceof Player, CheckPermission.checkPermission(Permissions.accountEdit, sender));
                 case "config" -> {
+                    if (CheckPermission.checkPermission(Permissions.configEdit, sender))
+                        out += configHelp();
+                    else {
+                        sender.sendMessage(
+                                Settings.prefix + ChatColor.RED + "Sorry, you don't have the permission to edit the config,\n" +
+                                        Settings.prefix + "So the help would be of no use for you!"
+                        );
+                        return true;
+                    }
                 }
                 case "help" -> {
                 }
@@ -52,7 +63,7 @@ public class Help implements CommandExecutor {
         return true;
     }
 
-    private static String normalHelpMessage(CommandSender sender) {
+    private static @NotNull String normalHelpMessage(CommandSender sender) {
         // Message for admin users:
         /*
          * +--------------------------[MCDC/HELP]--------------------------+
@@ -110,7 +121,8 @@ public class Help implements CommandExecutor {
         return out;
     }
 
-    private static String commandHelpPageStarter(String description) {
+    @Contract(pure = true)
+    private static @NotNull String commandHelpPageStarter(String description) {
         return ChatColor.RED + " If you are searching for the vanilla help, use \"" + ChatColor.GRAY + "/minecraft:help" + ChatColor.RED + "\"!\n\n"
                 + ChatColor.AQUA + " Help for command \"" + ChatColor.GRAY + "/account" + ChatColor.AQUA + "\". Use \"" + ChatColor.GRAY + "/mcdc:help" + ChatColor.AQUA + "\"\n"
                 + " to see a list of all available commands.\n\n"
@@ -156,5 +168,28 @@ public class Help implements CommandExecutor {
             out += ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "unlink" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Deletes your account\n";
 
         return out;
+    }
+
+    @Contract(pure = true)
+    private static @NotNull String configHelp() {
+        return commandHelpPageStarter(" The config command provides functionality to configure\n" +
+                " The discord bot and the plugin behavior.")
+
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "add" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Adds a value to the list at PATH\n"
+                + ChatColor.GRAY + " | |-> " + ChatColor.DARK_AQUA + "PATH" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The PATH to add the VALUE to\n"
+                + ChatColor.GRAY + " | `-> " + ChatColor.DARK_AQUA + "VALUE" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The VALUE to add to the list at PATH\n"
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "default" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Resets the configuration to its default values.\n"
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "get" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Gets the value from the PATH\n"
+                + ChatColor.GRAY + " | |-> " + ChatColor.DARK_AQUA + "PATH" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The PATH to get the value from\n"
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "reload" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Reloads the configuration from the file.\n"
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "remove" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Removes a value from the list at PATH\n"
+                + ChatColor.GRAY + " | |-> " + ChatColor.DARK_AQUA + "PATH" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The PATH to add the VALUE to\n"
+                + ChatColor.GRAY + " | `-> " + ChatColor.DARK_AQUA + "VALUE" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The VALUE to add to the list at PATH\n"
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "save" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Saves the configuration to the config file\n"
+                + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "set" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Sets the PATH to VALUE\n"
+                + ChatColor.GRAY + "   |-> " + ChatColor.DARK_AQUA + "PATH" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The PATH to add the VALUE to\n"
+                + ChatColor.GRAY + "   `-> " + ChatColor.DARK_AQUA + "VALUE" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The VALUE to add to the list at PATH\n"
+                + spacerLine
+                ;
     }
 }
