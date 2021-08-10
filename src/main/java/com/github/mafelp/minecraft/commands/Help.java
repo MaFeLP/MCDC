@@ -43,8 +43,7 @@ public class Help implements CommandExecutor {
                 case "link" -> out += linkHelp();
                 case "token" -> {
                 }
-                case "unlink" -> {
-                }
+                case "unlink" -> out += commandHelpPageStarter("The command used to delete your account/relationship with the discord bot.");
                 case "whisper", "dcmsg" -> {
                 }
                 default -> {
