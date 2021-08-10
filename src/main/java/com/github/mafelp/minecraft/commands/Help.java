@@ -8,23 +8,51 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Locale;
+
 import static com.github.mafelp.utils.Logging.info;
 
 public class Help implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        String out = ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+\n";
+
         if (args.length == 0) {
-            sendNormalHelpMessage(sender);
+            out += sendNormalHelpMessage(sender);
             info("\"" + sender.getName() + "\" executed command \"/help\"; Result: Normal help message.");
-            return true;
+        } else {
+            switch (args[0].toLowerCase(Locale.ROOT)) {
+                case "account" -> {
+                }
+                case "config" -> {
+                }
+                case "help" -> {
+                }
+                case "link" -> {
+                }
+                case "token" -> {
+                }
+                case "unlink" -> {
+                }
+                case "whisper", "dcmsg" -> {
+                }
+                default -> {
+                    out += ChatColor.RED + "Unknown command: \"" + ChatColor.GRAY + args[0] + ChatColor.RED + "\"! See below for a full list!\n";
+                    out += sendNormalHelpMessage(sender);
+                    info("\"" + sender.getName() + "\" executed command \"/help\"; Result: Normal help message.");
+                }
+            }
         }
 
-        info(sender.getName() + "Executed command \"/help\"");
+        out += ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+";
+        sender.sendMessage(out);
 
-        return false;
+        return true;
     }
 
-    private static void sendNormalHelpMessage(CommandSender sender) {
+    private static String sendNormalHelpMessage(CommandSender sender) {
         // Message for admin users:
         /*
          * +--------------------------[MCDC/HELP]--------------------------+
@@ -59,8 +87,7 @@ public class Help implements CommandExecutor {
          * +--------------------------[MCDC/HELP]--------------------------+
          */
 
-        String out = ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+\n"
-                + ChatColor.RED + " If you are searching for the vanilla help, use \"" + ChatColor.GRAY + "/minecraft:help" + ChatColor.RED + "\"!\n\n"
+        String out = ChatColor.RED + " If you are searching for the vanilla help, use \"" + ChatColor.GRAY + "/minecraft:help" + ChatColor.RED + "\"!\n\n"
                 + ChatColor.AQUA + " General command help. Use \"" + ChatColor.GRAY + "/mcdc:help <COMMAND>" + ChatColor.AQUA + "\"\n"
                 + " for more information on a specific command.\n\n"
                 + ChatColor.GREEN + ChatColor.UNDERLINE + "Commands" + ChatColor.RESET + ChatColor.DARK_GRAY + ":\n"
@@ -79,8 +106,7 @@ public class Help implements CommandExecutor {
             out += ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/unlink" + ChatColor.GRAY + "      -> " + ChatColor.BLUE + "Removes your account\n";
 
         out += ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "/whisper" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Sends a private message to a discord user\n";
-        out += ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+";
 
-        sender.sendMessage(out);
+        return out;
     }
 }
