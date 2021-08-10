@@ -191,4 +191,12 @@ public class Help implements CommandExecutor {
                 + spacerLine
                 ;
     }
+
+    private static @NotNull String linkHelp() {
+        return commandHelpPageStarter("""
+                The link command is used to link your minecraft and
+                 your discord account unofficially, so you can use functions
+                 /dcmsg and pinging of users.""")
+                + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "token" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "OPTIONAL - The token given to you by the discord bot on discord.\n";
+    }
 }
