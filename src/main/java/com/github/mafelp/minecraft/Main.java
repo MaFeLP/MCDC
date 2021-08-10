@@ -98,7 +98,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("config")).setTabCompleter(new ConfigTabCompleter());
         Logging.info("Command \"config\" has been enabled.");
         Objects.requireNonNull(getCommand("help")).setExecutor(new Help());
-        //Objects.requireNonNull(getCommand("help")).setTabCompleter(new HelpTabCompleter());
+        Objects.requireNonNull(getCommand("help")).setTabCompleter(new HelpTabCompleter());
         Logging.info("Command \"help\" has been enabled.");
         if (Settings.getConfiguration().getBoolean("enableLinking")) {
             Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
