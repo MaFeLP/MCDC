@@ -59,26 +59,27 @@ public class Help implements CommandExecutor {
          * +--------------------------[MCDC/HELP]--------------------------+
          */
 
-        String out = ChatColor.GREEN + "+--------------------------" + ChatColor.BLACK + "[" + ChatColor.GOLD + "MCDC" + ChatColor.BLACK + "/" + ChatColor.YELLOW + "HELP" + ChatColor.BLACK + "]" + ChatColor.GREEN + "--------------------------+\n"
-                + ChatColor.AQUA + "General command help. Use \"" + ChatColor.GRAY + "/mcdc:help <COMMAND>" + ChatColor.AQUA + "\"\n"
-                + " for more information on a specific command.\n"
-                + ChatColor.GREEN + ChatColor.UNDERLINE + "Commands" + ChatColor.RESET + ChatColor.BLACK + ":\n"
-                + ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/account" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Manage accounts/get account info\n";
+        String out = ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+\n"
+                + ChatColor.RED + " If you are searching for the vanilla help, use \"" + ChatColor.GRAY + "/minecraft:help" + ChatColor.RED + "\"!\n\n"
+                + ChatColor.AQUA + " General command help. Use \"" + ChatColor.GRAY + "/mcdc:help <COMMAND>" + ChatColor.AQUA + "\"\n"
+                + " for more information on a specific command.\n\n"
+                + ChatColor.GREEN + ChatColor.UNDERLINE + "Commands" + ChatColor.RESET + ChatColor.DARK_GRAY + ":\n"
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/account" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Manage accounts/get account info\n";
 
         if (!(sender instanceof Player) || CheckPermission.checkPermission(Permissions.configEdit, sender))
-            out += ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/config" + ChatColor.GRAY + "    -> " + ChatColor.BLUE + "Configure this plugin\n";
+            out += ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/config" + ChatColor.GRAY + "     -> " + ChatColor.BLUE + "Configure this plugin\n";
 
         if (sender instanceof Player)
-            out += ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/link" + ChatColor.GRAY + "      -> " + ChatColor.BLUE + "Link your minecraft to discord\n";
+            out += ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/link" + ChatColor.GRAY + "         -> " + ChatColor.BLUE + "Link your minecraft to discord\n";
 
-        out += ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/mcdc:help" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "Shows this page\n";
-        out += ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/dcmsg" + ChatColor.GRAY + "     -> " + ChatColor.BLUE + "Sends a private message to a discord user\n";
+        out += ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/mcdc:help" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "Shows this page\n";
+        out += ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/dcmsg" + ChatColor.GRAY + "     -> " + ChatColor.BLUE + "Sends a private message to a discord user\n";
 
         if (sender instanceof Player)
-            out += ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/unlink" + ChatColor.GRAY + "    -> " + ChatColor.BLUE + "Unlinks your minecraft and discord accounts\n";
+            out += ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "/unlink" + ChatColor.GRAY + "      -> " + ChatColor.BLUE + "Removes your account\n";
 
-        out += ChatColor.GRAY + " |->" + ChatColor.DARK_AQUA + "/whisper" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Sends a private message to a discord user\n";
-        out += ChatColor.GREEN + "+--------------------------" + ChatColor.BLACK + "[" + ChatColor.GOLD + "MCDC" + ChatColor.BLACK + "/" + ChatColor.YELLOW + "HELP" + ChatColor.BLACK + "]" + ChatColor.GREEN + "--------------------------+";
+        out += ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "/whisper" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Sends a private message to a discord user\n";
+        out += ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+";
 
         sender.sendMessage(out);
     }
