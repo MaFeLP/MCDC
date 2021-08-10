@@ -39,7 +39,7 @@ public class Help implements CommandExecutor {
                         return true;
                     }
                 }
-                case "help" -> out += ChatColor.RESET + " Displays information about all available commands.";
+                case "help" -> out += ChatColor.RESET + " Displays information about all available commands.\n";
                 case "link" -> out += linkHelp();
                 case "token" -> {
                     if (CheckPermission.checkPermission(Permissions.configEdit, sender))
@@ -52,7 +52,7 @@ public class Help implements CommandExecutor {
                         return true;
                     }
                 }
-                case "unlink" -> out += commandHelpPageStarter("The command used to delete your account/relationship with the discord bot.");
+                case "unlink" -> out += commandHelpPageStarter("The command used to delete your account/relationship with the discord bot.\n");
                 case "whisper", "dcmsg" -> out += whisperHelp();
                 default -> {
                     out += ChatColor.RED + "Unknown command: \"" + ChatColor.GRAY + args[0] + ChatColor.RED + "\"! See below for a full list!\n";
@@ -194,7 +194,6 @@ public class Help implements CommandExecutor {
                 + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "set" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Sets the PATH to VALUE\n"
                 + ChatColor.GRAY + "   |-> " + ChatColor.DARK_AQUA + "PATH" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The PATH to add the VALUE to\n"
                 + ChatColor.GRAY + "   `-> " + ChatColor.DARK_AQUA + "VALUE" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "The VALUE to add to the list at PATH\n"
-                + spacerLine
                 ;
     }
 
@@ -209,7 +208,7 @@ public class Help implements CommandExecutor {
     private static @NotNull String tokenHelp() {
         return commandHelpPageStarter(" The token command is used to change the discord bot token and restart the bot instance. ")
                 + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "token" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The token used to identify the bot with discord.\n" +
-                "For more information, please see: https://mafelp.github.io/MCDC/installation#get-a-discord-bot-token\n";
+                "For more information, please see: \nhttps://mafelp.github.io/MCDC/installation#get-a-discord-bot-token\n";
     }
 
     private static @NotNull String whisperHelp() {
