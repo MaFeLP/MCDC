@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import static com.github.mafelp.utils.Logging.info;
@@ -20,7 +19,7 @@ public class Help implements CommandExecutor {
         String out = ChatColor.GREEN + "+--------------------" + ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "MCDC" + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + "HELP" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + "--------------------+\n";
 
         if (args.length == 0) {
-            out += sendNormalHelpMessage(sender);
+            out += normalHelpMessage(sender);
             info("\"" + sender.getName() + "\" executed command \"/help\"; Result: Normal help message.");
         } else {
             switch (args[0].toLowerCase(Locale.ROOT)) {
@@ -40,7 +39,7 @@ public class Help implements CommandExecutor {
                 }
                 default -> {
                     out += ChatColor.RED + "Unknown command: \"" + ChatColor.GRAY + args[0] + ChatColor.RED + "\"! See below for a full list!\n";
-                    out += sendNormalHelpMessage(sender);
+                    out += normalHelpMessage(sender);
                     info("\"" + sender.getName() + "\" executed command \"/help\"; Result: Normal help message.");
                 }
             }
@@ -52,7 +51,7 @@ public class Help implements CommandExecutor {
         return true;
     }
 
-    private static String sendNormalHelpMessage(CommandSender sender) {
+    private static String normalHelpMessage(CommandSender sender) {
         // Message for admin users:
         /*
          * +--------------------------[MCDC/HELP]--------------------------+
