@@ -39,8 +39,7 @@ public class Help implements CommandExecutor {
                         return true;
                     }
                 }
-                case "help" -> {
-                }
+                case "help" -> out += ChatColor.RESET + " Displays information about all available commands.";
                 case "link" -> {
                 }
                 case "token" -> {
@@ -136,7 +135,7 @@ public class Help implements CommandExecutor {
                 + ChatColor.GRAY + "   |-> " + ChatColor.DARK_AQUA + "subcommand argument 1" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Description\n"
                 + ChatColor.GRAY + "   `-> " + ChatColor.DARK_AQUA + "subcommand argument 2" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Description\n"
                 + spacerLine
-                + ChatColor.GREEN + ChatColor.UNDERLINE + "Subcommands" + ChatColor.RESET + ChatColor.DARK_GRAY + ":\n";
+                + ChatColor.GREEN + ChatColor.UNDERLINE + "Subcommands" + ChatColor.RESET + ChatColor.DARK_GRAY + ":\n" + ChatColor.RESET;
     }
 
     private static String accountHelp(boolean isPlayer, boolean hasAccountEditPermission) {
