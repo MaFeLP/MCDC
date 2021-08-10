@@ -7,6 +7,9 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Logging.logIOException;
@@ -34,7 +37,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.8.4-beta";
+    public static final String version = "v0.11.0-beta";
 
     /**
      * enables more information being displayed while executing events
@@ -247,11 +250,28 @@ public class Settings {
         defaultConfiguration.set("serverName", "A Minecraft Server");
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
+        defaultConfiguration.set("deleteDiscordCommandMessages", false);
+        List<Long> channelIDs = new ArrayList<>();
+        channelIDs.add(1234L);
+        defaultConfiguration.set("channelIDs", channelIDs);
+        List<Long> roleIDs = new ArrayList<>();
+        roleIDs.add(1234L);
+        defaultConfiguration.set("roleIDs", roleIDs);
+        defaultConfiguration.set("enableLinking", true);
+        defaultConfiguration.set("allowListAllAccounts", true);
+        defaultConfiguration.set("showFooterInMessages", true);
+        defaultConfiguration.set("activity.enabled", true);
+        defaultConfiguration.set("activity.type", "listening");
+        defaultConfiguration.set("activity.message", "to your messages 👀");
+        defaultConfiguration.set("permission.accountEdit.level", 3);
+        defaultConfiguration.set("permission.accountEdit.allowedUserUUIDs", new ArrayList<UUID>());
         defaultConfiguration.set("permission.configEdit.level", 3);
-        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", null);
-        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", null);
-        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", null);
+        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", new ArrayList<UUID>());
+        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", new ArrayList<Long>());
+        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", new ArrayList<Long>());
         defaultConfiguration.set("saveEscapeCharacterInConfig", true);
+        defaultConfiguration.set("sendCommandToDiscord.player", false);
+        defaultConfiguration.set("sendCommandToDiscord.server", false);
 
         return defaultConfiguration;
     }

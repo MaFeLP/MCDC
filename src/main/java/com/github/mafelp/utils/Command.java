@@ -74,6 +74,22 @@ public class Command {
     }
 
     /**
+     * Gets the argument at the index as an int.
+     * @param index index of the argument.
+     * @return the value.
+     */
+    public Optional<Integer> getIntegerArgument(int index) {
+        if (argumentIsAvailable(index))
+            // Prevents an abort when not a long was passed.
+            try {
+                return Optional.of(Integer.parseInt(arguments[index]));
+            } catch (NumberFormatException numberFormatException) {
+                return Optional.empty();
+            }
+        return Optional.empty();
+    }
+
+    /**
      * Gets the argument array.
      * @return the arguments as a string array
      */

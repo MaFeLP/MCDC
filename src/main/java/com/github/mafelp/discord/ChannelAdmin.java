@@ -2,17 +2,15 @@ package com.github.mafelp.discord;
 
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
-import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerTextChannelBuilder;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.interaction.callback.InteractionImmediateResponseBuilder;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionException;
@@ -52,12 +50,12 @@ public class ChannelAdmin {
      * @param server server on which to create the channel on
      * @param topic the topic the channel should have
      * @param successEmbed the embed to be sent into successChannel after completion
-     * @param successChannel the channel successEmbed is sent to
+     * @param responder The slash command responder to send the success message to.
      * @param welcomeEmbed the embed to sent to the newly created channel
      * @return the newly created channel
      */
     public static ServerTextChannel createChannel(String name, Server server, String topic,
-                                                  EmbedBuilder successEmbed, TextChannel successChannel,
+                                                  EmbedBuilder successEmbed, InteractionImmediateResponseBuilder responder,
                                                   EmbedBuilder welcomeEmbed) throws CompletionException {
         // Create the Channel
         ServerTextChannel serverTextChannel = new ServerTextChannelBuilder(server)
@@ -74,7 +72,7 @@ public class ChannelAdmin {
         // Add a field containing a link to the new channel and send the embed
         successEmbed.addField("New Channel",
                 "The new channel is: <#" + serverTextChannel.getIdAsString() + ">");
-        successChannel.sendMessage(successEmbed);
+        responder.addEmbed(successEmbed).respond();
 
         // Also send the welcome embed into the newly created channel
         serverTextChannel.sendMessage(welcomeEmbed);

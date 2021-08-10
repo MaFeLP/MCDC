@@ -8,6 +8,9 @@ description: A Spigot plugin for cross communicatin with a discord server
 website: https://github.com/MaFeLP/MCDC
 
 commands:
+  help:
+    description: Displays a help text about all commands.
+    usage: /mcdc:help (COMMAND)
   link:
     description: Links your discord account to your minecraft account.
   token:
@@ -18,3 +21,14 @@ commands:
     description: Configuration Admin tools
     usage: /config <reload|save|set|get|add|remove>
     permission-message: Only administrators can run this command. Sorry
+  account:
+    description: The command to manage your linked account.
+    usage: /account <name|username|link|unlink|get|list> [<linkID|nameToSet>]
+  unlink:
+    description: The command used to remove your account.
+    usage: /unlink
+  whisper:
+    description: The command to whisper to a discord user.
+    usage: /whisper @AccountTag "<Message>"
+    aliases:
+      - dcmsg
