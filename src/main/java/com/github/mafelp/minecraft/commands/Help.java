@@ -53,8 +53,7 @@ public class Help implements CommandExecutor {
                     }
                 }
                 case "unlink" -> out += commandHelpPageStarter("The command used to delete your account/relationship with the discord bot.");
-                case "whisper", "dcmsg" -> {
-                }
+                case "whisper", "dcmsg" -> out += whisperHelp();
                 default -> {
                     out += ChatColor.RED + "Unknown command: \"" + ChatColor.GRAY + args[0] + ChatColor.RED + "\"! See below for a full list!\n";
                     out += normalHelpMessage(sender);
@@ -211,5 +210,13 @@ public class Help implements CommandExecutor {
         return commandHelpPageStarter(" The token command is used to change the discord bot token and restart the bot instance. ")
                 + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "token" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The token used to identify the bot with discord.\n" +
                 "For more information, please see: https://mafelp.github.io/MCDC/installation#get-a-discord-bot-token\n";
+    }
+
+    private static @NotNull String whisperHelp() {
+        return commandHelpPageStarter(" The whisper/dcmsg command is used to write private messages\n" +
+                " to your friends on discord. This requires you to have an account.")
+                + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "account tag" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The account tag for the person who should be messaged\n"
+                + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "message" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The message you want to send them.\n"
+                ;
     }
 }
