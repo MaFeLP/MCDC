@@ -40,8 +40,7 @@ public class Help implements CommandExecutor {
                     }
                 }
                 case "help" -> out += ChatColor.RESET + " Displays information about all available commands.";
-                case "link" -> {
-                }
+                case "link" -> out += linkHelp();
                 case "token" -> {
                 }
                 case "unlink" -> {
