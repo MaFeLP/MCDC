@@ -8,6 +8,9 @@ description: A Spigot plugin for cross communicatin with a discord server
 website: https://github.com/MaFeLP/MCDC
 
 commands:
+  help:
+    description: Displays a help text about all commands.
+    usage: /mcdc:help (COMMAND)
   link:
     description: Links your discord account to your minecraft account.
   token:
