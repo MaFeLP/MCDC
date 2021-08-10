@@ -52,7 +52,7 @@ public class Help implements CommandExecutor {
                         return true;
                     }
                 }
-                case "unlink" -> out += commandHelpPageStarter("The command used to delete your account/relationship with the discord bot.\n");
+                case "unlink" -> out += commandHelpPageStarter("/unlink", "The command used to delete your account/relationship with the discord bot.\n");
                 case "whisper", "dcmsg" -> out += whisperHelp();
                 default -> {
                     out += ChatColor.RED + "Unknown command: \"" + ChatColor.GRAY + args[0] + ChatColor.RED + "\"! See below for a full list!\n";
@@ -127,9 +127,9 @@ public class Help implements CommandExecutor {
     }
 
     @Contract(pure = true)
-    private static @NotNull String commandHelpPageStarter(String description) {
+    private static @NotNull String commandHelpPageStarter(String command, String description) {
         return ChatColor.RED + " If you are searching for the vanilla help, use \"" + ChatColor.GRAY + "/minecraft:help" + ChatColor.RED + "\"!\n\n"
-                + ChatColor.AQUA + " Help for command \"" + ChatColor.GRAY + "/account" + ChatColor.AQUA + "\". Use \"" + ChatColor.GRAY + "/mcdc:help" + ChatColor.AQUA + "\"\n"
+                + ChatColor.AQUA + " Help for command \"" + ChatColor.GRAY + command + ChatColor.AQUA + "\". Use \"" + ChatColor.GRAY + "/mcdc:help" + ChatColor.AQUA + "\"\n"
                 + " to see a list of all available commands.\n\n"
                 + ChatColor.GREEN + ChatColor.UNDERLINE + "Description" + ChatColor.RESET + ChatColor.DARK_GRAY + ":\n"
                 + ChatColor.RESET + description + "\n"
@@ -145,7 +145,7 @@ public class Help implements CommandExecutor {
     }
 
     private static String accountHelp(boolean isPlayer, boolean hasAccountEditPermission) {
-        String out = commandHelpPageStarter(" The account command provides lots of useful features for managing\n"
+        String out = commandHelpPageStarter("/account", " The account command provides lots of useful features for managing\n"
                 + " your local minecraft server/discord relationship.\n"
                 + ChatColor.RED + ChatColor.BOLD + " THIS ACCOUNT IS NOT OFFICIAL AND ONLY VALID ON THIS SERVER AND WITH THE MCDC BOT!")
                 ;
@@ -177,7 +177,7 @@ public class Help implements CommandExecutor {
 
     @Contract(pure = true)
     private static @NotNull String configHelp() {
-        return commandHelpPageStarter(" The config command provides functionality to configure\n" +
+        return commandHelpPageStarter("/config", " The config command provides functionality to configure\n" +
                 " The discord bot and the plugin behavior.")
 
                 + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "add" + ChatColor.GRAY + "   -> " + ChatColor.BLUE + "Adds a value to the list at PATH\n"
@@ -198,7 +198,7 @@ public class Help implements CommandExecutor {
     }
 
     private static @NotNull String linkHelp() {
-        return commandHelpPageStarter("""
+        return commandHelpPageStarter("/link", """
                 The link command is used to link your minecraft and
                  your discord account unofficially, so you can use functions
                  /dcmsg and pinging of users.""")
@@ -206,13 +206,13 @@ public class Help implements CommandExecutor {
     }
 
     private static @NotNull String tokenHelp() {
-        return commandHelpPageStarter(" The token command is used to change the discord bot token and restart the bot instance. ")
+        return commandHelpPageStarter("/token", " The token command is used to change the discord bot token and restart the bot instance. ")
                 + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "token" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The token used to identify the bot with discord.\n" +
                 "For more information, please see: \nhttps://mafelp.github.io/MCDC/installation#get-a-discord-bot-token\n";
     }
 
     private static @NotNull String whisperHelp() {
-        return commandHelpPageStarter(" The whisper/dcmsg command is used to write private messages\n" +
+        return commandHelpPageStarter("/whisper", " The whisper/dcmsg command is used to write private messages\n" +
                 " to your friends on discord. This requires you to have an account.")
                 + ChatColor.GRAY + " |-> " + ChatColor.DARK_AQUA + "account tag" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The account tag for the person who should be messaged\n"
                 + ChatColor.GRAY + " `-> " + ChatColor.DARK_AQUA + "message" + ChatColor.GRAY + " -> " + ChatColor.BLUE + "The message you want to send them.\n"
