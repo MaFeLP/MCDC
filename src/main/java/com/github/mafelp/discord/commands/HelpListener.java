@@ -9,6 +9,8 @@ import org.javacord.api.entity.message.component.SelectMenuOption;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class HelpListener {
                         .setAuthor(author)
                         .setFooter("MCDC was created by: MaFeLP", "https://avatars.githubusercontent.com/u/60669873")
                         .setTimestampToNow()
+                        .setColor(new Color(0xAAFF00))
                         .setDescription("""
                                 Please select an action from the menu below, you want to get help about!
 
