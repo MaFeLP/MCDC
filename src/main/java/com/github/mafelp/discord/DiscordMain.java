@@ -127,6 +127,10 @@ public class DiscordMain extends Thread {
      * Method to register all slash commands (in bulk).
      */
     private void registerSlashCommands() {
+        SlashCommand.with("help", "A command to give help about this bot and its commands").setDefaultPermission(true).createGlobal(discordApi).thenAccept(slashCommand ->
+                Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"")
+        );
+
         List<SlashCommandBuilder> accountSlashCommands = new ArrayList<>();
         List<SlashCommandBuilder> adminSlashCommands = new ArrayList<>();
 
