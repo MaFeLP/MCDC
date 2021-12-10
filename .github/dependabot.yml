@@ -1,13 +1,6 @@
 version: 2
-registries:
-  maven-spigot:
-    type: maven-repository
-    url: https://hub.spigotmc.org/nexus/content/repositories/snapshots/
-  maven-sonatype:
-    type: maven-repository
-    url: https://oss.sonatype.org/content/groups/public/
-
 updates:
+
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
