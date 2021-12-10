@@ -5,9 +5,10 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-    assignees: &member
+    assignees:
       - "MaFeLP"
-    reviewers: *member
+    reviewers:
+      - "MaFeLP"
     commit-message:
       prefix: "Maven"
       include: "scope"
@@ -18,8 +19,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    assignees: *member
-    reviewers: *member
+    assignees:
+      - "MaFeLP"
+    reviewers:
+      - "MaFeLP"
     commit-message:
       prefix: "GitHub Actions"
       include: "scope"
