@@ -1,0 +1,27 @@
+version: 2
+updates:
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: daily
+    assignees: &member
+      - "MaFeLP"
+    reviewers: *member
+    commit-message:
+      prefix: "Maven"
+      include: "scope"
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    assignees: *member
+    reviewers: *member
+    commit-message:
+      prefix: "GitHub Actions"
+      include: "scope"
+    labels:
+      - "dependencies"
