@@ -6,10 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.event.message.MessageCreateEvent;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Logging.logIOException;
@@ -23,7 +22,7 @@ import static com.github.mafelp.utils.Logging.logIOException;
  * ]
  */
 public class Settings {
-    // Internal variables::
+    // Internal variables:
     /**
      * communication API with Discord, defined in DiscordMain.init()
      */
@@ -69,6 +68,11 @@ public class Settings {
      * defined in config.yml
      */
     public static volatile String serverName;
+
+    /**
+     * The events the server admin has subscribed to.
+     */
+    public static volatile List<String> events;
 
     /**
      * API token used to authenticate the bot to discord -
@@ -232,6 +236,7 @@ public class Settings {
         shortMsg = configuration.getBoolean("useShortMessageFormat");
         prefix = configuration.getString("pluginPrefix");
         serverName = configuration.getString("serverName");
+        events = configuration.getStringList("events");
         debug = configuration.getBoolean("debug");
         discordCommandPrefix = configuration.getString("discordCommandPrefix");
     }
@@ -251,12 +256,16 @@ public class Settings {
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
         defaultConfiguration.set("deleteDiscordCommandMessages", false);
-        List<Long> channelIDs = new ArrayList<>();
-        channelIDs.add(1234L);
-        defaultConfiguration.set("channelIDs", channelIDs);
-        List<Long> roleIDs = new ArrayList<>();
-        roleIDs.add(1234L);
-        defaultConfiguration.set("roleIDs", roleIDs);
+        defaultConfiguration.set("events", Arrays.asList(
+                "JoinEvent",
+                "LeaveEvent",
+                "PlayerAdvancementEvent",
+                "PlayerDeathEvent",
+                "ServerShutdownEvent",
+                "ServerStartupEvent"
+        ));
+        defaultConfiguration.set("channelIDs", Collections.singletonList(1234L));
+        defaultConfiguration.set("roleIDs", Collections.singletonList(1234L));
         defaultConfiguration.set("enableLinking", true);
         defaultConfiguration.set("allowListAllAccounts", true);
         defaultConfiguration.set("showFooterInMessages", true);
