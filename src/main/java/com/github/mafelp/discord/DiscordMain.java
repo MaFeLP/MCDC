@@ -1,7 +1,7 @@
 package com.github.mafelp.discord;
 
 import com.github.mafelp.accounts.AccountManager;
-import com.github.mafelp.discord.commands.*;
+import com.github.mafelp.discord.commands.MainSlashCommandListener;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
@@ -13,7 +13,7 @@ import org.javacord.api.entity.permission.PermissionsBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.interaction.*;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletionException;
 
@@ -128,15 +128,14 @@ public class DiscordMain extends Thread {
      * Method to register all slash commands (in bulk).
      */
     private void registerSlashCommands() {
-        SlashCommand.with("help", "A command to give help about this bot and its commands")
-                .setDefaultPermission(true)
-                .createGlobal(discordApi)
-                .thenAccept(slashCommand ->
-                    Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"")
-        );
-
         List<SlashCommandBuilder> accountSlashCommands = new ArrayList<>();
         List<SlashCommandBuilder> adminSlashCommands = new ArrayList<>();
+
+        // global help command. Is always enabled, but needs to be added to the account slash commands list,
+        // as the list will be the list of global commands and overwrite any others created before.
+        accountSlashCommands.add(SlashCommand.with("help", "A command to give help about this bot and its commands")
+                .setDefaultPermission(true)
+        );
 
         // Link command
         accountSlashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
@@ -188,7 +187,12 @@ public class DiscordMain extends Thread {
         // If linking is NOT enabled, set the default permission for all the slash commands to false. No one can use them then
         if (!Settings.getConfiguration().getBoolean("enableLinking", true)) {
             Logging.info("Linking is not enabled. Setting permission for all slash commands to false.");
-            accountSlashCommands.forEach(slashCommandBuilder -> slashCommandBuilder.setDefaultPermission(false));
+            int i = 0;
+            for (SlashCommandBuilder slashCommandBuilder : accountSlashCommands) {
+                if ( i != 0)
+                    slashCommandBuilder.setDefaultPermission(false);
+                i++;
+            }
         }
         discordApi.bulkOverwriteGlobalSlashCommands(accountSlashCommands).thenAccept(slashCommands ->
                 slashCommands.forEach(slashCommand -> {
