@@ -88,6 +88,7 @@ public class DiscordMain extends Thread {
                     // register listeners
                     .addListener(DiscordListener::new)
                     .addListener(MainSlashCommandListener::new)
+                    .addListener(MessageComponentCreationListener::new)
                     // log the bot in and join the servers
                     .login().join();
 
@@ -127,8 +128,11 @@ public class DiscordMain extends Thread {
      * Method to register all slash commands (in bulk).
      */
     private void registerSlashCommands() {
-        SlashCommand.with("help", "A command to give help about this bot and its commands").setDefaultPermission(true).createGlobal(discordApi).thenAccept(slashCommand ->
-                Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"")
+        SlashCommand.with("help", "A command to give help about this bot and its commands")
+                .setDefaultPermission(true)
+                .createGlobal(discordApi)
+                .thenAccept(slashCommand ->
+                    Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"")
         );
 
         List<SlashCommandBuilder> accountSlashCommands = new ArrayList<>();
