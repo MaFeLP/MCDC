@@ -2,12 +2,11 @@ package com.github.mafelp.discord;
 
 import com.github.mafelp.accounts.Account;
 import com.github.mafelp.minecraft.skins.Skin;
-import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.List;
@@ -78,6 +77,19 @@ public class DiscordMessageBroadcast extends Thread {
     }
 
     /**
+     * The constructor to define this thread as an event broadcast for discord channel.
+     * @param event The event that has happened
+     * @param message The message to accompany this event
+     * @param messageAuthor The player that might be referenced in this event
+     */
+    public DiscordMessageBroadcast(String event, String message, @Nullable Player messageAuthor) {
+        this.command = event;
+        this.message = message;
+        this.messageAuthor = messageAuthor;
+        this.broadcastType = BroadcastType.eventBroadcast;
+    }
+
+    /**
      * The executing method to run the thread and sent all the messages.
      */
     @Override
@@ -86,6 +98,7 @@ public class DiscordMessageBroadcast extends Thread {
             case chatMessageBroadcast -> messageBroadcast();
             case playerCommandBroadcast -> playerCommandBroadcast();
             case serverCommandBroadcast -> serverCommandBroadcast();
+            case eventBroadcast -> eventBroadcast();
         }
     }
 
@@ -172,6 +185,27 @@ public class DiscordMessageBroadcast extends Thread {
 
         sendMessages(embed);
     }
+
+    private void eventBroadcast() {
+        // create an embed for the message
+        EmbedBuilder embed = new EmbedBuilder()
+                .setColor(new Color(0x17A288))
+                .setAuthor(Settings.discordApi.getYourself())
+                .setTitle(command)
+                .setDescription(message);
+
+        if (messageAuthor != null) {
+            if (Account.getByPlayer(messageAuthor).isPresent())
+                embed.setAuthor(Account.getByPlayer(messageAuthor).get().getUser());
+            else
+                embed.setAuthor(messageAuthor.getDisplayName(), "https://namemc.com/profile/" + messageAuthor.getName(), new Skin(messageAuthor, false).getHead(), ".png");
+        }
+
+        if (Settings.getConfiguration().getBoolean("showFooterInMessages", true))
+            embed.setFooter("On " + Settings.serverName);
+
+        sendMessages(embed);
+    }
 }
 
 /**
@@ -189,5 +223,10 @@ enum BroadcastType {
     /**
      * A player sent a normal message.
      */
-    chatMessageBroadcast
+    chatMessageBroadcast,
+
+    /**
+     * If an event was emitted
+     */
+    eventBroadcast
 }

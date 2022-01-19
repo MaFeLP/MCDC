@@ -1,14 +1,15 @@
 package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
+import com.github.mafelp.discord.DiscordMain;
 import com.github.mafelp.minecraft.commands.*;
 import com.github.mafelp.minecraft.listeners.CommandListener;
 import com.github.mafelp.minecraft.listeners.JoinListener;
+import com.github.mafelp.minecraft.listeners.LeaveListener;
 import com.github.mafelp.minecraft.listeners.MinecraftChatListener;
 import com.github.mafelp.minecraft.tabCompleters.*;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
-import com.github.mafelp.discord.DiscordMain;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -86,6 +87,7 @@ public final class Main extends JavaPlugin {
         pluginManager.registerEvents(new JoinListener(), this);
         pluginManager.registerEvents(new MinecraftChatListener(), this);
         pluginManager.registerEvents(new CommandListener(), this);
+        pluginManager.registerEvents(new LeaveListener(), this);
     }
 
     /**

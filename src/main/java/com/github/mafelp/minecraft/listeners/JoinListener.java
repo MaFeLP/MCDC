@@ -1,11 +1,12 @@
 package com.github.mafelp.minecraft.listeners;
 
 import com.github.mafelp.accounts.Account;
+import com.github.mafelp.discord.DiscordMessageBroadcast;
+import com.github.mafelp.minecraft.skins.Skin;
 import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Permissions;
 import com.github.mafelp.utils.Settings;
-import com.github.mafelp.minecraft.skins.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,6 +70,14 @@ public class JoinListener implements Listener {
                 "configEdit: " + CheckPermission.checkPermission(Permissions.configEdit, playerJoinEvent.getPlayer())
         );
 
-        // TODO add discord message updating with online players.
+        // Send an Event message that this player has joined
+        if (Settings.events.contains("JoinEvent")) {
+            DiscordMessageBroadcast discordMessageBroadcast = new DiscordMessageBroadcast(
+                    "Player " + playerJoinEvent.getPlayer().getDisplayName() + " joined",
+                    "Player " + playerJoinEvent.getPlayer().getDisplayName() + " has joined the game!",
+                    playerJoinEvent.getPlayer());
+            discordMessageBroadcast.setName("JoinEventBroadcaster");
+            discordMessageBroadcast.start();
+        }
     }
 }

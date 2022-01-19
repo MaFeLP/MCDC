@@ -122,7 +122,18 @@ public class DiscordMain extends Thread {
                 Logging.logIOException(e, "Could not load the Accounts in. The Account file is not present and it could not be created.");
             }
         }
+
+        // Send an Event message that this player has joined
+        if (Settings.events.contains("ServerStartupEvent")) {
+            DiscordMessageBroadcast discordMessageBroadcast = new DiscordMessageBroadcast(
+                    "Server Startup",
+                    "The server has been started and is now ready to connect!",
+                    null);
+            discordMessageBroadcast.setName("StartupEventBroadcaster");
+            discordMessageBroadcast.start();
+        }
     }
+
 
     /**
      * Method to register all slash commands (in bulk).
@@ -244,6 +255,16 @@ public class DiscordMain extends Thread {
      * Shutdown method to disconnect the bot instance
      */
     public static void shutdown() {
+        // Send an Event message that this player has joined
+        if (Settings.events.contains("ServerShutdownEvent")) {
+            DiscordMessageBroadcast discordMessageBroadcast = new DiscordMessageBroadcast(
+                    "Server Stopped",
+                    "The server has been stopped.",
+                    null);
+            discordMessageBroadcast.setName("ShutdownEventBroadcaster");
+            discordMessageBroadcast.start();
+        }
+
         // check if the bot is already logged out
         if (Settings.discordApi == null) {
             // if so, log a message and return
