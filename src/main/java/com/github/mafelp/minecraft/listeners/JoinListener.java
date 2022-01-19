@@ -1,4 +1,4 @@
-package com.github.mafelp.minecraft;
+package com.github.mafelp.minecraft.listeners;
 
 import com.github.mafelp.accounts.Account;
 import com.github.mafelp.utils.CheckPermission;

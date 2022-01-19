@@ -2,6 +2,9 @@ package com.github.mafelp.minecraft;
 
 import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.minecraft.commands.*;
+import com.github.mafelp.minecraft.listeners.CommandListener;
+import com.github.mafelp.minecraft.listeners.JoinListener;
+import com.github.mafelp.minecraft.listeners.MinecraftChatListener;
 import com.github.mafelp.minecraft.tabCompleters.*;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
