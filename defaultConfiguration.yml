@@ -66,6 +66,15 @@ sendCommandToDiscord:
   # ... the server.
   server: false
 
+# Server events that will trigger a message in discord
+events:
+  - JoinEvent # When a player joins the Server
+  - LeaveEvent # When a player leaves the Server
+  - PlayerAdvancementEvent # When a player gets a new Advancement
+  - PlayerDeathEvent # When a Player dies
+  - ServerStartupEvent # When the minecraft server starts
+  - ServerShutdownEvent # When the minecraft server stops
+
 # Permission section for setting permission levels
 permission:
   # The permissions on linking and editing accounts.
