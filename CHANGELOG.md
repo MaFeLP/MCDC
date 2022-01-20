@@ -1,4 +1,15 @@
 # Changelog
+## Help Command & Event Listeners
+➕ Added a help command for discord with nice buttons<br>
+➕ Added Event Listeners for the events:
+
+- Server starts/stops (plugin is loaded/unloaded)
+- Player joins/leaves the Server
+- Player gets an advancement
+- Player dies
+
+---
+
 ## Tab Completions
 ### v0.11.0-beta
 ➕ Added Tab Completion to all Minecraft commands
