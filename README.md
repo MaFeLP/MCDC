@@ -1,3 +1,5 @@
+![Java Version](https://img.shields.io/badge/Java%20Version-17-blue)
+
 # MCDC
 A [Minecraft](https://www.minecraft.net) plugin for [paper servers](https://papermc.io).
 
