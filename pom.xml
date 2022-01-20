@@ -13,7 +13,7 @@
 
     <description>A Spigot plugin for cross communicating with a discord server</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://github.com/MaFeLP/MCDC</url>
