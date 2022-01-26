@@ -3,10 +3,7 @@ package com.github.mafelp.minecraft;
 import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.discord.DiscordMain;
 import com.github.mafelp.minecraft.commands.*;
-import com.github.mafelp.minecraft.listeners.CommandListener;
-import com.github.mafelp.minecraft.listeners.JoinListener;
-import com.github.mafelp.minecraft.listeners.LeaveListener;
-import com.github.mafelp.minecraft.listeners.MinecraftChatListener;
+import com.github.mafelp.minecraft.listeners.*;
 import com.github.mafelp.minecraft.tabCompleters.*;
 import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
@@ -85,9 +82,11 @@ public final class Main extends JavaPlugin {
         // All listeners
         // for more information read the Javadoc in the specific classes
         pluginManager.registerEvents(new JoinListener(), this);
+        pluginManager.registerEvents(new LeaveListener(), this);
         pluginManager.registerEvents(new MinecraftChatListener(), this);
         pluginManager.registerEvents(new CommandListener(), this);
-        pluginManager.registerEvents(new LeaveListener(), this);
+        pluginManager.registerEvents(new AdvancementListener(), this);
+        pluginManager.registerEvents(new DeathListener(), this);
     }
 
     /**
