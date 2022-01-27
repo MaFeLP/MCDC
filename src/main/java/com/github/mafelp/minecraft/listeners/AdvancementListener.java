@@ -5,9 +5,11 @@ import com.github.mafelp.utils.Logging;
 import com.github.mafelp.utils.Settings;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,11 +62,20 @@ public class AdvancementListener implements Listener {
     public void onAdvancement(PlayerAdvancementDoneEvent playerAdvancementDoneEvent) {
         // Send an Event message that this player has joined
         if (Settings.events.contains("PlayerAdvancementEvent") && ! fileDisabled) {
-            String description_key = playerAdvancementDoneEvent.getAdvancement().getKey().getKey() + ".description";
-            String title_key = playerAdvancementDoneEvent.getAdvancement().getKey().getKey() + ".title";
+            String advancementKey = playerAdvancementDoneEvent.getAdvancement().getKey().getKey();
+            String description_key =  advancementKey + ".description";
+            String title_key = advancementKey + ".title";
+            @Nullable
+            String title = advancements.get(title_key);
+            @Nullable
+            String description = advancements.get(description_key);
+            if (description == null || title == null) {
+                Logging.info(ChatColor.RED + "Could not get advancement for " + ChatColor.GRAY + advancementKey + ChatColor.RED +"!");
+                return;
+            }
             DiscordMessageBroadcast discordMessageBroadcast = new DiscordMessageBroadcast(
-                    "Advancement made: " + advancements.get(title_key) + "!",
-                    advancements.get(description_key),
+                    "Advancement made: " + title + "!",
+                    description,
                     playerAdvancementDoneEvent.getPlayer());
             discordMessageBroadcast.setName("AdvancementEventBroadcaster");
             discordMessageBroadcast.start();
