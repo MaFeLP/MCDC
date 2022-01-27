@@ -11,6 +11,9 @@ the config file bundled.
 
 - [1.18](https://mafelp.github.io/MCDC/download/advancements/1-18.json)
 
+Please see [Place the config file](#place-the-config-file), to see where to put
+the downloaded file.
+
 ## Prerequisites
 - [jq](https://stedolan.github.io/jq/)
 - Access to a `.minecraft` folder of a Minecraft client
