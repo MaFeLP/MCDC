@@ -178,7 +178,7 @@ public class Settings {
     /**
      * Directory where the configuration files are in
      */
-    private static final File configurationFileDirectory = new File("./plugins/MCDC");
+    public static final File configurationFileDirectory = new File("./plugins/MCDC");
 
     /**
      * The file in which the configurations are specified in
