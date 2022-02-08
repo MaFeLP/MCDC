@@ -8,6 +8,7 @@ import com.github.mafelp.utils.Settings;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.awt.*;
 import java.util.Optional;
@@ -16,16 +17,7 @@ import java.util.Optional;
  * The class that handles discord messages and test, if they are the link command. If so, it starts the linking process.
  */
 public class LinkListener {
-    /**
-     * The method that handles messages, that are sent, tests if they are the link command.
-     * If so, this method starts the linking process.
-     * @param event The event sent from the Discord API, containing important information about the message,
-     *              such as the channel it has been sent to and the {@link User} who has sent it.
-     */
-    public static void onSlashCommand(SlashCommandCreateEvent event) {
-        User author = event.getSlashCommandInteraction().getUser();
-        Logging.debug("Executing link command for user " + author);
-
+    protected static void checkAndSendToken(final SlashCommandInteraction event, final Optional<Long> token, final User author) {
         // Embed sent on successful account linking
         EmbedBuilder successEmbed = new EmbedBuilder()
                 .setAuthor(author)
@@ -47,21 +39,19 @@ public class LinkListener {
             alreadyRegistered.setDescription("Sorry, but your Discord Account is already linked to the minecraft user " + account.getPlayer().getName() + "!\n" +
                     "Use \"/unlink\" in Minecraft or \"" + Settings.getConfiguration().get("discordCommandPrefix") + "unlink\" to unlink your accounts!");
 
-            event.getSlashCommandInteraction().createImmediateResponder().addEmbed(alreadyRegistered).respond();
+            event.createImmediateResponder().addEmbed(alreadyRegistered).respond();
 
             return;
         }
 
-        int token = event.getSlashCommandInteraction().getOptionLongValueByIndex(0).orElse(-1L).intValue();
-
         // Checks if a number is given as the first argument. If not, send the user a new Link token.
-        if (token == -1) {
+        if (token.isEmpty()) {
             Logging.debug("No Integer Argument given in link command. Sending LinkTokenEmbed...");
             sendLinkToken(author, event);
         // If a number is being found at the first argument, try to link it to a minecraft account.
         } else {
             Logging.debug("LinkToken found. Checking it...");
-            Optional<Account> linkedAccount = MinecraftLinker.linkToDiscord(author, token);
+            Optional<Account> linkedAccount = MinecraftLinker.linkToDiscord(author, token.get().intValue());
 
             if (linkedAccount.isEmpty()) {
                 Logging.debug("LinkToken is invalid. Sending new Link Token");
@@ -70,11 +60,23 @@ public class LinkListener {
             }
 
             Logging.debug("LinkToken valid. sending success Embed.");
-            event.getSlashCommandInteraction().createImmediateResponder().addEmbed(
+            event.createImmediateResponder().addEmbed(
                     successEmbed.addInlineField("Minecraft Account", linkedAccount.get().getPlayer().getName())
                             .addInlineField("Discord Account", linkedAccount.get().getUsername() + " :  " + linkedAccount.get().getMentionTag())
             ).respond();
         }
+    }
+
+    /**
+     * The method that handles messages, that are sent, tests if they are the link command.
+     * If so, this method starts the linking process.
+     * @param event The event sent from the Discord API, containing important information about the message,
+     *              such as the channel it has been sent to and the {@link User} who has sent it.
+     */
+    public static void onSlashCommand(SlashCommandCreateEvent event) {
+        User author = event.getSlashCommandInteraction().getUser();
+        Logging.debug("Executing link command for user " + author);
+
     }
 
     /**
@@ -83,7 +85,7 @@ public class LinkListener {
      * @param user The user to create the linking token from.
      * @param event The event to respond to.
      */
-    private static void sendLinkToken(final User user, final SlashCommandCreateEvent event) {
+    protected static void sendLinkToken(final User user, final SlashCommandInteraction event) {
         int minecraftLinkToken = DiscordLinker.getLinkToken(user);
 
         EmbedBuilder reply = new EmbedBuilder()
@@ -95,6 +97,6 @@ public class LinkListener {
                 .setFooter("MCDC made by MaFeLP (https://mafelp.github.io/MCDC/")
                 ;
 
-        event.getSlashCommandInteraction().createImmediateResponder().addEmbed(reply).respond();
+        event.createImmediateResponder().addEmbed(reply).respond();
     }
 }

@@ -148,6 +148,28 @@ public class DiscordMain extends Thread {
                 .setDefaultPermission(true)
         );
 
+        // Account command
+        accountSlashCommands.add(SlashCommand.with("account", "A command for account management",
+                Arrays.asList(
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "link", "Link your discord and minecraft accounts",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.LONG, "token", "The OPTIONAL token to link your accounts", false)
+                                )),
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "name", "Change or get your username for the accounts",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "change to", "The string to change your name to. Leave blank to get current name.", false)
+                                )),
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "username", "Change or get your username for the accounts",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "change to", "The string to change your name to. Leave blank to get current name.", false)
+                                )),
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "get", "Gets information about an account",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.USER, "account", "Get information about this user. Leave blank to get yourself.", false)
+                                )),
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "list", "List all currently linked accounts"),
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "unlink", "Unlink your discord account from your minecraft account.")
+                )));
         // Link command
         accountSlashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
                 Collections.singletonList(

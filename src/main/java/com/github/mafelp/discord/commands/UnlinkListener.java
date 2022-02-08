@@ -5,7 +5,7 @@ import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.utils.Logging;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
-import org.javacord.api.event.interaction.SlashCommandCreateEvent;
+import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.awt.*;
 import java.util.Optional;
@@ -20,8 +20,8 @@ public class UnlinkListener{
      * The method that initializes the unlinking.
      * @param event The event that hold information about this specific command.
      */
-    public static void onSlashCommand(SlashCommandCreateEvent event) {
-        User author = event.getSlashCommandInteraction().getUser();
+    public static void onSlashCommand(SlashCommandInteraction event) {
+        User author = event.getUser();
         // the embed sent on successful execution of the command.
         EmbedBuilder successEmbed = new EmbedBuilder()
                 .setAuthor(author)
@@ -44,7 +44,7 @@ public class UnlinkListener{
         // If the user does not have an account.
         if (optionalAccount.isEmpty()) {
             Logging.debug("User \"" + author.getName() + "\" does not have an account to unlink... Sending noAccountEmbed...");
-            event.getSlashCommandInteraction().createImmediateResponder().addEmbed(noAccountEmbed).respond();
+            event.createImmediateResponder().addEmbed(noAccountEmbed).respond();
             return;
         }
 
@@ -60,9 +60,9 @@ public class UnlinkListener{
         // Then remove the account.
         AccountManager.removeAccount(account);
 
-        successEmbed.addField("Successful Unlinking","Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);
+        successEmbed.setDescription("Successfully unlinked your minecraft account \"" + minecraftName + "\" from user discord account " + mentionTag);
 
         Logging.info("Removed account \"" + username + "\"... Sending success embed...");
-        event.getSlashCommandInteraction().createImmediateResponder().addEmbed(successEmbed).respond();
+        event.createImmediateResponder().addEmbed(successEmbed).respond();
     }
 }

@@ -22,7 +22,6 @@ import java.util.Optional;
 
 import static com.github.mafelp.utils.Settings.prefix;
 import static org.bukkit.ChatColor.*;
-import static org.bukkit.ChatColor.GREEN;
 
 /**
  * The class that is being called on the execution of the command <code>/account</code>, executed as a minecraft player.
@@ -39,9 +38,8 @@ public class AccountCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command, @NotNull String label, String[] args) {
         // Only allows players to execute this command.
-        if (commandSender instanceof Player) {
+        if (commandSender instanceof Player player) {
             // If a player executed this command, we can cast the commandSender to a player.
-            Player player = (Player) commandSender;
 
             if (args == null) {
                 commandSender.sendMessage(prefix + ChatColor.RED + "No arguments given into the command! Please use the following syntax.");
@@ -197,10 +195,7 @@ public class AccountCommand implements CommandExecutor {
                                 Optional<Account> requestedAccount = Account.getByPlayer(p);
 
                                 // If the player does not have an account, send an error message.
-                                if (requestedAccount.isEmpty()) {
-                                    commandSender.sendMessage(prefix + ChatColor.RED + "Player " + p.getName() + " doesn't have an account.");
-                                    Logging.debug("Player " + player.getName() + " tried to get the account name for " + cmd.getStringArgument(0).get() + ", but he/she does not have an account!");
-                                } else {
+                                if (requestedAccount.isPresent()) {
                                     Logging.debug("Player " + player.getName() + " got the account name for player " + cmd.getStringArgument(0).get() + ". It is: " + requestedAccount.get().getUsername());
                                     commandSender.sendMessage(prefix + ChatColor.GREEN + "The account name for player " + ChatColor.GRAY + p.getName() + ChatColor.GREEN + " is: " + ChatColor.GRAY + requestedAccount.get().getUsername());
                                 }
