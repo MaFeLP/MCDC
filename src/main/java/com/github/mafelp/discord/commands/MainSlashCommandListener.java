@@ -23,11 +23,11 @@ public class MainSlashCommandListener implements SlashCommandCreateListener {
             case "unlink" -> UnlinkListener.onSlashCommand(slashCommandCreateEvent);
             case "whisper", "mcmsg" -> WhisperListener.onSlashCommand(slashCommandCreateEvent);
             case "create" -> {
-                if (slashCommandCreateEvent.getSlashCommandInteraction().getFirstOption().isPresent()) {
-                    switch (slashCommandCreateEvent.getSlashCommandInteraction().getFirstOption().get().getName()) {
+                if (slashCommandCreateEvent.getSlashCommandInteraction().getOptionByIndex(0).isPresent()) {
+                    switch (slashCommandCreateEvent.getSlashCommandInteraction().getOptionByIndex(0).get().getName()) {
                         case "channel" -> CreateChannelListener.onSlashCommand(slashCommandCreateEvent);
                         case "role" -> CreateRoleListener.onSlashCommand(slashCommandCreateEvent);
-                        default -> Logging.info(ChatColor.RED + "Error in SlashCommand \"create\": First option is: " + slashCommandCreateEvent.getSlashCommandInteraction().getFirstOption().get().getName());
+                        default -> Logging.info(ChatColor.RED + "Error in SlashCommand \"create\": First option is: " + slashCommandCreateEvent.getSlashCommandInteraction().getOptionByIndex(0).get().getName());
                     }
                 } else {
                     Logging.info(ChatColor.RED + "Error in SlashCommand \"create\": no First option given!");

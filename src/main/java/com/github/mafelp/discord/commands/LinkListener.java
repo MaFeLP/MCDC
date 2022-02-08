@@ -52,7 +52,7 @@ public class LinkListener {
             return;
         }
 
-        int token = event.getSlashCommandInteraction().getFirstOptionIntValue().orElse(-1);
+        int token = event.getSlashCommandInteraction().getOptionLongValueByIndex(0).orElse(-1L).intValue();
 
         // Checks if a number is given as the first argument. If not, send the user a new Link token.
         if (token == -1) {

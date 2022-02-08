@@ -25,11 +25,10 @@ public class MessageComponentCreationListener implements MessageComponentCreateL
     private static void helpSelectMenu(MessageComponentInteraction interaction) {
         if (interaction.asSelectMenuInteraction().isEmpty())
             return;
-        interaction.getMessage().ifPresent(message -> {
-            if (message.canYouDelete())
-                message.delete("Message no longer needed, as the help command continues.").thenAccept(none ->
-                        Logging.debug("Removed original help message."));
-        });
+        if (interaction.getMessage().canYouDelete()) {
+            interaction.getMessage().delete("Message no longer needed, as the help command continues.").thenAccept(none ->
+                    Logging.debug("Removed original help message."));
+        }
 
         InteractionImmediateResponseBuilder message = interaction.createImmediateResponder()
                 .append("Your requested help page(s):")

@@ -151,7 +151,7 @@ public class DiscordMain extends Thread {
         // Link command
         accountSlashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
                 Collections.singletonList(
-                        SlashCommandOption.create(SlashCommandOptionType.INTEGER, "token", "The token used to link your accounts", false)
+                        SlashCommandOption.create(SlashCommandOptionType.LONG, "token", "The token used to link your accounts", false)
                 )
         ).setDefaultPermission(true));
 
@@ -205,13 +205,13 @@ public class DiscordMain extends Thread {
                 i++;
             }
         }
-        discordApi.bulkOverwriteGlobalSlashCommands(accountSlashCommands).thenAccept(slashCommands ->
+        discordApi.bulkOverwriteGlobalApplicationCommands(accountSlashCommands).thenAccept(slashCommands ->
                 slashCommands.forEach(slashCommand -> {
                     Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"");
                     Logging.debug("Default-Permission for \"/" + slashCommand.getName() + "\": " + slashCommand.getDefaultPermission());
         }));
         for (Server server : discordApi.getServers()) {
-            discordApi.bulkOverwriteServerSlashCommands(server, adminSlashCommands).thenAccept(slashCommands -> {
+            discordApi.bulkOverwriteServerApplicationCommands(server, adminSlashCommands).thenAccept(slashCommands -> {
                 // Setup a list with all allowed Users, configured in the config file and the bot owner
                 var allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordServerAdmin.allowedUserIDs");
                 allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordBotAdmin.allowedUserIDs");
@@ -220,8 +220,8 @@ public class DiscordMain extends Thread {
                     allowedUserIDs.add(discordApi.getOwnerId());
 
                 // Register the slash commands for each server
-                List<ServerSlashCommandPermissionsBuilder> updatedSlashCommands = new ArrayList<>();
-                List<SlashCommandPermissions> permissions = new ArrayList<>();
+                List<ServerApplicationCommandPermissionsBuilder> updatedSlashCommands = new ArrayList<>();
+                List<ApplicationCommandPermissions> permissions = new ArrayList<>();
                 Logging.debug("Updating admin slash command permission for server " + server.getName());
                 // Check if the server owner of this server is in the allowed lists.
                 // If not, add them only for this server and remove them afterwards.
@@ -230,12 +230,12 @@ public class DiscordMain extends Thread {
                     allowedUserIDs.add(server.getOwnerId());
 
                 // Create permission to use this slash command for each allowed user
-                allowedUserIDs.forEach(userID -> permissions.add(SlashCommandPermissions.create(userID, SlashCommandPermissionType.USER, true)));
+                allowedUserIDs.forEach(userID -> permissions.add(ApplicationCommandPermissions.create(userID, ApplicationCommandPermissionType.USER, true)));
                 // Prepare the commands to have the new permissions: Allow all allowed users to use this slash command.
-                slashCommands.forEach(slashCommand -> updatedSlashCommands.add(new ServerSlashCommandPermissionsBuilder(slashCommand.getId(), permissions)));
+                slashCommands.forEach(slashCommand -> updatedSlashCommands.add(new ServerApplicationCommandPermissionsBuilder(slashCommand.getId(), permissions)));
 
                 // Do the actual updates
-                discordApi.batchUpdateSlashCommandPermissions(server, updatedSlashCommands).thenAccept(serverSlashCommandPermissions ->
+                discordApi.batchUpdateApplicationCommandPermissions(server, updatedSlashCommands).thenAccept(serverSlashCommandPermissions ->
                         Logging.info("Updated admin slash command permissions for server " + server.getName()));
 
                 if (!serverOwnerIsAllowed)

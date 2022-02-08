@@ -92,13 +92,13 @@ public class SetupListener {
         }
 
         // If the first argument is empty, send the help message and exit.
-        if (event.getSlashCommandInteraction().getFirstOptionStringValue().isEmpty()) {
+        if (event.getSlashCommandInteraction().getOptionByIndex(0).isEmpty()) {
             info("Person " + ChatColor.GRAY + author.getName() + ChatColor.RESET + " used the command setup wrong. Sending help embed.");
             event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();
             return;
         }
 
-        String name = event.getSlashCommandInteraction().getFirstOptionStringValue().get();
+        String name = event.getSlashCommandInteraction().getOptionStringValueByIndex(0).orElse("");
 
         // try to create the role.
         try {

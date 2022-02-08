@@ -80,15 +80,15 @@ public class CreateRoleListener {
         }
 
         // Checks if the first argument after the first argument exists.
-        if (event.getSlashCommandInteraction().getFirstOption().isEmpty() ||
-                event.getSlashCommandInteraction().getFirstOption().get().getFirstOption().isEmpty()) {
+        if (event.getSlashCommandInteraction().getOptionByIndex(0).isEmpty() ||
+                event.getSlashCommandInteraction().getOptionByIndex(1).isEmpty()) {
             Logging.info("User \"" + author.getName() + "\" tried to execute command \"create role\"!");
             event.getSlashCommandInteraction().createImmediateResponder().addEmbed(helpMessage).respond();
             return;
         }
 
         // Gets the first argument after the first argument and then gets the it as a string
-        var secondOption = event.getSlashCommandInteraction().getFirstOption().get().getFirstOption().get();
+        var secondOption = event.getSlashCommandInteraction().getOptionByIndex(1).get();
         String name = secondOption.getStringValue().get();
 
         if (secondOption.getStringValue().isEmpty()) {
