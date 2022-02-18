@@ -157,11 +157,11 @@ public class DiscordMain extends Thread {
                                 )),
                         SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "name", "Change or get your username for the accounts",
                                 Collections.singletonList(
-                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "change to", "The string to change your name to. Leave blank to get current name.", false)
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "change-to", "The string to change your name to. Leave blank to get current name.", false)
                                 )),
                         SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "username", "Change or get your username for the accounts",
                                 Collections.singletonList(
-                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "change to", "The string to change your name to. Leave blank to get current name.", false)
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "change-to", "The string to change your name to. Leave blank to get current name.", false)
                                 )),
                         SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "get", "Gets information about an account",
                                 Collections.singletonList(
@@ -169,7 +169,8 @@ public class DiscordMain extends Thread {
                                 )),
                         SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "list", "List all currently linked accounts"),
                         SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "unlink", "Unlink your discord account from your minecraft account.")
-                )));
+                )
+        ).setDefaultPermission(true));
         // Link command
         accountSlashCommands.add(SlashCommand.with("link", "A command to link your discord and minecraft accounts",
                 Collections.singletonList(
@@ -227,11 +228,11 @@ public class DiscordMain extends Thread {
                 i++;
             }
         }
-        discordApi.bulkOverwriteGlobalApplicationCommands(accountSlashCommands).thenAccept(slashCommands ->
-                slashCommands.forEach(slashCommand -> {
-                    Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"");
-                    Logging.debug("Default-Permission for \"/" + slashCommand.getName() + "\": " + slashCommand.getDefaultPermission());
-        }));
+        var _slashCommands = discordApi.bulkOverwriteGlobalApplicationCommands(accountSlashCommands).join();
+        _slashCommands.forEach(slashCommand -> {
+            Logging.info("Added global slash command \"/" + slashCommand.getName() + "\"");
+            Logging.debug("Default-Permission for \"/" + slashCommand.getName() + "\": " + slashCommand.getDefaultPermission());
+        });
         for (Server server : discordApi.getServers()) {
             discordApi.bulkOverwriteServerApplicationCommands(server, adminSlashCommands).thenAccept(slashCommands -> {
                 // Setup a list with all allowed Users, configured in the config file and the bot owner

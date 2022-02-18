@@ -33,6 +33,7 @@ public class MainSlashCommandListener implements SlashCommandCreateListener {
                     Logging.info(ChatColor.RED + "Error in SlashCommand \"create\": no First option given!");
                 }
             }
+            case "account" -> AccountListener.onSlashCommand(slashCommandCreateEvent.getSlashCommandInteraction());
             case "help" -> HelpListener.onSlashCommand(slashCommandCreateEvent);
             default -> Logging.info(ChatColor.RED + "Wait. Wait? This command is not recognised: " + slashCommandCreateEvent.getSlashCommandInteraction().getCommandName() + " and this should not have happened!");
         }

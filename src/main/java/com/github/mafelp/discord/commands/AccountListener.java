@@ -76,12 +76,7 @@ public class AccountListener {
 
         switch (options.get(0).getName().toLowerCase(Locale.ROOT)) {
             // Links your discord and minecraft accounts
-            case "link" -> {
-                Optional<Long> id = Optional.empty();
-                if (options.size() >= 2)
-                    id = options.get(1).getLongValue();
-                LinkListener.checkAndSendToken(event, id, author);
-            }
+            case "link" -> LinkListener.checkAndSendToken(event, options.get(0).getOptionLongValueByIndex(0), author);
             // Sets your username
             case "name", "username" -> {
                 Logging.debug("Subcommand: " + options.get(0).getName());
@@ -90,7 +85,7 @@ public class AccountListener {
                     return;
                 }
 
-                if (options.size() < 2 || options.get(1).getStringValue().isEmpty()) {
+                if (options.get(0).getOptionStringValueByIndex(0).isEmpty()) {
                     Logging.info(ChatColor.GRAY + author.getName() + ChatColor.RESET + " requested his account name.");
                     event.createImmediateResponder().addEmbed(new EmbedBuilder()
                             .setAuthor(author)
@@ -104,7 +99,7 @@ public class AccountListener {
 
                 Logging.debug("DC User " + author.getName() + " requested a name change.");
                 // Validate the inputted string
-                String inputName = options.get(1).getStringValue().get();
+                String inputName = options.get(0).getOptionStringValueByIndex(0).get();
 
                 Logging.debug("Checking for wrong characters in requested name.");
                 char[] chars = inputName.toCharArray();
@@ -186,7 +181,7 @@ public class AccountListener {
             case "get" -> {
                 Logging.debug("DC User " + author.getName() + " executed subcommand \"get\".");
                 // If no additional arguments were passed, give the player his/her account name.
-                if (options.size() < 2 || options.get(1).getStringValue().isEmpty()) {
+                if (options.get(0).getOptionUserValueByIndex(0).isEmpty()) {
                     if (Account.getByDiscordUser(author).isEmpty()) {
                         Logging.debug("DC User " + ChatColor.GRAY + author.getName() + ChatColor.RESET + " has requested his account name: They don't have one. Sending help message.");
                         event.createImmediateResponder().addEmbed(new EmbedBuilder()
@@ -216,13 +211,13 @@ public class AccountListener {
                 for (OfflinePlayer p : Settings.minecraftServer.getOfflinePlayers()) {
                     Logging.debug("`--> " + p.getName());
                     // Check if the name of the player equals the requested name.
-                    if (Objects.equals(p.getName(), options.get(1).getStringValue().get())) {
+                    if (Objects.equals(p.getName(), options.get(0).getOptionStringValueByIndex(0).get())) {
                         // Get the account for the requested Player.
                         Optional<Account> requestedAccount = Account.getByPlayer(p);
 
                         // If the player does not have an account, send an error message.
                         if (requestedAccount.isPresent()) {
-                            Logging.debug("Player " + author.getName() + " got the account name for player " + options.get(1).getStringValue().get() + ". It is: " + requestedAccount.get().getUsername());
+                            Logging.debug("Player " + author.getName() + " got the account name for player " + options.get(0).getOptionStringValueByIndex(0).get() + ". It is: " + requestedAccount.get().getUsername());
                             event.createImmediateResponder().addEmbed(new EmbedBuilder()
                                     .setAuthor(author)
                                     .setTitle("Account info")
@@ -237,7 +232,7 @@ public class AccountListener {
 
                 // If no player could be found, send the player an error message and exit.
                 event.createImmediateResponder().addEmbed(errorEmbed.setDescription(
-                    "Player with the name " + options.get(1).getStringValue() + " does not exist!"
+                    "Player with the name " + options.get(0).getOptionStringValueByIndex(0).get() + " does not exist!"
                 )).respond().join();
             }
             // Removes an account, if the player has the required permissions.
@@ -246,7 +241,7 @@ public class AccountListener {
                 if (incidentReport(author, event)) return;
 
                 // Checks if enough arguments were passed.
-                if (options.size() < 2 || options.get(1).getUserValue().isEmpty()) {
+                if (options.get(0).getOptionUserValueByIndex(0).isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed.setDescription("""
                                     Not enough arguments given!
 
@@ -256,15 +251,15 @@ public class AccountListener {
                     return;
                 }
 
-                if (Account.getByDiscordUser(options.get(1).getUserValue().get()).isEmpty()) {
+                if (Account.getByDiscordUser(options.get(0).getOptionUserValueByIndex(0).get()).isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed.setDescription(
-                            "User " + options.get(1).getUserValue().get().getMentionTag() + " does not have account! Ignoring..."
+                            "User " + options.get(0).getOptionUserValueByIndex(0).get().getMentionTag() + " does not have account! Ignoring..."
                     )).respond().join();
 
                     return;
                 }
 
-                Account toRemove = Account.getByDiscordUser(options.get(1).getUserValue().get()).get();
+                Account toRemove = Account.getByDiscordUser(options.get(0).getOptionUserValueByIndex(0).get()).get();
                 String username = toRemove.getUsername();
                 AccountManager.removeAccount(toRemove);
                 event.createImmediateResponder().addEmbed(new EmbedBuilder()

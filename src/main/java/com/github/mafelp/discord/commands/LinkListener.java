@@ -17,7 +17,7 @@ import java.util.Optional;
  * The class that handles discord messages and test, if they are the link command. If so, it starts the linking process.
  */
 public class LinkListener {
-    protected static void checkAndSendToken(final SlashCommandInteraction event, final Optional<Long> token, final User author) {
+    protected static void checkAndSendToken(final SlashCommandInteraction event, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") final Optional<Long> token, final User author) {
         // Embed sent on successful account linking
         EmbedBuilder successEmbed = new EmbedBuilder()
                 .setAuthor(author)
@@ -40,7 +40,6 @@ public class LinkListener {
                     "Use \"/unlink\" in Minecraft or \"" + Settings.getConfiguration().get("discordCommandPrefix") + "unlink\" to unlink your accounts!");
 
             event.createImmediateResponder().addEmbed(alreadyRegistered).respond();
-
             return;
         }
 
