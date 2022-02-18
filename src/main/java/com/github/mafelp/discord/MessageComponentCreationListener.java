@@ -1,6 +1,10 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.utils.CheckPermission;
 import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Permissions;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.javacord.api.entity.message.component.ActionRow;
 import org.javacord.api.entity.message.component.Button;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -11,6 +15,9 @@ import org.javacord.api.listener.interaction.MessageComponentCreateListener;
 
 import java.awt.*;
 
+import static com.github.mafelp.utils.Settings.createDefaultConfig;
+import static com.github.mafelp.utils.Settings.getConfiguration;
+
 public class MessageComponentCreationListener implements MessageComponentCreateListener {
     @Override
     public void onComponentCreate(MessageComponentCreateEvent event) {
@@ -18,6 +25,8 @@ public class MessageComponentCreationListener implements MessageComponentCreateL
 
         switch (interaction.getCustomId()) {
             case "helpSelectMenu" -> helpSelectMenu(interaction);
+            case "configResetConfirm" -> configResetConfirm(interaction);
+            case "configResetAbort" -> configResetAbort(interaction);
             default -> {}
         }
     }
@@ -174,5 +183,71 @@ public class MessageComponentCreationListener implements MessageComponentCreateL
             }
         });
         message.respond();
+    }
+
+    private static void configResetConfirm(MessageComponentInteraction interaction) {
+        if (incidentReport(interaction)) return;
+
+        EmbedBuilder replyEmbed = new EmbedBuilder().setAuthor(interaction.getUser());
+        try {
+            // tries to set the configuration to the defaults.
+            getConfiguration().loadFromString(createDefaultConfig().saveToString());
+            replyEmbed.setTitle("Success!")
+                    .setColor(Color.GREEN)
+                    .setDescription("Successfully reloaded the config file from its defaults!");
+            Logging.info(ChatColor.GRAY + interaction.getUser().getName() + ChatColor.RESET + " successfully reset the config file to its defaults!");
+        } catch (InvalidConfigurationException e) {
+            Logging.logInvalidConfigurationException(e, "Error whilst resetting the config to the defaults.");
+            replyEmbed.setTitle("Error!")
+                    .setColor(Color.RED)
+                    .setDescription("""
+                            The Configuration is invalid!
+                            
+                            This should not happen!
+                            
+                            Please open an issue at https://github.com/MaFeLP/MCDC/issues/new""");
+        } finally {
+            interaction.getMessage().createUpdater().removeAllEmbeds().addEmbed(replyEmbed).replaceMessage().join();
+            Logging.debug("Updated the original message.");
+        }
+    }
+
+    private static void configResetAbort(MessageComponentInteraction interaction) {
+        if (incidentReport(interaction)) return;
+
+        Logging.info(ChatColor.GRAY + interaction.getUser().getName() + ChatColor.RESET + " successfully reset the config file to its defaults!");
+        interaction.getMessage().createUpdater().removeAllEmbeds().addEmbed(new EmbedBuilder()
+                        .setAuthor(interaction.getUser())
+                        .setTitle("Aborted!")
+                        .setColor(Color.ORANGE)
+                        .setDescription("Aborted resetting the configuration to its defaults.")
+        ).replaceMessage().join();
+        Logging.debug("Updated the original message.");
+    }
+
+    /**
+     * The method used to check the {@link com.github.mafelp.utils.Permissions}: {@code accountEdit} of a command Sender.
+     * @param event The command that will be shown into the console, if the permission is denied.
+     * @return If the permission was granted.
+     */
+    private static boolean incidentReport(MessageComponentInteraction event) {
+        EmbedBuilder errorEmbed = new EmbedBuilder()
+                .setAuthor(event.getUser())
+                .setTitle("Error")
+                .setColor(Color.RED)
+                .setFooter("Use \"/help\" for help!");
+
+        if (!CheckPermission.checkPermission(Permissions.discordBotAdmin, event.getUser().getId())
+                && !CheckPermission.checkPermission(Permissions.discordServerAdmin, event.getUser().getId())
+        ) {
+            event.createImmediateResponder().addEmbed(errorEmbed.setDescription("""
+                            Sorry, you don't have the required permissions, to execute this command!
+
+                            This incident will be reported!"""
+            )).respond().join();
+            Logging.info("DC User " + ChatColor.DARK_GRAY + event.getUser().getName() + ChatColor.RESET + " tried to execute the command " + ChatColor.DARK_GRAY + "config" + ChatColor.RESET + "! This action was denied due to missing permission!");
+            return true;
+        }
+        return false;
     }
 }
