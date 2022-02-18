@@ -218,6 +218,18 @@ public class DiscordMain extends Thread {
         .setDefaultPermission(false)
         );
 
+        // The account command for administrators
+        adminSlashCommands.add(SlashCommand.with("account", "A command for account management",
+                Arrays.asList(
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "save", "Saves the current memory state to the accounts file."),
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "reload", "Reloads the accounts from the save file and overrides the memory accounts. USE WITH CAUTION"),
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "remove", "Removed the account of given discord user.",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.USER, "user", "The user to delete the account from", true)
+                                ))
+                )
+        ).setDefaultPermission(true));
+
         // If linking is NOT enabled, set the default permission for all the slash commands to false. No one can use them then
         if (!Settings.getConfiguration().getBoolean("enableLinking", true)) {
             Logging.info("Linking is not enabled. Setting permission for all slash commands to false.");
@@ -234,39 +246,38 @@ public class DiscordMain extends Thread {
             Logging.debug("Default-Permission for \"/" + slashCommand.getName() + "\": " + slashCommand.getDefaultPermission());
         });
         for (Server server : discordApi.getServers()) {
-            discordApi.bulkOverwriteServerApplicationCommands(server, adminSlashCommands).thenAccept(slashCommands -> {
-                // Setup a list with all allowed Users, configured in the config file and the bot owner
-                var allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordServerAdmin.allowedUserIDs");
-                allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordBotAdmin.allowedUserIDs");
-                allowedUserIDs.remove(1234L);
-                if (!allowedUserIDs.contains(discordApi.getOwnerId()))
-                    allowedUserIDs.add(discordApi.getOwnerId());
+            _slashCommands = discordApi.bulkOverwriteServerApplicationCommands(server, adminSlashCommands).join();
+            // Setup a list with all allowed Users, configured in the config file and the bot owner
+            var allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordServerAdmin.allowedUserIDs");
+            allowedUserIDs = Settings.getConfiguration().getLongList("permission.discordBotAdmin.allowedUserIDs");
+            allowedUserIDs.remove(1234L);
+            if (!allowedUserIDs.contains(discordApi.getOwnerId()))
+                allowedUserIDs.add(discordApi.getOwnerId());
 
-                // Register the slash commands for each server
-                List<ServerApplicationCommandPermissionsBuilder> updatedSlashCommands = new ArrayList<>();
-                List<ApplicationCommandPermissions> permissions = new ArrayList<>();
-                Logging.debug("Updating admin slash command permission for server " + server.getName());
-                // Check if the server owner of this server is in the allowed lists.
-                // If not, add them only for this server and remove them afterwards.
-                boolean serverOwnerIsAllowed = allowedUserIDs.contains(server.getOwnerId());
-                if (!serverOwnerIsAllowed)
-                    allowedUserIDs.add(server.getOwnerId());
+            // Register the slash commands for each server
+            List<ServerApplicationCommandPermissionsBuilder> updatedSlashCommands = new ArrayList<>();
+            List<ApplicationCommandPermissions> permissions = new ArrayList<>();
+            Logging.debug("Updating admin slash command permission for server " + server.getName());
+            // Check if the server owner of this server is in the allowed lists.
+            // If not, add them only for this server and remove them afterwards.
+            boolean serverOwnerIsAllowed = allowedUserIDs.contains(server.getOwnerId());
+            if (!serverOwnerIsAllowed)
+                allowedUserIDs.add(server.getOwnerId());
 
-                // Create permission to use this slash command for each allowed user
-                allowedUserIDs.forEach(userID -> permissions.add(ApplicationCommandPermissions.create(userID, ApplicationCommandPermissionType.USER, true)));
-                // Prepare the commands to have the new permissions: Allow all allowed users to use this slash command.
-                slashCommands.forEach(slashCommand -> updatedSlashCommands.add(new ServerApplicationCommandPermissionsBuilder(slashCommand.getId(), permissions)));
+            // Create permission to use this slash command for each allowed user
+            allowedUserIDs.forEach(userID -> permissions.add(ApplicationCommandPermissions.create(userID, ApplicationCommandPermissionType.USER, true)));
+            // Prepare the commands to have the new permissions: Allow all allowed users to use this slash command.
+            _slashCommands.forEach(slashCommand -> updatedSlashCommands.add(new ServerApplicationCommandPermissionsBuilder(slashCommand.getId(), permissions)));
 
-                // Do the actual updates
-                discordApi.batchUpdateApplicationCommandPermissions(server, updatedSlashCommands).thenAccept(serverSlashCommandPermissions ->
-                        Logging.info("Updated admin slash command permissions for server " + server.getName()));
+            // Do the actual updates
+            discordApi.batchUpdateApplicationCommandPermissions(server, updatedSlashCommands).thenAccept(serverSlashCommandPermissions ->
+                    Logging.info("Updated admin slash command permissions for server " + server.getName()));
 
-                if (!serverOwnerIsAllowed)
-                    allowedUserIDs.remove(server.getOwnerId());
+            if (!serverOwnerIsAllowed)
+                allowedUserIDs.remove(server.getOwnerId());
 
-                permissions.clear();
-                updatedSlashCommands.clear();
-            });
+            permissions.clear();
+            updatedSlashCommands.clear();
         }
         Logging.info(ChatColor.GREEN + "Registered slash Commands.");
         Logging.info(ChatColor.YELLOW + "Information: Due to caching, it can take " + ChatColor.BOLD + "UP TO" + ChatColor.RESET + ChatColor.YELLOW + " an hour");

@@ -368,7 +368,10 @@ public class AccountListener {
                 .setColor(Color.RED)
                 .setFooter("Use \"/help\" for help!");
 
-        if (!CheckPermission.checkPermission(Permissions.accountEdit, author.getId())) {
+        if (!CheckPermission.checkPermission(Permissions.accountEdit, author.getId())
+                && !CheckPermission.checkPermission(Permissions.discordBotAdmin, author.getId())
+                && !CheckPermission.checkPermission(Permissions.discordServerAdmin, author.getId())
+        ) {
             event.createImmediateResponder().addEmbed(errorEmbed.setDescription("""
                             Sorry, you don't have the required permissions, to execute this command!
 
