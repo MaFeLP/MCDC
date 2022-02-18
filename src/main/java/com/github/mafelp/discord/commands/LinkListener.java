@@ -75,7 +75,7 @@ public class LinkListener {
     public static void onSlashCommand(SlashCommandCreateEvent event) {
         User author = event.getSlashCommandInteraction().getUser();
         Logging.debug("Executing link command for user " + author);
-
+        checkAndSendToken(event.getSlashCommandInteraction(), event.getSlashCommandInteraction().getOptionLongValueByIndex(0), author);
     }
 
     /**
@@ -96,6 +96,6 @@ public class LinkListener {
                 .setFooter("MCDC made by MaFeLP (https://mafelp.github.io/MCDC/")
                 ;
 
-        event.createImmediateResponder().addEmbed(reply).respond();
+        event.createImmediateResponder().addEmbed(reply).respond().join();
     }
 }

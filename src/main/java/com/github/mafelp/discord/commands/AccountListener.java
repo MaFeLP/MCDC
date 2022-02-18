@@ -181,7 +181,7 @@ public class AccountListener {
             case "get" -> {
                 Logging.debug("DC User " + author.getName() + " executed subcommand \"get\".");
                 // If no additional arguments were passed, give the player his/her account name.
-                if (options.get(0).getOptionUserValueByIndex(0).isEmpty()) {
+                if (options.get(0).requestOptionUserValueByIndex(0).isEmpty()) {
                     if (Account.getByDiscordUser(author).isEmpty()) {
                         Logging.debug("DC User " + ChatColor.GRAY + author.getName() + ChatColor.RESET + " has requested his account name: They don't have one. Sending help message.");
                         event.createImmediateResponder().addEmbed(new EmbedBuilder()
@@ -241,7 +241,7 @@ public class AccountListener {
                 if (incidentReport(author, event)) return;
 
                 // Checks if enough arguments were passed.
-                if (options.get(0).getOptionUserValueByIndex(0).isEmpty()) {
+                if (options.get(0).requestOptionUserValueByIndex(0).isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed.setDescription("""
                                     Not enough arguments given!
 
@@ -251,15 +251,16 @@ public class AccountListener {
                     return;
                 }
 
-                if (Account.getByDiscordUser(options.get(0).getOptionUserValueByIndex(0).get()).isEmpty()) {
+                User user = options.get(0).requestOptionUserValueByIndex(0).get().join();
+                if (Account.getByDiscordUser(user).isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed.setDescription(
-                            "User " + options.get(0).getOptionUserValueByIndex(0).get().getMentionTag() + " does not have account! Ignoring..."
+                            "User " + user.getMentionTag() + " does not have account! Ignoring..."
                     )).respond().join();
 
                     return;
                 }
 
-                Account toRemove = Account.getByDiscordUser(options.get(0).getOptionUserValueByIndex(0).get()).get();
+                Account toRemove = Account.getByDiscordUser(user).get();
                 String username = toRemove.getUsername();
                 AccountManager.removeAccount(toRemove);
                 event.createImmediateResponder().addEmbed(new EmbedBuilder()
