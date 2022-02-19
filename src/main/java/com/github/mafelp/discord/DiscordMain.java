@@ -230,6 +230,37 @@ public class DiscordMain extends Thread {
                 )
         ).setDefaultPermission(true));
 
+        // The config command for the bot & plugin configuration
+        adminSlashCommands.add(SlashCommand.with("config", "Manage the bot's and plugin's configuration",
+                Arrays.asList(
+                        // default
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "default", "Restores the configuration to its defaults."),
+                        // set
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "set", "Sets a value in the configuration.",
+                                Arrays.asList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "path", "The configuration path of the element", true),
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "value", "The value that will be set to in the configuration", true)
+                                )),
+                        // get
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "get", "Gets a value/list from the configuration",
+                                Collections.singletonList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "path", "The configuration path to get the value of", true)
+                                )),
+                        // add
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "add", "Appends a value to a list",
+                                Arrays.asList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "path", "The configuration path of the list", true),
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "value", "The value to add to the list", true)
+                                )),
+                        // remove
+                        SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "remove", "Removed a value from a list",
+                                Arrays.asList(
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "path", "The configuration path of the list", true),
+                                        SlashCommandOption.create(SlashCommandOptionType.STRING, "value", "The value to remove from the list", true)
+                                ))
+                )
+        ).setDefaultPermission(true));
+
         // If linking is NOT enabled, set the default permission for all the slash commands to false. No one can use them then
         if (!Settings.getConfiguration().getBoolean("enableLinking", true)) {
             Logging.info("Linking is not enabled. Setting permission for all slash commands to false.");

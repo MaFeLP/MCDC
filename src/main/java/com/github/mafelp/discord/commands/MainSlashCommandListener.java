@@ -34,6 +34,7 @@ public class MainSlashCommandListener implements SlashCommandCreateListener {
                 }
             }
             case "account" -> AccountListener.onSlashCommand(slashCommandCreateEvent.getSlashCommandInteraction());
+            case "config" -> ConfigListener.onSlashCommand(slashCommandCreateEvent.getSlashCommandInteraction());
             case "help" -> HelpListener.onSlashCommand(slashCommandCreateEvent);
             default -> Logging.info(ChatColor.RED + "Wait. Wait? This command is not recognised: " + slashCommandCreateEvent.getSlashCommandInteraction().getCommandName() + " and this should not have happened!");
         }
