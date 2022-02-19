@@ -235,6 +235,10 @@ public class DiscordMain extends Thread {
                 Arrays.asList(
                         // default
                         SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "default", "Restores the configuration to its defaults."),
+                        // save
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "save", "Saves the configuration in its current state to the config file, overriding changes to the file."),
+                        //reload
+                        SlashCommandOption.create(SlashCommandOptionType.SUB_COMMAND, "reload", "Loads the configuration from the configuration file, overriding current changes."),
                         // set
                         SlashCommandOption.createWithOptions(SlashCommandOptionType.SUB_COMMAND, "set", "Sets a value in the configuration.",
                                 Arrays.asList(

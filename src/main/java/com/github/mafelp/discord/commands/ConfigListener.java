@@ -80,6 +80,8 @@ public class ConfigListener {
                                         
                                         Warning! Only edit the file, if you know what you are doing!
                                         
+                                        If the bot appears again in the active users list, the config was reloaded successfully!
+                                        
                                         A Guide for the config file can be found at https://mafelp.github.io/mcdc/configuration""")
                 ).respond().join();
                 Logging.info("Discord User " + ChatColor.DARK_GRAY + author.getName() + ChatColor.RESET + " is reloading the configuration file.");
