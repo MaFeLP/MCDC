@@ -62,7 +62,7 @@ public class ConfigListener {
                 .setAuthor(author)
                 .setTitle("Error")
                 .setColor(Color.RED)
-                .setFooter("Use \"/help\" for help!");
+                .setFooter("Use \"/help\" for help or go to https://mafelp.github.io/MCDC/configuration");
 
         switch (options.get(0).getName().toLowerCase(Locale.ROOT)) {
             // subcommand reload:
@@ -153,8 +153,12 @@ public class ConfigListener {
                 Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(0);
 
                 if (pathOption.isEmpty() || valueOption.isEmpty()) {
-                    // TODO add Error embed
-                    Logging.debug("Path Option present? " + (pathOption.isPresent() ? "yes" : "no") + "; Value Option present? " + (valueOption.isPresent() ? "yes" : "no"));
+                    event.createImmediateResponder().addEmbed(errorEmbed
+                            .setDescription("The set command requires two arguments, of which one or more are missing!")
+                            .addField("First Argument: Path", "The path in the configuration.")
+                            .addField("Second Argument: Value", "The value to set at the path found in the first argument.")
+                    ).respond().join();
+                    Logging.debug("Path: " + pathOption.orElse("not present") + "; Value: " + valueOption.orElse("not present"));
                     return;
                 }
                 String path = pathOption.get();
@@ -189,7 +193,10 @@ public class ConfigListener {
                 Optional<String> pathOption = options.get(0).getStringValue();
 
                 if (pathOption.isEmpty()) {
-                    // TODO add error embed
+                    event.createImmediateResponder().addEmbed(errorEmbed
+                            .setDescription("The add command requires two arguments, of which one or more are missing!")
+                            .addField("First Argument: Path", "The path in the configuration to get its value from")
+                    ).respond().join();
                     Logging.debug("Path Option present? no");
                     return;
                 }
@@ -197,7 +204,9 @@ public class ConfigListener {
                 String path = pathOption.get();
                 Object value = getConfiguration().get(path);
                 if (value == null) {
-                    //TODO add error embed
+                    event.createImmediateResponder().addEmbed(errorEmbed
+                            .setDescription("No configuration entry exists for this path! See https://mafelp.github.io/MCDC/configuration for all existing paths!")
+                    ).respond().join();
                     Logging.debug("Requested option is non existent in the config.");
                     return;
                 }
@@ -222,8 +231,12 @@ public class ConfigListener {
                 Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(0);
 
                 if (pathOption.isEmpty() || valueOption.isEmpty()) {
-                    // TODO add Error embed
-                    Logging.debug("Path Option present? " + (pathOption.isPresent() ? "yes" : "no") + "; Value Option present? " + (valueOption.isPresent() ? "yes" : "no"));
+                    event.createImmediateResponder().addEmbed(errorEmbed
+                            .setDescription("The add command requires two arguments, of which one or more are missing!")
+                            .addField("First Argument: Path", "The path in the configuration.")
+                            .addField("Second Argument: Value", "The value to add to the list, found at the first argument.")
+                    ).respond().join();
+                    Logging.debug("Path: " + pathOption.orElse("not present") + "; Value: " + valueOption.orElse("not present"));
                     return;
                 }
                 String path = pathOption.get();
@@ -266,8 +279,12 @@ public class ConfigListener {
                 Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(0);
 
                 if (pathOption.isEmpty() || valueOption.isEmpty()) {
-                    // TODO add Error embed
-                    Logging.debug("Path Option present? " + (pathOption.isPresent() ? "yes" : "no") + "; Value Option present? " + (valueOption.isPresent() ? "yes" : "no"));
+                    event.createImmediateResponder().addEmbed(errorEmbed
+                            .setDescription("The add command requires two arguments, of which one or more are missing!")
+                            .addField("First Argument: Path", "The path in the configuration.")
+                            .addField("Second Argument: Value", "The value to remove from the list, found at the first argument.")
+                    ).respond().join();
+                    Logging.debug("Path: " + pathOption.orElse("not present") + "; Value: " + valueOption.orElse("not present"));
                     return;
                 }
                 String path = pathOption.get();
@@ -296,7 +313,7 @@ public class ConfigListener {
                         .setAuthor(author)
                         .setTitle("Success!")
                         .setColor(Color.GREEN)
-                        .setDescription("Removed value `" + valueString + "` from `" + path + "`; its contents are now: " + Settings.getConfiguration().getStringList(path) + "\n\nUse `/config save` to save the changes to the config file.")
+                        .setDescription("Removed value `" + valueString + "` from `" + path + "`\n\nits contents are now:\n" + Settings.getConfiguration().getStringList(path) + "\n\nUse `/config save` to save the changes to the config file.")
                 ).respond().join();
             }
             // If no subcommand was specified.
