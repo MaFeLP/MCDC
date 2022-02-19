@@ -149,8 +149,8 @@ public class ConfigListener {
                 if (incidentReport(author, event)) return;
 
                 SlashCommandInteractionOption pathOptionObject = options.get(0);
-                Optional<String> pathOption = pathOptionObject.getStringValue();
-                Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(0);
+                Optional<String> pathOption = pathOptionObject.getOptionStringValueByIndex(0);
+                Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(1);
 
                 if (pathOption.isEmpty() || valueOption.isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed
@@ -190,7 +190,8 @@ public class ConfigListener {
                 // If the user does not have te required permissions, exit.
                 if (incidentReport(author, event)) return;
 
-                Optional<String> pathOption = options.get(0).getStringValue();
+                SlashCommandInteractionOption pathOptionObject = options.get(0);
+                Optional<String> pathOption = pathOptionObject.getOptionStringValueByIndex(0);
 
                 if (pathOption.isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed
@@ -227,8 +228,8 @@ public class ConfigListener {
                 if (incidentReport(author, event)) return;
 
                 SlashCommandInteractionOption pathOptionObject = options.get(0);
-                Optional<String> pathOption = pathOptionObject.getStringValue();
-                Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(0);
+                Optional<String> pathOption = pathOptionObject.getOptionStringValueByIndex(0);
+                Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(1);
 
                 if (pathOption.isEmpty() || valueOption.isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed
@@ -275,8 +276,8 @@ public class ConfigListener {
                 if (incidentReport(author, event)) return;
 
                 SlashCommandInteractionOption pathOptionObject = options.get(0);
-                Optional<String> pathOption = pathOptionObject.getStringValue();
-                Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(0);
+                Optional<String> pathOption = pathOptionObject.getOptionStringValueByIndex(0);
+                Optional<String> valueOption = pathOptionObject.getOptionStringValueByIndex(1);
 
                 if (pathOption.isEmpty() || valueOption.isEmpty()) {
                     event.createImmediateResponder().addEmbed(errorEmbed
