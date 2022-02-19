@@ -26,8 +26,8 @@ public class MessageComponentCreationListener implements MessageComponentCreateL
         switch (interaction.getCustomId()) {
             case "helpSelectMenu" -> helpSelectMenu(interaction);
             case "configResetConfirm" -> configResetConfirm(interaction);
-            case "configResetAbort" -> configResetAbort(interaction);
-            default -> {}
+            case "configResetCancel" -> configResetAbort(interaction);
+            default -> Logging.info(ChatColor.RED + "Wait what? This interaction should not have been caught! Invalid Interaction: " + interaction.getCustomId());
         }
     }
 
@@ -215,7 +215,7 @@ public class MessageComponentCreationListener implements MessageComponentCreateL
     private static void configResetAbort(MessageComponentInteraction interaction) {
         if (incidentReport(interaction)) return;
 
-        Logging.info(ChatColor.GRAY + interaction.getUser().getName() + ChatColor.RESET + " successfully reset the config file to its defaults!");
+        Logging.info(ChatColor.GRAY + interaction.getUser().getName() + ChatColor.RESET + " successfully aborted the reset of the config file!");
         interaction.getMessage().createUpdater().removeAllEmbeds().addEmbed(new EmbedBuilder()
                         .setAuthor(interaction.getUser())
                         .setTitle("Aborted!")
