@@ -107,7 +107,11 @@ public class CommandParser {
             argumentList.add(argsList.get(i));
         }
 
-        return new Command(argsList.get(0), argumentList.toArray(String[]::new));
+        try {
+            return new Command(argsList.get(0), argumentList.toArray(String[]::new));
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     /**

@@ -1,10 +1,12 @@
 package com.github.mafelp.discord;
 
+import com.github.mafelp.utils.Settings;
 import org.bukkit.ChatColor;
-import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.*;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.interaction.callback.InteractionImmediateResponseBuilder;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.concurrent.CompletionException;
@@ -21,12 +23,14 @@ public class RoleAdmin {
      * Method creates a new Role on a server with the specified name.
      * @param server The server to create the new role on.
      * @param name The name of the new role.
-     * @param successEmbed The embed to sent the user on success.
-     * @param successChannel The channel to sent the successEmbed to.
+     * @param successEmbed The Embed to send on a success.
+     * @param successBuilder The immediate responseBuilder to answer to the slash commands.
      * @return The newly created role
      */
     public static Role createNewRole(Server server, String name,
-                                     EmbedBuilder successEmbed, ServerTextChannel successChannel) throws CompletionException {
+                                     @Nullable EmbedBuilder successEmbed,
+                                     @Nullable InteractionImmediateResponseBuilder successBuilder) throws CompletionException {
+        // Set the permissions the new role should have.
         Permissions permissions = new PermissionsBuilder()
                 .setAllowed(PermissionType.ADD_REACTIONS)
                 .setDenied(PermissionType.ADMINISTRATOR)
@@ -61,6 +65,7 @@ public class RoleAdmin {
                 .build()
                 ;
 
+        // Build the Role. This throws the CompletionException
         Role role = new RoleBuilder(server)
                 .setColor(new Color(194, 98, 94))
                 .setAuditLogReason("MCDC: Minecraft Server Role creation")
@@ -72,12 +77,23 @@ public class RoleAdmin {
 
         info("Created new Role " + ChatColor.GRAY + role.getName() + ChatColor.RESET + " on server " + ChatColor.RESET + server.getName() + "!");
 
-        if (successEmbed != null)
-            successChannel.sendMessage(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
-                    .addField("Usage:", "Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!"));
+        // Send the success embed, if one exists.
+        if (successEmbed != null && successBuilder != null)
+            successBuilder.addEmbed(successEmbed.addField("New Role", "The new role is: " + role.getMentionTag() + "!")
+                    .addField("Usage:", "Give the role to any members that should be allowed to view and write to the minecraft channel. Later this will get added automatically with linking!")
+            ).respond();
 
         discordApi.getYourself().addRole(role, "MCDC needs to see the channel as well!");
         info("Added role \"" + role.getName() + "\" to the discord API.");
+
+        var roleIDs = Settings.getConfiguration().getLongList("roleIDs");
+        if (roleIDs.get(0) == 1234L) {
+            roleIDs.set(0, role.getId());
+        } else {
+            roleIDs.add(role.getId());
+        }
+        Settings.getConfiguration().set("roleIDs", roleIDs);
+        Settings.saveConfiguration();
 
         return role;
     }

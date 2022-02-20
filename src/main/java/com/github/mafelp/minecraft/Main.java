@@ -1,20 +1,17 @@
 package com.github.mafelp.minecraft;
 
-import com.github.mafelp.utils.CheckPermission;
-import com.github.mafelp.utils.Logging;
-import com.github.mafelp.utils.Permissions;
-import com.github.mafelp.utils.Settings;
+import com.github.mafelp.accounts.AccountManager;
 import com.github.mafelp.discord.DiscordMain;
-import com.github.mafelp.minecraft.commands.Config;
-import com.github.mafelp.minecraft.commands.Link;
-import com.github.mafelp.minecraft.commands.Token;
+import com.github.mafelp.minecraft.commands.*;
+import com.github.mafelp.minecraft.listeners.*;
+import com.github.mafelp.minecraft.tabCompleters.*;
+import com.github.mafelp.utils.Logging;
+import com.github.mafelp.utils.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static com.github.mafelp.utils.Logging.debug;
-import static com.github.mafelp.utils.Settings.prefix;
-
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -29,11 +26,11 @@ public final class Main extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        // Logs greeting and version to the console
-        Bukkit.getLogger().fine("Plugin MCDC version " + Settings.version + " is being loaded...");
-
         // Setting minecraftServer for use in other methods that are not in a plugin class.
         Settings.minecraftServer = this.getServer();
+
+        // Logs greeting and version to the console
+        Logging.info("Plugin MCDC version " + Settings.version + " is being loaded...");
 
         // Initializing settings and loading (default) configuration for further use.
         Settings.init();
@@ -45,9 +42,10 @@ public final class Main extends JavaPlugin {
         commandRegistration();
 
         // Initialize and try starting up the discord bot.
-        Thread discordInitThread = new DiscordMain();
+        Thread discordInitThread = new DiscordMain(true);
         discordInitThread.setName("Initializing the Discord instance.");
         discordInitThread.start();
+
     }
 
     /**
@@ -56,14 +54,22 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // Print thank you message to the console
-        Bukkit.getLogger().fine(prefix + "Plugin MCDC version " + Settings.version + " is being unloaded...");
-        Bukkit.getLogger().fine(prefix + "Thanks for using it!");
+        Logging.info("Plugin MCDC version " + Settings.version + " is being unloaded...");
+        Logging.info("Thanks for using it!");
 
         // Safely shut down the Discord bot instance
         DiscordMain.shutdown();
 
         // Save the configuration
         Settings.saveConfiguration();
+
+        // Saves the current state of the accounts to the file.
+        try {
+            AccountManager.createAccountsFile();
+            AccountManager.saveAccounts();
+        } catch (IOException e) {
+            Logging.logIOException(e, "Error saving the Accounts file. ALL LINKS WILL BE LOST!");
+        }
     }
 
     /**
@@ -76,7 +82,11 @@ public final class Main extends JavaPlugin {
         // All listeners
         // for more information read the Javadoc in the specific classes
         pluginManager.registerEvents(new JoinListener(), this);
+        pluginManager.registerEvents(new LeaveListener(), this);
         pluginManager.registerEvents(new MinecraftChatListener(), this);
+        pluginManager.registerEvents(new CommandListener(), this);
+        pluginManager.registerEvents(new AdvancementListener(), this);
+        pluginManager.registerEvents(new DeathListener(), this);
     }
 
     /**
@@ -85,11 +95,28 @@ public final class Main extends JavaPlugin {
     private void commandRegistration() {
         // All commands
         // for more information read the Javadoc in the specific classes
-        Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
-        Logging.info("Command \"link\" has been enabled.");
         Objects.requireNonNull(getCommand("token")).setExecutor(new Token());
+        Objects.requireNonNull(getCommand("token")).setTabCompleter(new TokenTabCompleter());
         Logging.info("Command \"token\" has been enabled.");
         Objects.requireNonNull(getCommand("config")).setExecutor(new Config());
+        Objects.requireNonNull(getCommand("config")).setTabCompleter(new ConfigTabCompleter());
         Logging.info("Command \"config\" has been enabled.");
+        Objects.requireNonNull(getCommand("help")).setExecutor(new Help());
+        Objects.requireNonNull(getCommand("help")).setTabCompleter(new HelpTabCompleter());
+        Logging.info("Command \"help\" has been enabled.");
+        if (Settings.getConfiguration().getBoolean("enableLinking")) {
+            Objects.requireNonNull(getCommand("link")).setExecutor(new Link());
+            Objects.requireNonNull(getCommand("link")).setTabCompleter(new LinkTabCompleter());
+            Logging.info("Command \"link\" has been enabled.");
+            Objects.requireNonNull(getCommand("account")).setExecutor(new AccountCommand());
+            Objects.requireNonNull(this.getCommand("account")).setTabCompleter(new AccountTabCompleter());
+            Logging.info("Command \"account\" has been enabled.");
+            Objects.requireNonNull(getCommand("unlink")).setExecutor(new Unlink());
+            Objects.requireNonNull(getCommand("unlink")).setTabCompleter(new UnlinkTabCompleter());
+            Logging.info("Command \"unlink\" has been enabled.");
+            Objects.requireNonNull(getCommand("whisper")).setExecutor(new Whisper());
+            Objects.requireNonNull(this.getCommand("whisper")).setTabCompleter(new WhisperTabCompleter());
+            Logging.info("Command \"whisper\" has been enabled.");
+        }
     }
 }

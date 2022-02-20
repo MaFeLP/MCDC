@@ -8,14 +8,15 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 
 import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
 
 import static com.github.mafelp.utils.Logging.debug;
-import static com.github.mafelp.utils.Settings.getConfiguration;
-import static com.github.mafelp.utils.Settings.prefix;
+import static com.github.mafelp.utils.Settings.*;
 
 /**
  * Class used to check permissions on Discord or on the Minecraft server
@@ -28,7 +29,7 @@ public class CheckPermission {
      * @param action The action the person tried to do. Will be inserted into embed.
      * @return an embed to sent to the person.
      */
-    public static EmbedBuilder getPermissionDeniedEmbed(final MessageAuthor messageAuthor, final String action) {
+    public static EmbedBuilder getPermissionDeniedEmbed(final User messageAuthor, final String action) {
         return new EmbedBuilder()
                 .setAuthor(messageAuthor)
                 .setTitle("Error")
@@ -56,6 +57,29 @@ public class CheckPermission {
         for (long person :
                 getConfiguration().getLongList("permission.adminIDs")) {
             if (messageAuthor.getId() == person)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a user is a server admin or in the <code>permission.adminIDs</code> list in the <code>config.yml</code>
+     * file.
+     * @param user The user to check the permissions from.
+     * @param server The server to check the if the user has admin permission on.
+     * @return if the person is authorized to do so.
+     */
+    public static boolean hasAdminPermission (final User user, final Server server) {
+        // Checking if the sender has the required permissions
+        if (user.isBotOwner())
+            return true;
+
+        if (server.isAdmin(user))
+            return true;
+
+        for (long person : getConfiguration().getLongList("permission.adminIDs")) {
+            if (user.getId() == person)
                 return true;
         }
 
@@ -206,5 +230,35 @@ public class CheckPermission {
             commandSender.sendMessage(prefix + "Are you a player or a console? I don't know...\nBut what I know, is that only players and consoles can execute this command!");
             return false;
         }
+    }
+
+    /**
+     * Checks the configuration if a command executor has a specific permission or has a specific level.
+     * @param permission The permission to check the level of.
+     * @param messageAuthor the discord {@link org.javacord.api.entity.user.User} of a command to check the permission of.
+     * @return if the command sender has the permission.
+     */
+    public static boolean checkPermission(final Permissions permission, final MessageAuthor messageAuthor) {
+        if (messageAuthor.isBotOwner()) {
+            Logging.debug("Granting permission " + permission + " to " + messageAuthor.getDisplayName() + ": is the bot Owner.");
+            return true;
+        }
+
+        if (messageAuthor.isServerAdmin()) {
+            Logging.debug("Granting permission " + permission + " to " + messageAuthor.getDisplayName() + ": is a Server Administrator");
+            return true;
+        }
+
+        Logging.debug("Checking permission " + permission + " for player " + messageAuthor.getDisplayName() + "...");
+        String permissionToCheck = permission.toString();
+
+        for (final long id : Settings.getConfiguration().getLongList("permission." + permissionToCheck + ".allowedUserIDs")) {
+            if (id == messageAuthor.getId()) {
+                Logging.debug("Granting permission " + permission + " for player " + messageAuthor.getDisplayName() + "...");
+                return true;
+            }
+        }
+        Logging.debug("Denying permission " + permission + " for player " + messageAuthor.getDisplayName() + "...");
+        return false;
     }
 }

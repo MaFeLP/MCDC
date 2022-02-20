@@ -1,5 +1,6 @@
 package com.github.mafelp.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.IOException;
@@ -83,6 +84,6 @@ public class Logging {
      */
     public static void debug(String message) {
         if (Settings.debug)
-            Settings.minecraftServer.getLogger().info(Settings.prefix + message);
+            Settings.minecraftServer.getLogger().info(Settings.prefix + ChatColor.GREEN + message);
     }
 }

@@ -3,19 +3,27 @@
 # MCDC
 A [Minecraft](https://www.minecraft.net) plugin for [paper servers](https://papermc.io).
 
-## Functions
+## Features
 The bot can currently do all the checked items, unchecked will be implemented in the future.
  - [X] Display discord messages in the minecraft chat
     - [X] Discord messages can be sent to the bot via direct message
     - [X] Discord messages can be sent to any server channel the bot is present on
  - [X] Display minecraft messages in a discord chat
  - [X] managing a "#mincraft-server" channel on a specific discord server
-   - [ ] this includes that only members with a role can see this channel and write in it
- <br><br>
- - [ ] whisper between a discord user and a minecraft user
- - [ ] linking between a discord and a minecraft account
-<div class="alert alert-danger" role="alert">Remember that this plugin is currently in its beta phase!<br>
-All the functionalities will be added in the future!</div>
+   - [X] this includes that only members with a role can see this channel and write in it
+ - [X] whisper between a discord user and a minecraft user
+ - [X] linking between a discord and a minecraft account
+ - [X] Toggle-able: Sending minecraft commands to the discord chats.
+ - [X] Slash Commands: use slash commands in the discord chat.
+ - [X] Tab completion in Minecraft
+<br><br>
+ - [ ] A message in a channel that displays all online Members.
+ - [ ] Migrate more slash commands to discord
+   - [ ] `/account`
+   - [ ] `/config`
+ - [ ] Add a new command: `/help`
+   - [X] `/help` in minecraft
+   - [ ] `/help` in discord
 
 ## Installation
 1. Download the latest [release](https://github.com/MaFeLP/MCDC/releases/) and put it into `<your server directory>/plugins`.
@@ -62,12 +70,52 @@ apiToken: 'Your API Token goes here!'
 # Allowed values: any String
 discordCommandPrefix: '.'
 
+# Selects if messages that are commands should be deleted after execution.
+# Allowed values: <true|false>
+deleteDiscordCommandMessages: false
+
 # Discord Channel IDs to broadcast messages to.
 channelIDs:
    - 1234
 
+# Enables accounts and linking.
+# Allowed values <true|false>
+enableLinking: true
+
+# Allow players to list all the accounts.
+# Allowed values <true|false>
+allowListAllAccounts: true
+
+# Decides, if the config value 'serverName' should be displayed in the footer of discord messages.
+# Allowed values <true|false>
+showFooterInMessages: true
+
+# The value that should be displayed below the name
+activity:
+   # If the bot should have an activity.
+   enabled: true
+   # The type of the message, aka. the first word:
+   # can be set to custom, competing, listening, watching, streaming or playing
+   type: listening
+   # The text that should be displayed.
+   message: "your messages 👀"
+
+# If the bot should send a message to the listening channels, if a command was executed by ...
+sendCommandToDiscord:
+   # ... a player.
+   player: false
+   # ... the server.
+   server: false
+
 # Permission section for setting permission levels
 permission:
+   # The permissions on linking and editing accounts.
+   accountEdit:
+      # The OP level needed to remove accounts of players.
+      level: 3
+      # A list of UUIDs of Players who have a wildcard to use this command.
+      allowedUserUUIDs:
+         - a unique ID
 
    # Permission for minecraft command /config
    configEdit:

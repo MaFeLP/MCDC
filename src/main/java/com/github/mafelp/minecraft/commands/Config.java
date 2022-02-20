@@ -7,15 +7,12 @@ import com.github.mafelp.utils.exceptions.NoCommandGivenException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static com.github.mafelp.utils.Settings.*;
 
@@ -102,6 +99,7 @@ public class Config implements CommandExecutor {
                     }
                 });
 
+                // Prompt the user to confirm his/her choices.
                 if (subCommand.getArguments().length == 0)
                     commandSender.sendMessage(prefix + "Please type " + ChatColor.GRAY + "config default confirm" +
                             ChatColor.RESET + " to confirm your actions!");

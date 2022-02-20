@@ -1,4 +1,61 @@
 # Changelog
+## Account and config command
+➕ Added discord `/account` command<br>
+➕ Added discord `/config` command for administrators
+
+---
+
+## Help Command & Event Listeners
+➕ Added a help command for discord with nice buttons<br>
+➕ Added Event Listeners for the events:
+
+- Server starts/stops (plugin is loaded/unloaded)
+- Player joins/leaves the Server
+- Player gets an advancement
+- Player dies
+
+---
+
+## Tab Completions
+### v0.11.0-beta
+➕ Added Tab Completion to all Minecraft commands
+
+---
+
+## Slash Commands Update
+### v0.10.0
+➕ Added Slash Commands!<br>
+↳ Now use discord commands by using a slash (/) instead of the old discordCommandPrefix Entry in the config file <br><br>
+
+**⚠️ Information about slash commands⚠️**<br>
+ - It can take **up to** an hour until the slash commands are registered
+   - This is a caching limitation put in place by discord.
+ - If you do not see any slash commands after this hour, please see your console log for a link!
+ - You **CAN NOT** use normal message commands like `.setup` anymore. Use `/setup` instead, if you are the discord server **owner** and/or the bot owner.
+<br>
+🚫 Removed the old discord commands, that could be used in messages.
+
+---
+
+## BIG Account update
+### v0.9.0
+➕ Added Accounts! <br>
+↳ Place an account Tag in your minecraft message, and it will be replaced with a discord ping (if the user has a linked account)! <br>
+↳ Added a new minecraft command `/link`: Link your minecraft and discord accounts! <br>
+↳ Added a new minecraft command `/unlink`: Unlink your minecraft and discord accounts! <br>
+↳ Added a new minecraft command `/account`: Manage your accounts! <br>
+↳ Added a new minecraft command `/whisper`: Whisper to a friend on discord! <br>
+↳ Added a new minecraft command `/dcmsg`: Whisper to a friend on discord! <br>
+↳ Added a new discord command `<prefix>link`: Link your discord to your minecraft! <br>
+↳ Added a new discord command `<prefix>whisper`: Whisper your message to a minecraft player! <br>
+↳ Added a new discord command `<prefix>mcmsg`: Whisper your message to a minecraft player! <br>
+➕ Added some more toggles: <br>
+↳ The bot **can** send message with server commands and player commands to all the channels. <br>
+↳ Toggle, if the footer should be displayed. <br>
+↳ Toggle, if discord command messages should be deleted b the bot. <br>
+
+---
+
 ## Small bug fixes
 ### v0.8.4-beta
 ➕ Added Error message, when then bot does not have the required permissions, to create Channels or/and roles (See issue [29](https://github.com/MaFeLP/MCDC/issues/29)). <br>
@@ -157,7 +214,7 @@
 ## v0.3.1-beta
 ### 🏁 Commenting update!
 ➕ Added building instructions with Java 8 <br>
-➕ Added full Javadoc documentation in [doc](./doc) <br>
+➕ Added full Javadoc documentation in [doc](https://mafelp.github.io/MCDC/doc/development/index.html) <br>
 ➕ Added full commentary to the full code base<br>
 ➕ Added [RoleAdmin.java](./src/main/java/com/github/mafelp/discord/RoleAdmin.java) to prepare for Role management in coming builds
 

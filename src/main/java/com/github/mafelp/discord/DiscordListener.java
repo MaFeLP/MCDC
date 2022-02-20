@@ -42,12 +42,16 @@ public class DiscordListener implements MessageCreateListener {
         if (event.getReadableMessageContent().startsWith(Settings.discordCommandPrefix))
             return;
 
+        /*
+         * If the message is empty and only houses an embed.
+         *
+         * This embed can not be displayed in the in-game chat and would therefore be an empty message.
+         */
+        if (event.getReadableMessageContent().equalsIgnoreCase(""))
+            return;
+
         // Send the readable content of the message into the minecraft chat
         // for everyone to read.
-        // TODO broadcast version of message WITHOUT line break to the console and messages with line breaks to the players if Settings.shortMsg == true
-        // Settings.minecraftServer.broadcastMessage(
-                // msgPrefix(event) + event.getReadableMessageContent()
-        //);
 
         for (Player p : Settings.minecraftServer.getOnlinePlayers()) {
             p.sendMessage(msgPrefix(event) + event.getReadableMessageContent());

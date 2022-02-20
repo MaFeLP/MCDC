@@ -6,7 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.event.message.MessageCreateEvent;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 import static com.github.mafelp.utils.Logging.info;
 import static com.github.mafelp.utils.Logging.logIOException;
@@ -20,7 +22,7 @@ import static com.github.mafelp.utils.Logging.logIOException;
  * ]
  */
 public class Settings {
-    // Internal variables::
+    // Internal variables:
     /**
      * communication API with Discord, defined in DiscordMain.init()
      */
@@ -34,7 +36,7 @@ public class Settings {
     /**
      * version number of the plugin - displayed to users
      */
-    public static final String version = "v0.8.4-beta";
+    public static final String version = "v0.13.0-beta";
 
     /**
      * enables more information being displayed while executing events
@@ -66,6 +68,11 @@ public class Settings {
      * defined in config.yml
      */
     public static volatile String serverName;
+
+    /**
+     * The events the server admin has subscribed to.
+     */
+    public static volatile List<String> events;
 
     /**
      * API token used to authenticate the bot to discord -
@@ -171,7 +178,7 @@ public class Settings {
     /**
      * Directory where the configuration files are in
      */
-    private static final File configurationFileDirectory = new File("./plugins/MCDC");
+    public static final File configurationFileDirectory = new File("./plugins/MCDC");
 
     /**
      * The file in which the configurations are specified in
@@ -229,6 +236,7 @@ public class Settings {
         shortMsg = configuration.getBoolean("useShortMessageFormat");
         prefix = configuration.getString("pluginPrefix");
         serverName = configuration.getString("serverName");
+        events = configuration.getStringList("events");
         debug = configuration.getBoolean("debug");
         discordCommandPrefix = configuration.getString("discordCommandPrefix");
     }
@@ -247,11 +255,32 @@ public class Settings {
         defaultConfiguration.set("serverName", "A Minecraft Server");
         defaultConfiguration.set("debug", false);
         defaultConfiguration.set("discordCommandPrefix", ".");
+        defaultConfiguration.set("deleteDiscordCommandMessages", false);
+        defaultConfiguration.set("events", Arrays.asList(
+                "JoinEvent",
+                "LeaveEvent",
+                "PlayerAdvancementEvent",
+                "PlayerDeathEvent",
+                "ServerShutdownEvent",
+                "ServerStartupEvent"
+        ));
+        defaultConfiguration.set("channelIDs", Collections.singletonList(1234L));
+        defaultConfiguration.set("roleIDs", Collections.singletonList(1234L));
+        defaultConfiguration.set("enableLinking", true);
+        defaultConfiguration.set("allowListAllAccounts", true);
+        defaultConfiguration.set("showFooterInMessages", true);
+        defaultConfiguration.set("activity.enabled", true);
+        defaultConfiguration.set("activity.type", "listening");
+        defaultConfiguration.set("activity.message", "to your messages 👀");
+        defaultConfiguration.set("permission.accountEdit.level", 3);
+        defaultConfiguration.set("permission.accountEdit.allowedUserUUIDs", new ArrayList<UUID>());
         defaultConfiguration.set("permission.configEdit.level", 3);
-        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", null);
-        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", null);
-        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", null);
+        defaultConfiguration.set("permission.configEdit.allowedUserUUIDs", new ArrayList<UUID>());
+        defaultConfiguration.set("permission.discordServerAdmin.allowedUserIDs", new ArrayList<Long>());
+        defaultConfiguration.set("permission.discordBotAdmin.allowedUserIDs", new ArrayList<Long>());
         defaultConfiguration.set("saveEscapeCharacterInConfig", true);
+        defaultConfiguration.set("sendCommandToDiscord.player", false);
+        defaultConfiguration.set("sendCommandToDiscord.server", false);
 
         return defaultConfiguration;
     }
