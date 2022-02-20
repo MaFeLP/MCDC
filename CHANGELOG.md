@@ -1,4 +1,10 @@
 # Changelog
+## Account and config command
+➕ Added discord `/account` command<br>
+➕ Added discord `/config` command for administrators
+
+---
+
 ## Help Command & Event Listeners
 ➕ Added a help command for discord with nice buttons<br>
 ➕ Added Event Listeners for the events:
