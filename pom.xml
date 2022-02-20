@@ -6,7 +6,7 @@
 
     <groupId>com.github.mafelp</groupId>
     <artifactId>mcdc</artifactId>
-    <version>0.12.1-beta</version>
+    <version>0.13.0-beta</version>
     <packaging>jar</packaging>
 
     <name>Mcdc</name>
